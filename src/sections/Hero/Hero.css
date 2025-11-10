@@ -1,0 +1,73 @@
+.hero {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  color: var(--text-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+}
+
+.animated-bg {
+  position: absolute;
+  width: 150%;
+  height: 150%;
+  background: var(--animated-gradient);
+  background-size: 300% 300%;
+  animation: gradientMove 10s ease infinite;
+  filter: blur(12px);
+  top: -25%;
+  left: -25%;
+  z-index: 0;
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  padding: 20px;
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.hero-title span {
+  color: var(--accent-yellow);
+  text-shadow: 0 0 15px rgba(var(--accent-yellow-rgb), 0.6);
+}
+
+.hero-subtitle {
+  font-size: 1.2rem;
+  margin-top: 10px;
+  opacity: 0.9;
+}
+
+.hero-btn {
+  margin-top: 30px;
+  padding: 12px 28px;
+  background: var(--accent-yellow);
+  color: #1a1a1a;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.hero-btn:hover {
+  background: #f4a261;
+  box-shadow: 0 0 20px rgba(var(--accent-yellow-rgb), 0.5);
+}

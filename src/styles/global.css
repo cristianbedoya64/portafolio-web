@@ -1,0 +1,183 @@
+/* 🎨 Paleta y tipografía base */
+:root {
+  --bg-color: #0e0e10;
+  --text-color: #f3f4f6;
+  --accent-color: #00d9ff;
+  --secondary-color: #6b7280;
+  --highlight: #38bdf8;
+  --font-main: 'Poppins', sans-serif;
+  /* Project-wide palette */
+  --accent-yellow: #ffd166; /* used for highlights */
+  --accent-yellow-rgb: 255,209,102;
+  --linkedin-blue: #0a66c2;
+  --whatsapp-green: #25d366;
+  --github-white: #ffffff;
+  /* useful RGB tokens for rgba() fallbacks in components */
+  --text-color-rgb: 243,244,246; /* matches --text-color (#f3f4f6) */
+  --muted-rgb: 156,163,175; /* matches --muted (#9ca3af) */
+  /* card hover background (uses rgba overlay) */
+  --card-hover-bg: rgba(255,255,255,0.06);
+  --btn-radius: 8px;
+  --btn-height: 44px;
+  --animated-gradient: linear-gradient(-45deg, #1b263b, #415a77, #778da9, #e0e1dd);
+  /* animated background tuning (per-section override allowed) */
+  --animated-bg-opacity: 0.55;
+  --animated-bg-blur: 28px;
+  --animated-bg-size: 400% 400%;
+  --animated-bg-duration: 12s;
+  /* altura del navbar fija para compensar anclas */
+  --nav-height: 58px;
+  /* navbar visuals */
+  --nav-bg: rgba(15,15,20,0.6);
+  --nav-backdrop-blur: 6px;
+  --nav-link-hover-bg: rgba(255,255,255,0.04);
+  /* surfaces */
+  --surface: #0f1724;
+  --card-bg: rgba(255,255,255,0.04);
+  --muted: #9ca3af;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg-color);
+  color: var(--text-color);
+  font-family: var(--font-main);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* smooth color transitions when switching theme */
+
+/* ✨ Animaciones suaves */
+.fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ✨ Botones elegantes */
+button {
+  background: var(--accent-color);
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+button:hover {
+  background: var(--highlight);
+  transform: scale(1.05);
+}
+
+/* Clase base reutilizable para botones/links estilizados */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: transparent;
+  border: 2px solid var(--accent-color);
+  color: var(--text-color);
+  padding: 0 16px;
+  height: var(--btn-height, 44px);
+  border-radius: var(--btn-radius, 8px);
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn:focus-visible { outline: 2px solid rgba(var(--accent-yellow-rgb),0.45); outline-offset:2px }
+
+/* ✨ Títulos destacados */
+h1, h2, h3 {
+  font-weight: 600;
+  color: var(--accent-color);
+  letter-spacing: 0.5px;
+}
+
+/* ✨ Secciones */
+section {
+  padding: 80px 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* ✨ Navbar básica (la agregaremos luego) */
+header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: rgba(15, 15, 20, 0.8);
+  backdrop-filter: blur(10px);
+  padding: 10px 0;
+  z-index: 100;
+}
+
+/* Shared animated background used by sections. Each section can set --animated-gradient. */
+.animated-bg {
+  position: absolute;
+  width: 150%;
+  height: 150%;
+  background: var(--animated-gradient);
+  background-size: var(--animated-bg-size);
+  animation: gradientMove var(--animated-bg-duration) ease infinite;
+  filter: blur(var(--animated-bg-blur));
+  top: -25%;
+  left: -25%;
+  z-index: 0;
+  opacity: var(--animated-bg-opacity);
+  pointer-events: none; /* don't block clicks */
+  mix-blend-mode: overlay; /* subtle blend to integrate with cards */
+  transition: opacity 0.6s ease, filter 0.6s ease;
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Accessible focus style */
+:focus-visible {
+  outline: 3px solid rgba(var(--accent-yellow-rgb), 0.35);
+  outline-offset: 2px;
+}
+
+/* Compensar navbar fijo: asegurar que los anclas no queden ocultos */
+section[id] {
+  scroll-margin-top: calc(var(--nav-height) + 8px);
+}
+
+/* Light theme overrides (apply by adding class `light-theme` on <html>) */
+html.light-theme {
+  --bg-color: #f8fafc; /* light background */
+  --text-color: #0f1724; /* dark text */
+  --text-color-rgb: 15,23,36;
+  --accent-color: #0b6cff; /* slightly different accent for light */
+  --secondary-color: #374151;
+  --highlight: #0ea5e9;
+  --card-bg: rgba(15, 23, 42, 0.04);
+  --muted-rgb: 107,114,128;
+  --card-hover-bg: rgba(15,23,42,0.06);
+  --nav-bg: rgba(255,255,255,0.92);
+  --nav-link-hover-bg: rgba(15,23,42,0.04);
+  --muted: #6b7280;
+}
+

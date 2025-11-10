@@ -1,0 +1,150 @@
+.contact {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  color: var(--text-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+  padding: 60px 20px;
+  /* define the gradient used by the shared .animated-bg */
+  --animated-gradient: linear-gradient(-45deg, #1b263b, #415a77, #778da9, #e0e1dd);
+}
+
+.contact-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+}
+
+.contact-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.contact-title span {
+  color: var(--accent-yellow);
+  text-shadow: 0 0 15px rgba(var(--accent-yellow-rgb), 0.6);
+}
+
+.contact-subtitle {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin-bottom: 40px;
+  line-height: 1.6;
+}
+
+.contact-buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+}
+
+.contact-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: transparent;
+  border: 2px solid var(--btn-border, var(--accent-yellow));
+  color: var(--text-color);
+  padding: 0 18px; /* padding vertical removed, height controls size */
+  height: 44px; /* fixed height for uniform buttons */
+  min-width: 140px; /* keep buttons reasonably sized and uniform */
+  max-width: 220px;
+  box-sizing: border-box;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.contact-btn .icon {
+  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 🔵 Efecto neón al pasar el mouse */
+.contact-btn:hover {
+  /* softer/neater shadow to reduce paint cost; uses --btn-shadow-rgb if provided */
+  box-shadow: 0 0 10px rgba(var(--btn-shadow-rgb, 255,209,102), 0.6),
+              0 0 20px rgba(var(--btn-shadow-rgb, 255,209,102), 0.35);
+  transform: translateY(-2px);
+  border-color: var(--btn-border-hover, #f4a261);
+}
+
+/* Responsive tweaks: make buttons smaller on narrow screens */
+@media (max-width: 480px) {
+  .contact-buttons { gap: 12px; }
+  .contact-btn {
+    min-width: 110px;
+    max-width: 180px;
+    height: 40px;
+    font-size: 0.9rem;
+    padding: 0 12px;
+    gap: 6px;
+  }
+}
+
+@media (max-width: 600px) {
+  .contact { padding: 40px 16px; }
+  .contact-title { font-size: 2rem; }
+  .contact-subtitle { margin-bottom: 20px; }
+}
+
+/* 🎨 Estilos personalizados para cada botón */
+.contact .contact-btn.linkedin {
+  /* mayor especificidad para sobreescribir .linkedin global (sección) */
+  --btn-border: var(--linkedin-blue);
+  --btn-border-hover: rgba(10,102,194,0.9);
+  --btn-shadow-rgb: 10,102,194;
+  display: inline-flex;
+  height: var(--btn-height);
+  min-height: 0;
+  padding: 0 18px;
+  box-sizing: border-box;
+}
+.contact .contact-btn.linkedin:hover {
+  /* Shadow uses the --btn-shadow-rgb token */
+  box-shadow: 0 0 10px rgba(var(--btn-shadow-rgb), 0.65),
+              0 0 20px rgba(var(--btn-shadow-rgb), 0.35);
+}
+
+.github {
+  --btn-border: var(--github-white);
+  --btn-shadow-rgb: 255,255,255;
+}
+.github:hover {
+  box-shadow: 0 0 10px rgba(var(--btn-shadow-rgb), 0.65),
+              0 0 20px rgba(var(--btn-shadow-rgb), 0.35);
+}
+
+.email {
+  --btn-border: var(--accent-yellow);
+  --btn-shadow-rgb: var(--accent-yellow-rgb);
+}
+.email:hover {
+  box-shadow: 0 0 10px rgba(var(--btn-shadow-rgb), 0.75),
+              0 0 20px rgba(var(--btn-shadow-rgb), 0.35);
+}
+
+.whatsapp {
+  --btn-border: var(--whatsapp-green);
+  --btn-shadow-rgb: 37,211,102;
+}
+.whatsapp:hover {
+  box-shadow: 0 0 10px rgba(var(--btn-shadow-rgb), 0.65),
+              0 0 20px rgba(var(--btn-shadow-rgb), 0.35);
+}

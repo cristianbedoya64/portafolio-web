@@ -1,0 +1,131 @@
+/* 🎨 Estilos globales del portafolio */
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+  background: var(--bg-color);
+  color: var(--text-color);
+  scroll-behavior: smooth;
+}
+
+/* ✨ Efectos de entrada */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+section {
+  max-width: 900px;
+  margin: 80px auto;
+  padding: 40px;
+  background: var(--card-bg);
+  border-radius: 15px;
+  backdrop-filter: blur(8px);
+  animation: fadeInUp 0.8s ease both;
+  box-shadow: 0 0 20px rgba(var(--text-color-rgb), 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+section:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 25px rgba(var(--text-color-rgb), 0.2);
+}
+
+h1, h2 {
+  text-align: center;
+  color: var(--accent-color);
+}
+
+p, li {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+button {
+  display: block;
+  margin: 20px auto;
+  padding: 12px 28px;
+  background-color: var(--accent-color);
+  color: var(--bg-color);
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: var(--accent-yellow);
+  color: var(--bg-color);
+  transform: translateY(-3px);
+}
+
+/* 💫 Animación de título principal */
+.hero-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-align: center;
+  animation: fadeInUp 1s ease;
+}
+
+.hero-subtitle {
+  text-align: center;
+  color: var(--highlight);
+  animation: fadeInUp 1.2s ease;
+}
+
+
+/* ✨ Animaciones al hacer scroll */
+
+.fade-in-section {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.fade-in-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Otras variantes posibles */
+.fade-in-left {
+  opacity: 0;
+  transform: translateX(-50px);
+  transition: all 0.8s ease;
+}
+
+.fade-in-left.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.fade-in-right {
+  opacity: 0;
+  transform: translateX(50px);
+  transition: all 0.8s ease;
+}
+
+.fade-in-right.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.fade-in-zoom {
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.8s ease;
+}
+
+.fade-in-zoom.visible {
+  opacity: 1;
+  transform: scale(1);
+}

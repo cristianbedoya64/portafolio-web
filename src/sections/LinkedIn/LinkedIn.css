@@ -1,0 +1,60 @@
+.linkedin-section {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  color: var(--text-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+  padding: 60px 20px;
+  /* section-specific animated gradient used by shared .animated-bg */
+  --animated-gradient: linear-gradient(-45deg, #2b2d42, #8d99ae, #ef233c, #d90429);
+}
+.linkedin-title span {
+  color: var(--accent-yellow);
+  text-shadow: 0 0 15px rgba(var(--accent-yellow-rgb), 0.6);
+}
+
+.linkedin-subtitle {
+  margin-top: 10px;
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin-bottom: 40px;
+}
+
+/* Tarjetas de publicaciones */
+.linkedin-posts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 25px;
+}
+
+.linkedin-card {
+  background: var(--card-bg);
+  border-radius: 15px;
+  padding: 25px;
+  width: 280px;
+  text-decoration: none;
+  color: var(--text-color);
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(255, 209, 102, 0.2);
+}
+
+.linkedin-card:hover {
+  background: var(--card-hover-bg);
+  box-shadow: 0 0 20px rgba(255, 209, 102, 0.4);
+}
+
+.linkedin-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+.linkedin-date {
+  font-size: 0.9rem;
+  color: var(--accent-yellow);
+  opacity: 0.8;
+}
