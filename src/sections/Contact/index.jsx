@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars -- 'motion' is used in JSX elements below */
 import React from "react";
 import { motion } from "framer-motion";
 import { FaLinkedin, FaGithub, FaEnvelope, FaWhatsapp } from "react-icons/fa";

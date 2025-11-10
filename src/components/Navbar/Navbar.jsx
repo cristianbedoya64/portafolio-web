@@ -11,7 +11,7 @@ export default function Navbar() {
     const hash = href.slice(1);
     if (!hash || hash === 'home') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
-      try { history.replaceState(null, '', '#home'); } catch (err) {}
+  try { history.replaceState(null, '', '#home'); } catch { void 0; }
       return;
     }
     const el = document.getElementById(hash);
@@ -20,7 +20,7 @@ export default function Navbar() {
       const rect = el.getBoundingClientRect();
       const top = window.scrollY + rect.top - navHeight - 8;
       window.scrollTo({ top, behavior: 'smooth' });
-      try { history.replaceState(null, '', `#${hash}`); } catch (err) {}
+  try { history.replaceState(null, '', `#${hash}`); } catch { void 0; }
     }
   };
 
@@ -30,7 +30,7 @@ export default function Navbar() {
       const stored = localStorage.getItem('theme');
       if (stored) return stored;
       return window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-    } catch (e) { return 'dark'; }
+  } catch { void 0; return 'dark'; }
   });
 
   useEffect(() => {
@@ -38,7 +38,7 @@ export default function Navbar() {
       if (theme === 'light') document.documentElement.classList.add('light-theme');
       else document.documentElement.classList.remove('light-theme');
       localStorage.setItem('theme', theme);
-    } catch (e) {}
+  } catch { void 0; }
   }, [theme]);
 
   const toggleTheme = () => setTheme(t => t === 'light' ? 'dark' : 'light');

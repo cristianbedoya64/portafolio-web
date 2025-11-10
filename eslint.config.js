@@ -26,4 +26,24 @@ export default defineConfig([
       'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
     },
   },
+  // Node / config files (allow require/module/process)
+  {
+    files: ['playwright.config.js', '.eslintrc.js', 'vite.config.js', 'postcss.config.js', 'tests/e2e/**'],
+    languageOptions: {
+      globals: globals.node,
+      parserOptions: { sourceType: 'module', ecmaVersion: 'latest' },
+    },
+    rules: {},
+  },
+  // Test files: enable Vitest globals so describe/test/expect are recognised
+  {
+    files: ['**/*.test.*', 'tests/**'],
+    languageOptions: {
+      globals: globals.vitest || { describe: true, test: true, expect: true, beforeEach: true, afterEach: true },
+      parserOptions: { ecmaVersion: 'latest', ecmaFeatures: { jsx: true } },
+    },
+    rules: {
+      'no-empty': ['error', { allowEmptyCatch: true }],
+    },
+  },
 ])
