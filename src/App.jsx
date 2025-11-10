@@ -12,13 +12,15 @@ export default function App() {
   return (
     <>
       <Navbar />
-      <Hero />
-      <About />
-      <Skills />
-      <Projects />
-      <LinkedIn />
-      <AI />
-      <Contact />
+      <main id="main" role="main">
+        <Hero />
+        <About />
+        <Skills />
+        <Projects />
+        <LinkedIn />
+        <AI />
+        <Contact />
+      </main>
     </>
   );
 }

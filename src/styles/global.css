@@ -37,13 +37,23 @@
   --muted: #9ca3af;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
-
+/* NOTE: font import moved to index.html to avoid PostCSS @import ordering issues */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   scroll-behavior: smooth;
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+    filter: none !important;
+  }
+  .animated-bg { display: none !important; }
 }
 
 body {
@@ -146,6 +156,17 @@ header {
   pointer-events: none; /* don't block clicks */
   mix-blend-mode: overlay; /* subtle blend to integrate with cards */
   transition: opacity 0.6s ease, filter 0.6s ease;
+}
+
+/* Reduce cost of animated background on smaller screens */
+@media (max-width: 768px) {
+  .animated-bg {
+    width: 120%;
+    height: 120%;
+    filter: blur(10px);
+    opacity: 0.35;
+    mix-blend-mode: normal;
+  }
 }
 
 @keyframes gradientMove {
