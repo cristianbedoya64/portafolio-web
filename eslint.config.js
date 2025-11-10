@@ -23,7 +23,8 @@ export default defineConfig([
       },
     },
     rules: {
-      'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
+      // allow PascalCase component names and the `motion` import (used in JSX as <motion.x>)
+      'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]|^motion$'}],
     },
   },
   // Node / config files (allow require/module/process)
