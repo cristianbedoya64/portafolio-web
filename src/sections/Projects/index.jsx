@@ -1,25 +1,19 @@
-import React from "react";
-import { motion } from "framer-motion";
-import "./Projects.css";
+import React from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
+import './Projects.css';
+import { useLanguage } from '../../contexts/LanguageContext.jsx';
 
 export default function Projects() {
-  const projects = [
-    {
-      title: "Sistema de Gestión",
-      description: "Aplicación web para administrar clientes, ventas y reportes.",
-      link: "#",
-    },
-    {
-      title: "App de Tareas",
-      description: "Aplicación con React y Node.js para organizar tareas diarias.",
-      link: "#",
-    },
-    {
-      title: "Portafolio IA",
-      description: "Integración de IA para generación de contenido creativo.",
-      link: "#",
-    },
-  ];
+  const { t } = useLanguage();
+  const projectCards = t('projects.cards') || [];
+  const shouldReduceMotion = useReducedMotion();
+
+  const containerInitial = shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 36 };
+  const containerWhileInView = shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 };
+  const containerTransition = shouldReduceMotion
+    ? { duration: 0.6, ease: 'linear' }
+    : { duration: 1, ease: 'easeOut' };
+  const cardHover = shouldReduceMotion ? undefined : { scale: 1.04, y: -4 };
 
   return (
     <section id="projects" className="projects">
@@ -27,28 +21,26 @@ export default function Projects() {
 
       <motion.div
         className="projects-content"
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, ease: "easeOut" }}
+        initial={containerInitial}
+        whileInView={containerWhileInView}
+        transition={containerTransition}
         viewport={{ once: true }}
       >
-        <h2 className="projects-title">Proyectos Destacados</h2>
-        <p className="projects-subtitle">
-          Algunos de los proyectos que reflejan mi experiencia y pasión por la tecnología:
-        </p>
+        <h2 className="projects-title">{t('projects.title')}</h2>
+        <p className="projects-subtitle">{t('projects.subtitle')}</p>
 
         <div className="projects-grid">
-          {projects.map((project, index) => (
+          {projectCards.map((project, index) => (
             <motion.div
-              key={index}
+              key={project.title + index}
               className="project-card"
-              whileHover={{ scale: 1.05, y: -5 }}
-              transition={{ duration: 0.3 }}
+              whileHover={cardHover}
+              transition={shouldReduceMotion ? { duration: 0.2 } : { duration: 0.3 }}
             >
               <h3>{project.title}</h3>
               <p>{project.description}</p>
-              <a href={project.link} target="_blank" rel="noopener noreferrer">
-                Ver Proyecto
+              <a href={project.link || '#'} target="_blank" rel="noopener noreferrer">
+                {project.action || ''}
               </a>
             </motion.div>
           ))}

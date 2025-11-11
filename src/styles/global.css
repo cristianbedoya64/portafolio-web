@@ -8,15 +8,15 @@
   --font-main: 'Poppins', sans-serif;
   /* Project-wide palette */
   --accent-yellow: #ffd166; /* used for highlights */
-  --accent-yellow-rgb: 255,209,102;
+  --accent-yellow-rgb: 255, 209, 102;
   --linkedin-blue: #0a66c2;
   --whatsapp-green: #25d366;
   --github-white: #ffffff;
   /* useful RGB tokens for rgba() fallbacks in components */
-  --text-color-rgb: 243,244,246; /* matches --text-color (#f3f4f6) */
-  --muted-rgb: 156,163,175; /* matches --muted (#9ca3af) */
+  --text-color-rgb: 243, 244, 246; /* matches --text-color (#f3f4f6) */
+  --muted-rgb: 156, 163, 175; /* matches --muted (#9ca3af) */
   /* card hover background (uses rgba overlay) */
-  --card-hover-bg: rgba(255,255,255,0.06);
+  --card-hover-bg: rgba(255, 255, 255, 0.06);
   --btn-radius: 8px;
   --btn-height: 44px;
   --animated-gradient: linear-gradient(-45deg, #1b263b, #415a77, #778da9, #e0e1dd);
@@ -27,27 +27,13 @@
   --animated-bg-duration: 12s;
   /* altura del navbar fija para compensar anclas */
   --nav-height: 58px;
-
-/* Ensure yellow text isn't used on light backgrounds; swap to accent color */
-html.light-theme .hero-title span,
-html.light-theme .contact-title span,
-html.light-theme .linkedin-title span,
-html.light-theme .linkedin-date,
-html.light-theme .projects-title,
-html.light-theme .project-card h3,
-html.light-theme .ai-title span,
-html.light-theme .ai-card h3,
-html.light-theme .ai-tech {
-  color: var(--accent-color);
-  text-shadow: none;
-}
   /* navbar visuals */
-  --nav-bg: rgba(15,15,20,0.6);
+  --nav-bg: rgba(15, 15, 20, 0.6);
   --nav-backdrop-blur: 6px;
-  --nav-link-hover-bg: rgba(255,255,255,0.04);
+  --nav-link-hover-bg: rgba(255, 255, 255, 0.04);
   /* surfaces */
   --surface: #0f1724;
-  --card-bg: rgba(255,255,255,0.04);
+  --card-bg: rgba(255, 255, 255, 0.04);
   --muted: #9ca3af;
   /* page background gradient (used by <body> and as fallback for sections) */
   --page-gradient: linear-gradient(180deg, #0b1220 0%, #0a0f1a 100%);
@@ -63,13 +49,17 @@ html.light-theme .ai-tech {
 
 /* Respect users who prefer reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     animation: none !important;
     transition: none !important;
     scroll-behavior: auto !important;
     filter: none !important;
   }
-  .animated-bg { display: none !important; }
+  .animated-bg {
+    display: none !important;
+  }
 }
 
 body {
@@ -80,13 +70,47 @@ body {
   overflow-x: hidden;
 }
 
+.skip-link {
+  position: fixed;
+  top: -200px;
+  left: 16px;
+  z-index: 300;
+  padding: 12px 18px;
+  background: var(--accent-color);
+  color: #fff;
+  border-radius: 999px;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus-visible {
+  top: 16px;
+  outline: 3px solid rgba(var(--accent-yellow-rgb), 0.6);
+  outline-offset: 4px;
+}
+
+.section-loading {
+  padding: 60px 20px;
+  text-align: center;
+  color: var(--muted, #9ca3af);
+  font-size: 1rem;
+}
+
+.section-loading span::after {
+  content: '…';
+}
+
 /* smooth color transitions when switching theme */
 
 /* ✨ Animaciones suaves */
 .fade-in {
   opacity: 0;
   transform: translateY(30px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
 }
 
 .fade-in.visible {
@@ -103,7 +127,9 @@ button {
   border-radius: 25px;
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.3s ease, background 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    background 0.3s ease;
 }
 
 button:hover {
@@ -128,10 +154,15 @@ button:hover {
   transition: all 0.2s ease;
 }
 
-.btn:focus-visible { outline: 2px solid rgba(var(--accent-yellow-rgb),0.45); outline-offset:2px }
+.btn:focus-visible {
+  outline: 2px solid rgba(var(--accent-yellow-rgb), 0.45);
+  outline-offset: 2px;
+}
 
 /* ✨ Títulos destacados */
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   font-weight: 600;
   color: var(--accent-color);
   letter-spacing: 0.5px;
@@ -171,7 +202,9 @@ header {
   opacity: var(--animated-bg-opacity);
   pointer-events: none; /* don't block clicks */
   mix-blend-mode: overlay; /* subtle blend to integrate with cards */
-  transition: opacity 0.6s ease, filter 0.6s ease;
+  transition:
+    opacity 0.6s ease,
+    filter 0.6s ease;
 }
 
 /* Reduce cost of animated background on smaller screens */
@@ -186,9 +219,15 @@ header {
 }
 
 @keyframes gradientMove {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 /* Accessible focus style */
@@ -206,16 +245,16 @@ section[id] {
 html.light-theme {
   --bg-color: #f8fafc; /* light background */
   --text-color: #0f1724; /* dark text */
-  --text-color-rgb: 15,23,36;
+  --text-color-rgb: 15, 23, 36;
   /* Darken accent for better contrast on light background (>=4.5) */
-  --accent-color: #0954d8; 
+  --accent-color: #0954d8;
   --secondary-color: #374151;
   --highlight: #0ea5e9;
   --card-bg: rgba(15, 23, 42, 0.04);
-  --muted-rgb: 107,114,128;
-  --card-hover-bg: rgba(15,23,42,0.06);
-  --nav-bg: rgba(255,255,255,0.92);
-  --nav-link-hover-bg: rgba(15,23,42,0.04);
+  --muted-rgb: 107, 114, 128;
+  --card-hover-bg: rgba(15, 23, 42, 0.06);
+  --nav-bg: rgba(255, 255, 255, 0.92);
+  --nav-link-hover-bg: rgba(15, 23, 42, 0.04);
   --muted: #6b7280;
   --page-gradient: linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
   --animated-bg-opacity: 0.18;
@@ -223,3 +262,16 @@ html.light-theme {
   --accent-yellow-text: #cc9a00;
 }
 
+/* Ensure yellow text isn't used on light backgrounds; swap to accent color */
+html.light-theme .hero-title span,
+html.light-theme .contact-title span,
+html.light-theme .linkedin-title span,
+html.light-theme .linkedin-date,
+html.light-theme .projects-title,
+html.light-theme .project-card h3,
+html.light-theme .ai-title span,
+html.light-theme .ai-card h3,
+html.light-theme .ai-tech {
+  color: var(--accent-color);
+  text-shadow: none;
+}

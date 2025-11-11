@@ -1,30 +1,38 @@
-import React from "react";
-import { motion } from "framer-motion";
-import "./Hero.css";
+import React from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
+import './Hero.css';
+import { useLanguage } from '../../contexts/LanguageContext.jsx';
 
 export default function Hero() {
+  const { t } = useLanguage();
+  const shouldReduceMotion = useReducedMotion();
+
+  const containerInitial = shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 24 };
+  const containerAnimate = shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 };
+  const containerTransition = shouldReduceMotion
+    ? { duration: 0.6, ease: 'linear' }
+    : { duration: 1.2, ease: 'easeOut' };
+  const hoverScale = shouldReduceMotion ? undefined : { scale: 1.06 };
+  const tapScale = shouldReduceMotion ? undefined : { scale: 0.97 };
+
   return (
-    <section className="hero">
+    <section id="home" className="hero">
       <div className="animated-bg"></div>
 
       <motion.div
         className="hero-content"
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.2, ease: "easeOut" }}
+        initial={containerInitial}
+        animate={containerAnimate}
+        transition={containerTransition}
       >
-        <h1 className="hero-title">Hola, soy <span>Tu Nombre</span></h1>
-        <p className="hero-subtitle">
-          Desarrollador de Software | Innovador Digital | Soñador Tecnológico
-        </p>
+        <h1 className="hero-title">
+          {t('hero.titlePrefix')} <span>{t('hero.name')}</span>
+        </h1>
+        <p className="hero-subtitle">{t('hero.subtitle')}</p>
 
-        <motion.button
-          className="hero-btn"
-          whileHover={{ scale: 1.08 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          Ver Portafolio
-        </motion.button>
+        <motion.a className="hero-btn" href="#projects" whileHover={hoverScale} whileTap={tapScale}>
+          {t('hero.cta')}
+        </motion.a>
       </motion.div>
     </section>
   );

@@ -1,7 +1,15 @@
-import React, { useEffect, useState } from "react";
-import "./Navbar.css";
+import React, { useEffect, useState } from 'react';
+import './Navbar.css';
+import { useLanguage } from '../../contexts/LanguageContext.jsx';
+import { TRANSLATIONS } from '../../i18n/translations.js';
 
 export default function Navbar() {
+  const { language, toggleLanguage, t, translations } = useLanguage();
+  const nextLanguage = language === 'es' ? 'en' : 'es';
+  const languageLabel = translations?.languageNames?.[language] ?? language.toUpperCase();
+  const languageToggleLabel = translations?.navbar?.languageToggle ?? '';
+  const nextLanguageToggleLabel = TRANSLATIONS[nextLanguage]?.navbar?.languageToggle ?? '';
+
   const handleNavClick = (e) => {
     const target = e.target.closest('a');
     if (!target) return;
@@ -11,16 +19,28 @@ export default function Navbar() {
     const hash = href.slice(1);
     if (!hash || hash === 'home') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
-  try { history.replaceState(null, '', '#home'); } catch { void 0; }
+      try {
+        history.replaceState(null, '', '#home');
+      } catch {
+        void 0;
+      }
       return;
     }
     const el = document.getElementById(hash);
     if (el) {
-      const navHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-height') || '58', 10) || 58;
+      const navHeight =
+        parseInt(
+          getComputedStyle(document.documentElement).getPropertyValue('--nav-height') || '58',
+          10,
+        ) || 58;
       const rect = el.getBoundingClientRect();
       const top = window.scrollY + rect.top - navHeight - 8;
       window.scrollTo({ top, behavior: 'smooth' });
-  try { history.replaceState(null, '', `#${hash}`); } catch { void 0; }
+      try {
+        history.replaceState(null, '', `#${hash}`);
+      } catch {
+        void 0;
+      }
     }
   };
 
@@ -29,8 +49,13 @@ export default function Navbar() {
     try {
       const stored = localStorage.getItem('theme');
       if (stored) return stored;
-      return window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-  } catch { void 0; return 'dark'; }
+      return window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches
+        ? 'light'
+        : 'dark';
+    } catch {
+      void 0;
+      return 'dark';
+    }
   });
 
   useEffect(() => {
@@ -38,33 +63,79 @@ export default function Navbar() {
       if (theme === 'light') document.documentElement.classList.add('light-theme');
       else document.documentElement.classList.remove('light-theme');
       localStorage.setItem('theme', theme);
-  } catch { void 0; }
+    } catch {
+      void 0;
+    }
   }, [theme]);
 
-  const toggleTheme = () => setTheme(t => t === 'light' ? 'dark' : 'light');
+  const toggleTheme = () => setTheme((t) => (t === 'light' ? 'dark' : 'light'));
 
   return (
     <header className="site-nav" role="banner">
       <div className="nav-inner">
-        <a className="nav-brand" href="#home" aria-label="Ir al inicio" onClick={handleNavClick}>Cristian</a>
+        <a
+          className="nav-brand"
+          href="#home"
+          aria-label={t('navbar.home')}
+          onClick={handleNavClick}
+        >
+          {t('navbar.brand')}
+        </a>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <button
+            className="language-toggle btn"
+            aria-label={languageToggleLabel}
+            title={nextLanguageToggleLabel || languageToggleLabel}
+            onClick={toggleLanguage}
+            type="button"
+          >
+            {languageLabel}
+          </button>
           <button
             className="theme-toggle btn"
             aria-pressed={theme === 'light'}
-            aria-label="Alternar tema claro u oscuro"
+            aria-label={t('navbar.themeToggle')}
             onClick={toggleTheme}
-            title="Alternar tema claro/oscuro"
+            title={t('navbar.themeToggle')}
+            type="button"
           >
             {theme === 'light' ? '🌞' : '🌙'}
           </button>
-          <nav className="nav-links" role="navigation" aria-label="Navegación principal" onClick={handleNavClick}>
-            <a href="#home" aria-label="Ir al inicio">Inicio</a>
-            <a href="#about" aria-label="Ir a la sección Sobre mí">Sobre mí</a>
-            <a href="#skills" aria-label="Ir a la sección Habilidades">Habilidades</a>
-            <a href="#projects" aria-label="Ir a la sección Proyectos">Proyectos</a>
-            <a href="#linkedin" aria-label="Ir a la sección LinkedIn">LinkedIn</a>
-            <a href="#ai" aria-label="Ir a la sección IA">IA</a>
-            <a href="#contact" aria-label="Ir a la sección Contacto">Contacto</a>
+          <nav
+            className="nav-links"
+            role="navigation"
+            aria-label="main navigation"
+            onClick={handleNavClick}
+          >
+            <a href="#home" aria-label={t('navbar.home')}>
+              {t('navbar.home')}
+            </a>
+            <a href="#about" aria-label={t('navbar.about')}>
+              {t('navbar.about')}
+            </a>
+            <a href="#skills" aria-label={t('navbar.skills')}>
+              {t('navbar.skills')}
+            </a>
+            <a href="#projects" aria-label={t('navbar.projects')}>
+              {t('navbar.projects')}
+            </a>
+            <a href="#linkedin" aria-label={t('navbar.linkedin')}>
+              {t('navbar.linkedin')}
+            </a>
+            <a href="#ai" aria-label={t('navbar.ai')}>
+              {t('navbar.ai')}
+            </a>
+            <a href="#contact" aria-label={t('navbar.contact')}>
+              {t('navbar.contact')}
+            </a>
+            <a
+              className="cv-link"
+              href="/cv/Cristian-Bedoya-CV.pdf"
+              download
+              aria-label={t('navbar.cvAria')}
+            >
+              {t('navbar.cv')}
+            </a>
           </nav>
         </div>
       </div>

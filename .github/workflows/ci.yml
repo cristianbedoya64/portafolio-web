@@ -6,23 +6,23 @@ on:
   pull_request:
     branches: [ main ]
 
+env:
+  CI: true
+
 jobs:
-  build:
-    name: Lint • Test • Build • E2E
+  lint-test:
+    name: Lint & Unit Tests
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18.x]
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
+          node-version: 20
+          cache: npm
 
       - name: Install dependencies
         run: npm ci
@@ -30,39 +30,106 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      - name: Run unit tests
-        run: npm test -- --run
+      - name: Unit tests
+        run: npm run test -- --run
 
-      - name: Build
-        run: npm run build
+  e2e:
+    name: Playwright E2E
+    needs: lint-test
+    runs-on: ubuntu-latest
 
-      - name: Install Playwright dependencies and browsers
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
         uses: microsoft/playwright-github-action@v1
         with:
-          # installs browsers and necessary dependencies
           install-deps: true
 
-      - name: Run Playwright E2E tests
+      - name: Build application
+        run: npm run build
+
+      - name: Run Playwright tests
         run: npx playwright test --reporter=list
+
+  lighthouse:
+    name: Lighthouse Audit
+    needs: lint-test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+
+      - name: Launch preview server
+        run: npm run preview -- --port=4173 &
+
+      - name: Wait for preview server
+        run: |
+          n=0
+          until [ "$n" -ge 30 ]; do
+            if curl -sSf http://localhost:4173 >/dev/null; then
+              echo "Preview ready"
+              exit 0
+            fi
+            n=$((n+1))
+            sleep 2
+          done
+          echo "Preview did not start in time" >&2
+          exit 1
+
+      - name: Lighthouse CI
+        run: npx lhci autorun --config=./lighthouserc.cjs
+
+      - name: Upload Lighthouse reports
+        if: success() || failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-reports
+          path: lhci-reports/**
 
   deploy:
     name: Deploy to GitHub Pages
-    needs: build
+    needs: [lint-test, e2e, lighthouse]
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18.x
+          node-version: 20
+          cache: npm
 
-      - name: Install
+      - name: Install dependencies
         run: npm ci
 
-      - name: Build
+      - name: Build application
         run: npm run build
 
       - name: Deploy to GitHub Pages

@@ -7,7 +7,7 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
   /* modern background gradient for hero */
   --section-bg: linear-gradient(180deg, #0b1324 0%, #0a101c 100%);
   background: var(--section-bg, var(--page-gradient));
@@ -29,15 +29,25 @@
 }
 
 @keyframes gradientMove {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .hero-content {
   position: relative;
   z-index: 1;
   padding: 20px;
+  max-width: min(760px, 90vw);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .hero-title {
@@ -53,12 +63,13 @@
 
 .hero-subtitle {
   font-size: 1.2rem;
-  margin-top: 10px;
+  margin-top: 16px;
+  margin-bottom: 72px;
   opacity: 0.9;
 }
 
 .hero-btn {
-  margin-top: 30px;
+  margin-top: 0;
   padding: 12px 28px;
   background: var(--accent-yellow);
   color: #1a1a1a;

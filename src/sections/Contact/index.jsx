@@ -1,45 +1,63 @@
-import React from "react";
-import { motion } from "framer-motion";
-import { FaLinkedin, FaGithub, FaEnvelope, FaWhatsapp } from "react-icons/fa";
-import "./Contact.css";
+import React from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
+import { FaLinkedin, FaGithub, FaEnvelope, FaWhatsapp, FaFileDownload } from 'react-icons/fa';
+import './Contact.css';
+import { useLanguage } from '../../contexts/LanguageContext.jsx';
 
 export default function Contact() {
+  const { t } = useLanguage();
+  const shouldReduceMotion = useReducedMotion();
+
+  const containerInitial = shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 30 };
+  const containerWhileInView = shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 };
+  const containerTransition = shouldReduceMotion
+    ? { duration: 0.5, ease: 'linear' }
+    : { duration: 1, ease: 'easeOut' };
+  const buttonHover = shouldReduceMotion ? undefined : { scale: 1.05 };
+
   return (
-  <section id="contact" className="contact">
+    <section id="contact" className="contact">
       <div className="animated-bg"></div>
 
       <motion.div
         className="contact-content"
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, ease: "easeOut" }}
+        initial={containerInitial}
+        whileInView={containerWhileInView}
+        transition={containerTransition}
+        viewport={{ once: true }}
       >
-        <h2 className="contact-title">
-          ¡Conectemos y creemos algo <span>increíble</span> juntos!
-        </h2>
-        <p className="contact-subtitle">
-          Estoy disponible para colaborar en proyectos, desarrollar ideas o simplemente conversar sobre tecnología.
-        </p>
+        <h2 className="contact-title" dangerouslySetInnerHTML={{ __html: t('contact.title') }} />
+        <p className="contact-subtitle">{t('contact.subtitle')}</p>
 
         <div className="contact-buttons">
+          <motion.a
+            href="/cv/Cristian-Bedoya-CV.pdf"
+            download
+            className="contact-btn btn cv"
+            aria-label={t('contact.buttons.cv.aria')}
+            whileHover={buttonHover}
+          >
+            <FaFileDownload className="icon" /> {t('contact.buttons.cv.label')}
+          </motion.a>
+
           <motion.a
             href="https://www.linkedin.com/"
             target="_blank"
             rel="noopener noreferrer"
             className="contact-btn btn linkedin"
-            aria-label="Abrir mi perfil de LinkedIn en nueva pestaña"
-            whileHover={{ scale: 1.08 }}
+            aria-label={t('contact.buttons.linkedin.aria')}
+            whileHover={buttonHover}
           >
-            <FaLinkedin className="icon" /> LinkedIn
+            <FaLinkedin className="icon" /> {t('contact.buttons.linkedin.label')}
           </motion.a>
 
           <motion.a
             href="mailto:tucorreo@example.com"
             className="contact-btn btn email"
-            aria-label="Enviar correo electrónico"
-            whileHover={{ scale: 1.08 }}
+            aria-label={t('contact.buttons.email.aria')}
+            whileHover={buttonHover}
           >
-            <FaEnvelope className="icon" /> Correo
+            <FaEnvelope className="icon" /> {t('contact.buttons.email.label')}
           </motion.a>
 
           <motion.a
@@ -47,10 +65,10 @@ export default function Contact() {
             target="_blank"
             rel="noopener noreferrer"
             className="contact-btn btn github"
-            aria-label="Abrir mi perfil de GitHub en nueva pestaña"
-            whileHover={{ scale: 1.08 }}
+            aria-label={t('contact.buttons.github.aria')}
+            whileHover={buttonHover}
           >
-            <FaGithub className="icon" /> GitHub
+            <FaGithub className="icon" /> {t('contact.buttons.github.label')}
           </motion.a>
 
           <motion.a
@@ -58,10 +76,10 @@ export default function Contact() {
             target="_blank"
             rel="noopener noreferrer"
             className="contact-btn btn whatsapp"
-            aria-label="Abrir chat de WhatsApp en nueva pestaña"
-            whileHover={{ scale: 1.08 }}
+            aria-label={t('contact.buttons.whatsapp.aria')}
+            whileHover={buttonHover}
           >
-            <FaWhatsapp className="icon" /> WhatsApp
+            <FaWhatsapp className="icon" /> {t('contact.buttons.whatsapp.label')}
           </motion.a>
         </div>
       </motion.div>

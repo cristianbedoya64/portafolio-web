@@ -1,0 +1,72 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 899 >>
+stream
+BT
+/F1 26 Tf
+64 770 Td
+(Cristian Bedoya - Curriculum Vitae) Tj
+/F1 14 Tf
+0 -48 Td
+(Desarrollador Full Stack orientado a crear experiencias accesibles y eficientes.) Tj
+0 -26 Td
+(Email: contacto@cristian.dev) Tj
+0 -22 Td
+(Teléfono: +57 300 111 22 33) Tj
+0 -22 Td
+(LinkedIn: linkedin.com/in/cristianbedoya) Tj
+0 -22 Td
+(GitHub: github.com/cristianbedoya) Tj
+0 -22 Td
+(Ubicación: Medellín, Colombia) Tj
+0 -40 Td
+/F1 16 Tf
+(Resumen)
+ Tj
+/F1 12 Tf
+0 -24 Td
+(Desarrollador en formación con énfasis en frontend y backend, ) Tj
+0 -18 Td
+(busca un rol donde aportar habilidades en React, Node.js y bases de datos SQL.) Tj
+0 -32 Td
+/F1 16 Tf
+(Tecnologías clave)
+ Tj
+/F1 12 Tf
+0 -24 Td
+(React · Node.js · Express · PostgreSQL · Git · Testing Library · Playwright) Tj
+0 -32 Td
+/F1 16 Tf
+(Educación)
+ Tj
+/F1 12 Tf
+0 -24 Td
+(Ingeniería de Sistemas - Universidad de Antioquia (2021 - presente)) Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+0000001191 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+1261
+%%EOF

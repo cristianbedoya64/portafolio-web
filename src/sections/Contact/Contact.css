@@ -7,7 +7,7 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
   padding: 60px 20px;
   /* polished gradient and animated overlay */
   --section-bg: linear-gradient(150deg, #0d1828 0%, #13273d 50%, #0b121d 100%);
@@ -81,15 +81,18 @@
 /* 🔵 Efecto neón al pasar el mouse */
 .contact-btn:hover {
   /* softer/neater shadow to reduce paint cost; uses --btn-shadow-rgb if provided */
-  box-shadow: 0 0 10px rgba(var(--btn-shadow-rgb, 255,209,102), 0.6),
-              0 0 20px rgba(var(--btn-shadow-rgb, 255,209,102), 0.35);
+  box-shadow:
+    0 0 10px rgba(var(--btn-shadow-rgb, 255, 209, 102), 0.6),
+    0 0 20px rgba(var(--btn-shadow-rgb, 255, 209, 102), 0.35);
   transform: translateY(-2px);
   border-color: var(--btn-border-hover, #f4a261);
 }
 
 /* Responsive tweaks: make buttons smaller on narrow screens */
 @media (max-width: 480px) {
-  .contact-buttons { gap: 12px; }
+  .contact-buttons {
+    gap: 12px;
+  }
   .contact-btn {
     min-width: 110px;
     max-width: 180px;
@@ -101,17 +104,23 @@
 }
 
 @media (max-width: 600px) {
-  .contact { padding: 40px 16px; }
-  .contact-title { font-size: 2rem; }
-  .contact-subtitle { margin-bottom: 20px; }
+  .contact {
+    padding: 40px 16px;
+  }
+  .contact-title {
+    font-size: 2rem;
+  }
+  .contact-subtitle {
+    margin-bottom: 20px;
+  }
 }
 
 /* 🎨 Estilos personalizados para cada botón */
 .contact .contact-btn.linkedin {
   /* mayor especificidad para sobreescribir .linkedin global (sección) */
   --btn-border: var(--linkedin-blue);
-  --btn-border-hover: rgba(10,102,194,0.9);
-  --btn-shadow-rgb: 10,102,194;
+  --btn-border-hover: rgba(10, 102, 194, 0.9);
+  --btn-shadow-rgb: 10, 102, 194;
   display: inline-flex;
   height: var(--btn-height);
   min-height: 0;
@@ -120,35 +129,41 @@
 }
 .contact .contact-btn.linkedin:hover {
   /* Shadow uses the --btn-shadow-rgb token */
-  box-shadow: 0 0 10px rgba(var(--btn-shadow-rgb), 0.65),
-              0 0 20px rgba(var(--btn-shadow-rgb), 0.35);
+  box-shadow:
+    0 0 10px rgba(var(--btn-shadow-rgb), 0.65),
+    0 0 20px rgba(var(--btn-shadow-rgb), 0.35);
 }
 
 .github {
   --btn-border: var(--github-white);
-  --btn-shadow-rgb: 255,255,255;
+  --btn-shadow-rgb: 255, 255, 255;
 }
 .github:hover {
-  box-shadow: 0 0 10px rgba(var(--btn-shadow-rgb), 0.65),
-              0 0 20px rgba(var(--btn-shadow-rgb), 0.35);
+  box-shadow:
+    0 0 10px rgba(var(--btn-shadow-rgb), 0.65),
+    0 0 20px rgba(var(--btn-shadow-rgb), 0.35);
 }
 
-.email {
+.email,
+.cv {
   --btn-border: var(--accent-yellow);
   --btn-shadow-rgb: var(--accent-yellow-rgb);
 }
-.email:hover {
-  box-shadow: 0 0 10px rgba(var(--btn-shadow-rgb), 0.75),
-              0 0 20px rgba(var(--btn-shadow-rgb), 0.35);
+.email:hover,
+.cv:hover {
+  box-shadow:
+    0 0 10px rgba(var(--btn-shadow-rgb), 0.75),
+    0 0 20px rgba(var(--btn-shadow-rgb), 0.35);
 }
 
 .whatsapp {
   --btn-border: var(--whatsapp-green);
-  --btn-shadow-rgb: 37,211,102;
+  --btn-shadow-rgb: 37, 211, 102;
 }
 .whatsapp:hover {
-  box-shadow: 0 0 10px rgba(var(--btn-shadow-rgb), 0.65),
-              0 0 20px rgba(var(--btn-shadow-rgb), 0.35);
+  box-shadow:
+    0 0 10px rgba(var(--btn-shadow-rgb), 0.65),
+    0 0 20px rgba(var(--btn-shadow-rgb), 0.35);
 }
 
 /* Light theme override */
