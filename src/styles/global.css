@@ -27,6 +27,20 @@
   --animated-bg-duration: 12s;
   /* altura del navbar fija para compensar anclas */
   --nav-height: 58px;
+
+/* Ensure yellow text isn't used on light backgrounds; swap to accent color */
+html.light-theme .hero-title span,
+html.light-theme .contact-title span,
+html.light-theme .linkedin-title span,
+html.light-theme .linkedin-date,
+html.light-theme .projects-title,
+html.light-theme .project-card h3,
+html.light-theme .ai-title span,
+html.light-theme .ai-card h3,
+html.light-theme .ai-tech {
+  color: var(--accent-color);
+  text-shadow: none;
+}
   /* navbar visuals */
   --nav-bg: rgba(15,15,20,0.6);
   --nav-backdrop-blur: 6px;
@@ -193,7 +207,8 @@ html.light-theme {
   --bg-color: #f8fafc; /* light background */
   --text-color: #0f1724; /* dark text */
   --text-color-rgb: 15,23,36;
-  --accent-color: #0b6cff; /* slightly different accent for light */
+  /* Darken accent for better contrast on light background (>=4.5) */
+  --accent-color: #0954d8; 
   --secondary-color: #374151;
   --highlight: #0ea5e9;
   --card-bg: rgba(15, 23, 42, 0.04);
@@ -204,5 +219,7 @@ html.light-theme {
   --muted: #6b7280;
   --page-gradient: linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
   --animated-bg-opacity: 0.18;
+  /* Optional text-safe yellow if ever needed for text (not used yet) */
+  --accent-yellow-text: #cc9a00;
 }
 
