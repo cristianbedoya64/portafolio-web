@@ -3,9 +3,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(180deg, #0d0d0f 0%, #111113 100%);
+  /* replace flat dark gradient with a deeper navy/cool tone */
+  --section-bg: radial-gradient(circle at 30% 30%, #15263d 0%, #0d1a2b 45%, #0a121e 100%);
+  background: var(--section-bg, var(--page-gradient));
   color: var(--text-color);
   padding: 80px 20px;
+  position: relative;
 }
 
 .about-content {
@@ -29,6 +32,7 @@
   margin-bottom: 25px;
   background: linear-gradient(90deg, #ff005a, #ff6600, #ffcc00);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: hueRotate 6s linear infinite;
 }
@@ -75,6 +79,11 @@
 .about-item p {
   color: var(--muted);
   font-size: 1rem;
+}
+
+/* Light theme override */
+html.light-theme .about-section {
+  --section-bg: radial-gradient(circle at 35% 30%, #ffffff 0%, #f1f5f9 45%, #e2e8f0 100%);
 }
 
 @media (max-width: 768px) {

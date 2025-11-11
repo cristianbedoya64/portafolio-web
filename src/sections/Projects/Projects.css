@@ -9,6 +9,9 @@
   text-align: center;
   font-family: "Poppins", sans-serif;
   padding: 80px 20px;
+  /* subtle gradient for projects */
+  --section-bg: linear-gradient(145deg, #0d1a2b 0%, #102338 45%, #0b1623 100%);
+  background: var(--section-bg, var(--page-gradient));
 }
 
 .animated-bg {
@@ -91,4 +94,9 @@
 .project-card a:hover {
   background: #f4a261;
   box-shadow: 0 0 15px rgba(var(--accent-yellow-rgb), 0.6);
+}
+
+/* Light theme override */
+html.light-theme .projects {
+  --section-bg: linear-gradient(145deg, #ffffff 0%, #eef2f7 55%, #e2e8f0 100%);
 }

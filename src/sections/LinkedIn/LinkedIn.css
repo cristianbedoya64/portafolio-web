@@ -9,8 +9,10 @@
   text-align: center;
   font-family: "Poppins", sans-serif;
   padding: 60px 20px;
-  /* section-specific animated gradient used by shared .animated-bg */
-  --animated-gradient: linear-gradient(-45deg, #2b2d42, #8d99ae, #ef233c, #d90429);
+  /* refined professional gradient and animated overlay */
+  --section-bg: linear-gradient(160deg, #0d1726 0%, #11263a 55%, #0d1e30 100%);
+  background: var(--section-bg, var(--page-gradient));
+  --animated-gradient: linear-gradient(-45deg, #0a66c2, #38bdf8, #8892b0, #1b2d3a);
 }
 .linkedin-title span {
   color: var(--accent-yellow);
@@ -57,4 +59,10 @@
   font-size: 0.9rem;
   color: var(--accent-yellow);
   opacity: 0.8;
+}
+
+/* Light theme override */
+html.light-theme .linkedin-section {
+  --section-bg: linear-gradient(160deg, #f8fafc 0%, #e8f1fb 55%, #dde9f5 100%);
+  --animated-gradient: linear-gradient(-45deg, #0a66c2, #4fb3ff, #9ab6d6, #e0efff);
 }

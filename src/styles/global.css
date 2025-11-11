@@ -21,7 +21,7 @@
   --btn-height: 44px;
   --animated-gradient: linear-gradient(-45deg, #1b263b, #415a77, #778da9, #e0e1dd);
   /* animated background tuning (per-section override allowed) */
-  --animated-bg-opacity: 0.55;
+  --animated-bg-opacity: 0.35;
   --animated-bg-blur: 28px;
   --animated-bg-size: 400% 400%;
   --animated-bg-duration: 12s;
@@ -35,6 +35,8 @@
   --surface: #0f1724;
   --card-bg: rgba(255,255,255,0.04);
   --muted: #9ca3af;
+  /* page background gradient (used by <body> and as fallback for sections) */
+  --page-gradient: linear-gradient(180deg, #0b1220 0%, #0a0f1a 100%);
 }
 
 /* NOTE: font import moved to index.html to avoid PostCSS @import ordering issues */
@@ -57,7 +59,7 @@
 }
 
 body {
-  background: var(--bg-color);
+  background: var(--page-gradient, var(--bg-color));
   color: var(--text-color);
   font-family: var(--font-main);
   line-height: 1.6;
@@ -200,5 +202,7 @@ html.light-theme {
   --nav-bg: rgba(255,255,255,0.92);
   --nav-link-hover-bg: rgba(15,23,42,0.04);
   --muted: #6b7280;
+  --page-gradient: linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
+  --animated-bg-opacity: 0.18;
 }
 

@@ -9,8 +9,10 @@
   text-align: center;
   font-family: "Poppins", sans-serif;
   padding: 60px 20px;
-  /* define the gradient used by the shared .animated-bg */
-  --animated-gradient: linear-gradient(-45deg, #1b263b, #415a77, #778da9, #e0e1dd);
+  /* polished gradient and animated overlay */
+  --section-bg: linear-gradient(150deg, #0d1828 0%, #13273d 50%, #0b121d 100%);
+  background: var(--section-bg, var(--page-gradient));
+  --animated-gradient: linear-gradient(-45deg, #38bdf8, #00d9ff, #415a77, #1b263b);
 }
 
 .contact-content {
@@ -147,4 +149,10 @@
 .whatsapp:hover {
   box-shadow: 0 0 10px rgba(var(--btn-shadow-rgb), 0.65),
               0 0 20px rgba(var(--btn-shadow-rgb), 0.35);
+}
+
+/* Light theme override */
+html.light-theme .contact {
+  --section-bg: linear-gradient(150deg, #f8fafc 0%, #e7f2fa 55%, #dee9f3 100%);
+  --animated-gradient: linear-gradient(-45deg, #0b6cff, #38bdf8, #9abedc, #ffffff);
 }

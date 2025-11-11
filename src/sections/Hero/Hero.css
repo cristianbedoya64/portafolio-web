@@ -8,6 +8,9 @@
   align-items: center;
   text-align: center;
   font-family: "Poppins", sans-serif;
+  /* modern background gradient for hero */
+  --section-bg: linear-gradient(180deg, #0b1324 0%, #0a101c 100%);
+  background: var(--section-bg, var(--page-gradient));
 }
 
 .animated-bg {
@@ -70,4 +73,9 @@
 .hero-btn:hover {
   background: #f4a261;
   box-shadow: 0 0 20px rgba(var(--accent-yellow-rgb), 0.5);
+}
+
+/* Light theme override */
+html.light-theme .hero {
+  --section-bg: linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
 }

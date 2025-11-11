@@ -9,6 +9,9 @@
   text-align: center;
   font-family: "Poppins", sans-serif;
   padding: 60px 20px;
+  /* cool tech gradient background */
+  --section-bg: linear-gradient(135deg, #0d1b2a 0%, #102a43 35%, #16324f 70%, #1b2f47 100%);
+  background: var(--section-bg, var(--page-gradient));
 }
 
 /* Fondo animado igual al Hero */
@@ -86,6 +89,11 @@
   font-size: 1.2rem;
   margin-bottom: 10px;
   color: var(--accent-yellow);
+}
+
+/* Light theme override */
+html.light-theme .ai-showcase {
+  --section-bg: linear-gradient(135deg, #ffffff 0%, #eef4fa 40%, #dfe7ef 100%);
 }
 
 .ai-description {
