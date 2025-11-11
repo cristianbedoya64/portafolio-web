@@ -1,15 +1,15 @@
 .skills-section {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
   padding: 100px 20px;
-  background: linear-gradient(135deg, #ff3131, #ff914d);
+  /* modern, cool gradient aligned with the new palette */
+  --section-bg: linear-gradient(155deg, #0d1a2b 0%, #102338 48%, #0b1623 100%);
+  background: var(--section-bg, var(--page-gradient));
   color: var(--text-color);
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: background 0.4s ease;
-}
-
-.skills-section:hover {
-  background: linear-gradient(135deg, #ff914d, #ff3131);
 }
 
 .skills-content {
@@ -26,7 +26,7 @@
 .skills-description {
   font-size: 1.1rem;
   margin-bottom: 40px;
-  color: #fefefe;
+  color: var(--muted);
 }
 
 .skills-grid {
@@ -56,4 +56,9 @@
 .skill-card span {
   font-size: 0.95rem;
   opacity: 0.85;
+}
+
+/* Light theme override */
+html.light-theme .skills-section {
+  --section-bg: linear-gradient(155deg, #ffffff 0%, #eef2f7 55%, #e2e8f0 100%);
 }
