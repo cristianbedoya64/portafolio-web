@@ -61,7 +61,7 @@ export default function Contact() {
           </motion.a>
 
           <motion.a
-            href="https://github.com/"
+            href="https://github.com/cristianbedoya64"
             target="_blank"
             rel="noopener noreferrer"
             className="contact-btn btn github"
