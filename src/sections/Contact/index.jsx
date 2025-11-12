@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { FaLinkedin, FaGithub, FaEnvelope, FaWhatsapp, FaFileDownload } from 'react-icons/fa';
 import './Contact.css';
@@ -14,6 +14,18 @@ export default function Contact() {
     ? { duration: 0.5, ease: 'linear' }
     : { duration: 1, ease: 'easeOut' };
   const buttonHover = shouldReduceMotion ? undefined : { scale: 1.05 };
+
+  // Mensaje prellenado para WhatsApp usando nombre y rol desde i18n
+  const whatsappText = useMemo(() => {
+    const name = t('hero.name') || 'Cristian Bedoya';
+    const role = t('hero.highlight') || 'Full-Stack + IA';
+    const msg = `Hola ${name} — ${role}. Me gustaría conversar sobre un proyecto.`;
+    try {
+      return encodeURIComponent(msg);
+    } catch {
+      return 'Hola%20Cristian%20Bedoya%20%E2%80%94%20Full-Stack%20%2B%20IA.%20Me%20gustar%C3%ADa%20conversar%20sobre%20un%20proyecto.';
+    }
+  }, [t]);
 
   return (
     <section id="contact" className="contact">
@@ -72,7 +84,7 @@ export default function Contact() {
           </motion.a>
 
           <motion.a
-            href="https://wa.me/573171084060"
+            href={`https://wa.me/573171084060?text=${whatsappText}`}
             target="_blank"
             rel="noopener noreferrer"
             className="contact-btn btn whatsapp"
