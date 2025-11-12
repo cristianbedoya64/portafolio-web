@@ -41,7 +41,7 @@ export default function Contact() {
           </motion.a>
 
           <motion.a
-            href="https://www.linkedin.com/"
+            href="https://www.linkedin.com/in/cristian-alexander-bedoya-marin-ba1306277/"
             target="_blank"
             rel="noopener noreferrer"
             className="contact-btn btn linkedin"
