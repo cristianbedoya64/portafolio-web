@@ -351,10 +351,11 @@ export const TRANSLATIONS = {
       subtitle: 'Insights y aprendizajes recientes que comparto con mi red profesional.',
       cards: [
         {
-          title: 'Buenas prácticas de React 2025',
-          date: 'Hace 5 días',
-          description: 'Reflexiono sobre patrones modernos y tips para mejorar DX.',
-          link: '#',
+          title: 'El nacimiento del “Ingeniero Potenciado por IA”',
+          date: 'Hoy',
+          description:
+            'Durante años, la ingeniería de software se definió como escribir código. En 2025 surge un nuevo perfil: el Ingeniero Potenciado por IA.',
+          link: 'https://www.linkedin.com/feed/update/urn:li:activity:7394449555485904896/',
         },
         {
           title: 'Integrando IA en proyectos web',
@@ -783,10 +784,11 @@ export const TRANSLATIONS = {
       subtitle: 'Insights and learnings I regularly share with my professional network.',
       cards: [
         {
-          title: 'React best practices 2025',
-          date: '5 days ago',
-          description: 'Sharing modern patterns and tips to boost DX.',
-          link: '#',
+          title: 'The Rise of the “AI-augmented Engineer”',
+          date: 'Today',
+          description:
+            'For years, software engineering meant writing code. In 2025 a new profile emerges: the AI-augmented Engineer.',
+          link: 'https://www.linkedin.com/feed/update/urn:li:activity:7394449555485904896/',
         },
         {
           title: 'Bringing AI into web projects',
