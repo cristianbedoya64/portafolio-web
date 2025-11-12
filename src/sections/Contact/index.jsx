@@ -52,7 +52,7 @@ export default function Contact() {
           </motion.a>
 
           <motion.a
-            href="mailto:tucorreo@example.com"
+            href="mailto:cristian.bedoya02@usc.edu.co"
             className="contact-btn btn email"
             aria-label={t('contact.buttons.email.aria')}
             whileHover={buttonHover}
@@ -72,7 +72,7 @@ export default function Contact() {
           </motion.a>
 
           <motion.a
-            href="https://wa.me/573001112233"
+            href="https://wa.me/573171084060"
             target="_blank"
             rel="noopener noreferrer"
             className="contact-btn btn whatsapp"
