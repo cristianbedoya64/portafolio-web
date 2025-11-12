@@ -11,8 +11,11 @@ const LanguageContext = createContext({
   translations: TRANSLATIONS[DEFAULT_LANGUAGE],
 });
 
-export function LanguageProvider({ children }) {
+export function LanguageProvider({ children, initialLanguage }) {
   const [language, setLanguage] = useState(() => {
+    if (initialLanguage && TRANSLATIONS[initialLanguage]) {
+      return initialLanguage;
+    }
     try {
       const stored = localStorage.getItem('lang');
       if (stored && TRANSLATIONS[stored]) return stored;

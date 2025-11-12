@@ -6,6 +6,7 @@ import { useLanguage } from '../../contexts/LanguageContext.jsx';
 const About = () => {
   const { t, translations } = useLanguage();
   const cards = translations?.about?.cards ?? [];
+  const bulletPoints = translations?.about?.bullets ?? [];
   const shouldReduceMotion = useReducedMotion();
 
   const containerInitial = shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 48 };
@@ -26,6 +27,13 @@ const About = () => {
       >
         <h2 className="about-title">{t('about.title')}</h2>
         <p className="about-text">{t('about.intro')}</p>
+        {bulletPoints.length > 0 && (
+          <ul className="about-bullets">
+            {bulletPoints.map((line, index) => (
+              <li key={`${line}-${index}`}>{line}</li>
+            ))}
+          </ul>
+        )}
 
         <div className="about-grid">
           {cards.map((card, index) => (
@@ -37,8 +45,23 @@ const About = () => {
                 shouldReduceMotion ? { duration: 0.2 } : { type: 'spring', stiffness: 200 }
               }
             >
-              <h4>{card.title}</h4>
-              <p>{card.description}</p>
+              <div className="about-item-header">
+                {card.icon ? (
+                  <span className="about-item-icon" aria-hidden="true">
+                    {card.icon}
+                  </span>
+                ) : null}
+                <h4>{card.title}</h4>
+              </div>
+              {Array.isArray(card.bullets) && card.bullets.length > 0 ? (
+                <ul className="about-card-bullets">
+                  {card.bullets.map((line, bulletIndex) => (
+                    <li key={`${card.title}-${bulletIndex}`}>{line}</li>
+                  ))}
+                </ul>
+              ) : (
+                <p>{card.description}</p>
+              )}
             </motion.div>
           ))}
         </div>

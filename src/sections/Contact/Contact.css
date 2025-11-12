@@ -106,6 +106,7 @@
 @media (max-width: 600px) {
   .contact {
     padding: 40px 16px;
+    min-height: auto;
   }
   .contact-title {
     font-size: 2rem;

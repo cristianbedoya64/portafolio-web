@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import './Navbar.css';
 import { useLanguage } from '../../contexts/LanguageContext.jsx';
 import { TRANSLATIONS } from '../../i18n/translations.js';
+import { useEffects } from '../../contexts/EffectsContext.jsx';
 
 export default function Navbar() {
   const { language, toggleLanguage, t, translations } = useLanguage();
+  const { effectsEnabled, toggleEffects } = useEffects();
   const nextLanguage = language === 'es' ? 'en' : 'es';
   const languageLabel = translations?.languageNames?.[language] ?? language.toUpperCase();
   const languageToggleLabel = translations?.navbar?.languageToggle ?? '';
@@ -100,6 +102,16 @@ export default function Navbar() {
             type="button"
           >
             {theme === 'light' ? '🌞' : '🌙'}
+          </button>
+          <button
+            className="effects-toggle btn"
+            aria-pressed={effectsEnabled}
+            aria-label={t('navbar.effectsToggle')}
+            onClick={toggleEffects}
+            title={t('navbar.effectsToggle')}
+            type="button"
+          >
+            {effectsEnabled ? '✨' : '🚫✨'}
           </button>
           <nav
             className="nav-links"

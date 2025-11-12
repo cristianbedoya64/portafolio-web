@@ -1,9 +1,10 @@
 /* 🎨 Estilos globales del portafolio */
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
   background: var(--bg-color);
   color: var(--text-color);
   scroll-behavior: smooth;
@@ -21,7 +22,7 @@ html, body {
   }
 }
 
-section {
+section:not(.skills-section) {
   max-width: 900px;
   margin: 80px auto;
   padding: 40px;
@@ -30,20 +31,24 @@ section {
   backdrop-filter: blur(8px);
   animation: fadeInUp 0.8s ease both;
   box-shadow: 0 0 20px rgba(var(--text-color-rgb), 0.05);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
-section:hover {
+section:not(.skills-section):hover {
   transform: scale(1.02);
   box-shadow: 0 0 25px rgba(var(--text-color-rgb), 0.2);
 }
 
-h1, h2 {
+h1,
+h2 {
   text-align: center;
   color: var(--accent-color);
 }
 
-p, li {
+p,
+li {
   font-size: 1.1rem;
   line-height: 1.6;
   text-align: center;
@@ -82,13 +87,14 @@ button:hover {
   animation: fadeInUp 1.2s ease;
 }
 
-
 /* ✨ Animaciones al hacer scroll */
 
 .fade-in-section {
   opacity: 0;
   transform: translateY(50px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
 }
 
 .fade-in-section.visible {

@@ -1,22 +1,22 @@
-import { Suspense, lazy } from 'react';
+import { useEffect } from 'react';
 import Hero from './sections/Hero/Hero';
-const About = lazy(() => import('./sections/About'));
-const Skills = lazy(() => import('./sections/Skills'));
-const Projects = lazy(() => import('./sections/Projects'));
-const LinkedIn = lazy(() => import('./sections/LinkedIn'));
-const AI = lazy(() => import('./sections/AI'));
-const Contact = lazy(() => import('./sections/Contact'));
+import About from './sections/About';
+import Skills from './sections/Skills';
+import Projects from './sections/Projects';
+import Updates from './sections/Updates';
+import LinkedIn from './sections/LinkedIn';
+import AI from './sections/AI';
+import Contact from './sections/Contact';
 import Navbar from './components/Navbar/Navbar';
+import TechTrendsDashboard from './components/TechTrendsDashboard.jsx';
 import { useLanguage } from './contexts/LanguageContext.jsx';
 
 export default function App() {
   const { t } = useLanguage();
-
-  const renderFallback = () => (
-    <div className="section-loading" role="status" aria-live="polite">
-      <span>{t('ui.loadingSection')}</span>
-    </div>
-  );
+  useEffect(() => {
+    // ensure body scrolls to top on mount (SPA navigation edge-case)
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  }, []);
 
   return (
     <>
@@ -26,25 +26,15 @@ export default function App() {
       <Navbar />
       <main id="main" role="main">
         <Hero />
-        <Suspense fallback={renderFallback()}>
-          <About />
-        </Suspense>
-        <Suspense fallback={renderFallback()}>
-          <Skills />
-        </Suspense>
-        <Suspense fallback={renderFallback()}>
-          <Projects />
-        </Suspense>
-        <Suspense fallback={renderFallback()}>
-          <LinkedIn />
-        </Suspense>
-        <Suspense fallback={renderFallback()}>
-          <AI />
-        </Suspense>
-        <Suspense fallback={renderFallback()}>
-          <Contact />
-        </Suspense>
+        <About />
+        <Skills />
+        <Projects />
+        <Updates />
+        <LinkedIn />
+        <AI />
+        <Contact />
       </main>
+      <TechTrendsDashboard />
     </>
   );
 }

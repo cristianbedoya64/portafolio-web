@@ -11,7 +11,6 @@ Sitio personal construido con Vite + React, animaciones con framer-motion y them
 - `npm run test`: pruebas unitarias con Vitest.
 - `npm run e2e`: pruebas end-to-end con Playwright.
 - `npm run audit:lighthouse`: ejecuta Lighthouse CI (requiere `npm install`).
-- `npm run audit:lighthouse`: ejecuta Lighthouse CI (requiere `npm install`).
 
 ### Analytics con Plausible
 

@@ -169,11 +169,17 @@ h3 {
 }
 
 /* ✨ Secciones */
-section {
-  padding: 80px 20px;
+section:not(.skills-section) {
+  padding: clamp(60px, 8vw, 96px) clamp(16px, 5vw, 28px);
   max-width: 1000px;
   margin: 0 auto;
   text-align: center;
+}
+
+@media (max-width: 600px) {
+  section:not(.skills-section) {
+    text-align: left;
+  }
 }
 
 /* ✨ Navbar básica (la agregaremos luego) */
