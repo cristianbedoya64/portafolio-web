@@ -309,25 +309,39 @@ export const TRANSLATIONS = {
       subtitle: 'Un vistazo rápido a las mejoras que mantienen este portafolio en evolución.',
       entries: [
         {
-          dateLabel: 'Noviembre 2025',
-          dateTime: '2025-11-05',
-          title: 'Sección de novedades en vivo',
+          dateLabel: '12 Nov 2025',
+          dateTime: '2025-11-12',
+          title: 'Efecto 3D en foto de perfil',
           description:
-            'Presentamos un histórico público de cambios para transmitir transparencia y constancia en la mejora del sitio.',
+            'Se añadió tilt con perspectiva y sombras reactivas al pasar el cursor. Respeta Reduce Motion y el toggle de efectos.',
         },
         {
-          dateLabel: 'Octubre 2025',
-          dateTime: '2025-10-18',
-          title: 'Auditorías automatizadas',
+          dateLabel: '12 Nov 2025',
+          dateTime: '2025-11-12',
+          title: 'Proyectos destacados actualizados',
           description:
-            'La integración continua ahora ejecuta Lighthouse y Playwright en cada commit para mantener calidad y rendimiento.',
+            'Ahora son 5 proyectos con su stack y enlaces listos para repositorio y demo, sin cambiar el diseño de la sección.',
         },
         {
-          dateLabel: 'Septiembre 2025',
-          dateTime: '2025-09-12',
-          title: 'Optimización de imágenes y SEO',
+          dateLabel: '11 Nov 2025',
+          dateTime: '2025-11-11',
+          title: 'Mejoras de accesibilidad (tema claro)',
           description:
-            'Se agregaron tareas de optimización y metadatos enriquecidos que mejoran la carga y la visibilidad en buscadores.',
+            'Aumentamos contraste en tema claro, ajustando el acento azul y evitando texto amarillo de bajo contraste.',
+        },
+        {
+          dateLabel: '11 Nov 2025',
+          dateTime: '2025-11-11',
+          title: 'Nuevo look con gradientes',
+          description:
+            'Se incorporaron fondos con gradientes modernos y opacidades para secciones, con ajustes para el tema claro.',
+        },
+        {
+          dateLabel: '11 Nov 2025',
+          dateTime: '2025-11-11',
+          title: 'Ajustes visuales en Habilidades',
+          description:
+            'La sección Skills ahora sigue la nueva paleta y usa tipografía más legible en tema claro.',
         },
       ],
     },
@@ -724,25 +738,39 @@ export const TRANSLATIONS = {
       subtitle: 'A living changelog that showcases how this portfolio keeps evolving.',
       entries: [
         {
-          dateLabel: 'November 2025',
-          dateTime: '2025-11-05',
-          title: 'Updates section launched',
+          dateLabel: 'Nov 12, 2025',
+          dateTime: '2025-11-12',
+          title: '3D hover effect on profile photo',
           description:
-            'Introduced a public changelog to highlight ongoing improvements and foster transparency.',
+            'Added a perspective tilt with dynamic shadows on hover. Respects Reduce Motion and the advanced effects toggle.',
         },
         {
-          dateLabel: 'October 2025',
-          dateTime: '2025-10-18',
-          title: 'Automated quality gates',
+          dateLabel: 'Nov 12, 2025',
+          dateTime: '2025-11-12',
+          title: 'Highlighted projects refreshed',
           description:
-            'Continuous integration now runs Lighthouse and Playwright on every commit to ensure quality and performance.',
+            'Now showcasing 5 projects with their stacks and ready-to-link repo/demo buttons, keeping the section design intact.',
         },
         {
-          dateLabel: 'September 2025',
-          dateTime: '2025-09-12',
-          title: 'Image and SEO improvements',
+          dateLabel: 'Nov 11, 2025',
+          dateTime: '2025-11-11',
+          title: 'Accessibility improvements (light theme)',
           description:
-            'Added optimization tasks and enriched metadata to improve load times and search visibility.',
+            'Increased contrast in light theme, tuned blue accents, and avoided low-contrast yellow text.',
+        },
+        {
+          dateLabel: 'Nov 11, 2025',
+          dateTime: '2025-11-11',
+          title: 'Modern gradients across sections',
+          description:
+            'Introduced modern gradient backgrounds and opacity tweaks across sections, with light theme overrides.',
+        },
+        {
+          dateLabel: 'Nov 11, 2025',
+          dateTime: '2025-11-11',
+          title: 'Skills visuals aligned with palette',
+          description:
+            'The Skills section now follows the new color palette and uses more legible typography in light theme.',
         },
       ],
     },
