@@ -5,7 +5,7 @@ import './Contact.css';
 import { useLanguage } from '../../contexts/LanguageContext.jsx';
 
 export default function Contact() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const shouldReduceMotion = useReducedMotion();
 
   const containerInitial = shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 30 };
@@ -15,15 +15,20 @@ export default function Contact() {
     : { duration: 1, ease: 'easeOut' };
   const buttonHover = shouldReduceMotion ? undefined : { scale: 1.05 };
 
-  // Mensaje prellenado para WhatsApp (enfocado a reclutadores): saludo breve
+  // Mensaje prellenado para WhatsApp (enfocado a reclutadores)
   const whatsappText = useMemo(() => {
-    const msg = 'Hola Cristian';
+    const msg =
+      language === 'en'
+        ? "Hi Cristian, I'm a recruiter at [Company]. I'd like to talk about an opportunity."
+        : 'Hola Cristian, soy reclutador de [Empresa]. Me gustaría conversar sobre una oportunidad.';
     try {
       return encodeURIComponent(msg);
     } catch {
-      return 'Hola%20Cristian';
+      return language === 'en'
+        ? 'Hi%20Cristian%2C%20I%27m%20a%20recruiter%20at%20%5BCompany%5D.%20I%27d%20like%20to%20talk%20about%20an%20opportunity.'
+        : 'Hola%20Cristian%2C%20soy%20reclutador%20de%20%5BEmpresa%5D.%20Me%20gustar%C3%ADa%20conversar%20sobre%20una%20oportunidad.';
     }
-  }, []);
+  }, [language]);
 
   return (
     <section id="contact" className="contact">
