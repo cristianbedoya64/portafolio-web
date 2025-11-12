@@ -353,6 +353,7 @@ export const TRANSLATIONS = {
         {
           title: 'El nacimiento del “Ingeniero Potenciado por IA”',
           date: 'Hoy',
+          dateTime: '2025-11-12',
           description:
             'Durante años, la ingeniería de software se definió como escribir código. En 2025 surge un nuevo perfil: el Ingeniero Potenciado por IA.',
           link: 'https://www.linkedin.com/feed/update/urn:li:activity:7394449555485904896/',
@@ -786,6 +787,7 @@ export const TRANSLATIONS = {
         {
           title: 'The Rise of the “AI-augmented Engineer”',
           date: 'Today',
+          dateTime: '2025-11-12',
           description:
             'For years, software engineering meant writing code. In 2025 a new profile emerges: the AI-augmented Engineer.',
           link: 'https://www.linkedin.com/feed/update/urn:li:activity:7394449555485904896/',

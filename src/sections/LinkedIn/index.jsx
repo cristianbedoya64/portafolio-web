@@ -4,7 +4,7 @@ import './LinkedIn.css';
 import { useLanguage } from '../../contexts/LanguageContext.jsx';
 
 export default function LinkedIn() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const posts = t('linkedin.cards') || [];
   const shouldReduceMotion = useReducedMotion();
 
@@ -39,6 +39,36 @@ export default function LinkedIn() {
     }
   }, []);
 
+  const formatPostDate = useCallback(
+    (post) => {
+      if (!post) return '';
+      if (post.dateTime) {
+        try {
+          const d = new Date(post.dateTime);
+          // Día + mes abreviado, sin año
+          if (language === 'es') {
+            const parts = new Intl.DateTimeFormat('es-ES', {
+              day: '2-digit',
+              month: 'short',
+            })
+              .format(d)
+              .replace('.', ''); // normaliza posibles puntos en abreviaturas
+            return parts;
+          }
+          const parts = new Intl.DateTimeFormat('en-US', {
+            month: 'short',
+            day: '2-digit',
+          }).format(d);
+          return parts;
+        } catch {
+          // fallback al campo de texto
+        }
+      }
+      return post.date || '';
+    },
+    [language],
+  );
+
   return (
     <section id="linkedin" className="linkedin-section">
       <div className="animated-bg"></div>
@@ -67,7 +97,7 @@ export default function LinkedIn() {
             const content = (
               <>
                 <h3>{post.title}</h3>
-                <p className="linkedin-date">{post.date}</p>
+                <p className="linkedin-date">{formatPostDate(post)}</p>
                 {post.description && <p className="linkedin-description">{post.description}</p>}
               </>
             );
