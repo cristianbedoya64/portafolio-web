@@ -119,6 +119,34 @@
   justify-content: center;
 }
 
+/* Nuevo contenedor para tilt separado del motion para evitar sobrescritura de transform */
+.hero-photo-tilt {
+  width: var(--photo-size);
+  height: var(--photo-size);
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  transition:
+    transform 0.4s cubic-bezier(0.16, 0.68, 0.4, 0.98),
+    filter 0.4s ease;
+}
+
+.hero-photo-tilt:hover {
+  transform: translateZ(0) scale(1.015);
+  filter: drop-shadow(0 6px 18px rgba(56, 189, 248, 0.35))
+    drop-shadow(0 2px 6px rgba(234, 179, 8, 0.25));
+}
+
+.hero-photo-tilt.is-static:hover {
+  transform: none;
+  filter: none;
+}
+
+/* Ajuste para mejorar rendimiento: limitar composición */
+.hero-photo,
+.hero-photo-tilt {
+  will-change: transform;
+}
+
 .hero-photo {
   position: relative;
   width: var(--photo-size);

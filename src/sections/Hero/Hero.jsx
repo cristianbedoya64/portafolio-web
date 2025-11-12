@@ -140,44 +140,53 @@ export default function Hero() {
         <div className="hero-photo-area" aria-hidden={false}>
           <div className="hero-photo-glow" />
           <div className="hero-photo-ring" />
-          <motion.div
-            className="hero-photo"
+          {/* Separar el contenedor tilt del motion para evitar colisiones de transform */}
+          <div
             ref={tiltRef}
-            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.96 }}
-            animate={imgLoaded ? { opacity: 1, scale: 1 } : { opacity: 0.85, scale: 0.98 }}
-            transition={{ duration: 0.6, ease: 'easeOut' }}
+            className={
+              effectsEnabled && !shouldReduceMotion
+                ? 'hero-photo-tilt'
+                : 'hero-photo-tilt is-static'
+            }
           >
-            {!imgError ? (
-              <img
-                src={currentSrc}
-                alt={altText}
-                className={imgLoaded ? 'hero-photo-img' : 'hero-photo-img is-loading'}
-                width="192"
-                height="192"
-                decoding="async"
-                fetchpriority="high"
-                onLoad={() => setImgLoaded(true)}
-                onError={() => {
-                  if (fallbackStep === 0) {
-                    setFallbackStep(1);
-                    setCurrentSrc(srcWebp);
-                  } else if (fallbackStep === 1) {
-                    setFallbackStep(2);
-                    setCurrentSrc(srcJpg);
-                  } else if (fallbackStep === 2) {
-                    setFallbackStep(3);
-                    setCurrentSrc(srcJfif);
-                  } else {
-                    setImgError(true);
-                  }
-                }}
-              />
-            ) : (
-              <div className="hero-photo-fallback" aria-label={altText} role="img">
-                <span>{initials}</span>
-              </div>
-            )}
-          </motion.div>
+            <motion.div
+              className="hero-photo"
+              initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.96 }}
+              animate={imgLoaded ? { opacity: 1, scale: 1 } : { opacity: 0.85, scale: 0.98 }}
+              transition={{ duration: 0.6, ease: 'easeOut' }}
+            >
+              {!imgError ? (
+                <img
+                  src={currentSrc}
+                  alt={altText}
+                  className={imgLoaded ? 'hero-photo-img' : 'hero-photo-img is-loading'}
+                  width="192"
+                  height="192"
+                  decoding="async"
+                  fetchpriority="high"
+                  onLoad={() => setImgLoaded(true)}
+                  onError={() => {
+                    if (fallbackStep === 0) {
+                      setFallbackStep(1);
+                      setCurrentSrc(srcWebp);
+                    } else if (fallbackStep === 1) {
+                      setFallbackStep(2);
+                      setCurrentSrc(srcJpg);
+                    } else if (fallbackStep === 2) {
+                      setFallbackStep(3);
+                      setCurrentSrc(srcJfif);
+                    } else {
+                      setImgError(true);
+                    }
+                  }}
+                />
+              ) : (
+                <div className="hero-photo-fallback" aria-label={altText} role="img">
+                  <span>{initials}</span>
+                </div>
+              )}
+            </motion.div>
+          </div>
         </div>
         <h1 className="hero-title">
           {titlePrefix}{' '}
