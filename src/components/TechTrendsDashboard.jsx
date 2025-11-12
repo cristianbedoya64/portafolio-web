@@ -42,6 +42,7 @@ export default function TechTrendsDashboard() {
   const [isFallback, setIsFallback] = useState(true);
   const [error, setError] = useState(null);
   const [lastUpdated, setLastUpdated] = useState(null);
+  const [fetchMs, setFetchMs] = useState(null);
 
   const controllerRef = useRef(null);
   const mountedRef = useRef(false);
@@ -61,12 +62,17 @@ export default function TechTrendsDashboard() {
     }
 
     try {
+      const start =
+        typeof performance !== 'undefined' && performance.now ? performance.now() : Date.now();
       const result = await getTechTrends({ signal: controller.signal });
       if (!mountedRef.current) return;
 
       setTrends(result.data);
       setIsFallback(Boolean(result.isFallback));
       setError(result.isFallback ? (result.error ?? null) : null);
+      const end =
+        typeof performance !== 'undefined' && performance.now ? performance.now() : Date.now();
+      setFetchMs(Math.max(0, Math.round(end - start)));
     } catch (fetchError) {
       if (!mountedRef.current) return;
       if (fetchError?.name === 'AbortError') return;
@@ -117,6 +123,10 @@ export default function TechTrendsDashboard() {
   const rolesData = trends.roles || [];
   const regionsData = trends.regions || [];
 
+  const totalLanguages = languagesData.reduce((acc, it) => acc + (it?.value ?? 0), 0);
+  const totalRoles = rolesData.reduce((acc, it) => acc + (it?.value ?? 0), 0);
+  const totalRegions = regionsData.reduce((acc, it) => acc + (it?.value ?? 0), 0);
+
   const languagesSummary = languagesData.slice(0, 3);
   const rolesSummary = rolesData.slice(0, 4);
   const regionsSummary = regionsData.slice(0, 4);
@@ -127,6 +137,13 @@ export default function TechTrendsDashboard() {
     } catch {
       return String(value ?? 0);
     }
+  }, []);
+
+  const pct = useCallback((part, total) => {
+    const p = Number(part ?? 0);
+    const t = Number(total ?? 0);
+    if (!t || t <= 0) return '0%';
+    return `${Math.round((p / t) * 100)}%`;
   }, []);
 
   return (
@@ -168,6 +185,11 @@ export default function TechTrendsDashboard() {
                 <p className="tech-trends-meta">
                   {loading ? 'Cargando datos en tiempo real...' : 'Panel actualizado en vivo'}
                 </p>
+                <div className="tech-trends-kpis" aria-label="Resumen de métricas clave">
+                  <span className="tech-trends-kpi">Lenguajes: {formatCount(totalLanguages)}</span>
+                  <span className="tech-trends-kpi">Vacantes: {formatCount(totalRoles)}</span>
+                  <span className="tech-trends-kpi">Regiones: {regionsData.length}</span>
+                </div>
               </div>
               <button
                 type="button"
@@ -215,6 +237,10 @@ export default function TechTrendsDashboard() {
                         }}
                         labelStyle={{ color: '#f8fafc' }}
                         itemStyle={{ color: '#fbbf24' }}
+                        formatter={(value, name) => [
+                          `${formatCount(value)} (${pct(value, totalLanguages)})`,
+                          name,
+                        ]}
                       />
                       <Bar dataKey="value" radius={[6, 6, 0, 0]}>
                         {languagesData.map((entry, index) => (
@@ -233,6 +259,7 @@ export default function TechTrendsDashboard() {
                       <li key={`languages-${item.name}`}>
                         <span className="tech-trends-list-name">{item.name}</span>
                         <span className="tech-trends-list-value">{formatCount(item.value)}</span>
+                        <span className="tech-trends-badge">{pct(item.value, totalLanguages)}</span>
                       </li>
                     ))}
                   </ul>
@@ -278,6 +305,10 @@ export default function TechTrendsDashboard() {
                         }}
                         labelStyle={{ color: '#f8fafc' }}
                         itemStyle={{ color: '#38bdf8' }}
+                        formatter={(value, name) => [
+                          `${formatCount(value)} (${pct(value, totalRoles)})`,
+                          name,
+                        ]}
                       />
                       <Bar dataKey="value" radius={[0, 6, 6, 0]}>
                         {rolesData.map((entry, index) => (
@@ -296,6 +327,7 @@ export default function TechTrendsDashboard() {
                       <li key={`roles-${item.name}`}>
                         <span className="tech-trends-list-name">{item.name}</span>
                         <span className="tech-trends-list-value">{formatCount(item.value)}</span>
+                        <span className="tech-trends-badge">{pct(item.value, totalRoles)}</span>
                       </li>
                     ))}
                   </ul>
@@ -320,6 +352,10 @@ export default function TechTrendsDashboard() {
                         }}
                         labelStyle={{ color: '#f8fafc' }}
                         itemStyle={{ color: '#38bdf8' }}
+                        formatter={(value, name) => [
+                          `${formatCount(value)} (${pct(value, totalRegions)})`,
+                          name,
+                        ]}
                       />
                       <Pie
                         data={regionsData}
@@ -347,6 +383,7 @@ export default function TechTrendsDashboard() {
                       <li key={`regions-${item.name}`}>
                         <span className="tech-trends-list-name">{item.name}</span>
                         <span className="tech-trends-list-value">{formatCount(item.value)}</span>
+                        <span className="tech-trends-badge">{pct(item.value, totalRegions)}</span>
                       </li>
                     ))}
                   </ul>
@@ -360,7 +397,13 @@ export default function TechTrendsDashboard() {
                   ? `Última actualización: ${lastUpdated.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`
                   : 'Sin registros recientes'}
               </span>
-              <span>{refreshing ? 'Sincronizando...' : 'Intervalo automático: 30s'}</span>
+              <span>
+                {refreshing
+                  ? 'Sincronizando...'
+                  : `Intervalo: ${Math.round(REFRESH_INTERVAL / 1000)}s`}
+                {typeof fetchMs === 'number' ? ` • Latencia ~${fetchMs}ms` : ''}
+                {` • Fuente: ${isFallback ? 'estimada' : 'en vivo'}`}
+              </span>
             </footer>
           </motion.aside>
         )}

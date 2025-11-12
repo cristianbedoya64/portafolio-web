@@ -104,6 +104,25 @@
   margin-top: 4px;
 }
 
+.tech-trends-kpis {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.tech-trends-kpi {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  color: rgba(226, 232, 240, 0.9);
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+}
+
 .tech-trends-close {
   border: none;
   width: 32px;
@@ -212,6 +231,16 @@
 .tech-trends-list-value {
   font-variant-numeric: tabular-nums;
   color: rgba(129, 230, 217, 0.85);
+}
+
+.tech-trends-badge {
+  margin-left: 8px;
+  font-size: 0.72rem;
+  color: rgba(248, 250, 252, 0.92);
+  background: rgba(168, 85, 247, 0.16);
+  border: 1px solid rgba(168, 85, 247, 0.28);
+  padding: 2px 6px;
+  border-radius: 999px;
 }
 
 .tech-trends-footer {
