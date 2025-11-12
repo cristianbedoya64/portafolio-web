@@ -9,6 +9,7 @@ import AI from './sections/AI';
 import Contact from './sections/Contact';
 import Navbar from './components/Navbar/Navbar';
 import TechTrendsDashboard from './components/TechTrendsDashboard.jsx';
+import FloatingWhatsApp from './components/FloatingWhatsApp.jsx';
 import { useLanguage } from './contexts/LanguageContext.jsx';
 
 export default function App() {
@@ -35,6 +36,7 @@ export default function App() {
         <Contact />
       </main>
       <TechTrendsDashboard />
+      <FloatingWhatsApp />
     </>
   );
 }
