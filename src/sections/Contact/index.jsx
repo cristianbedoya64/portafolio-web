@@ -15,17 +15,15 @@ export default function Contact() {
     : { duration: 1, ease: 'easeOut' };
   const buttonHover = shouldReduceMotion ? undefined : { scale: 1.05 };
 
-  // Mensaje prellenado para WhatsApp usando nombre y rol desde i18n
+  // Mensaje prellenado para WhatsApp (enfocado a reclutadores): saludo breve
   const whatsappText = useMemo(() => {
-    const name = t('hero.name') || 'Cristian Bedoya';
-    const role = t('hero.highlight') || 'Full-Stack + IA';
-    const msg = `Hola ${name} — ${role}. Me gustaría conversar sobre un proyecto.`;
+    const msg = 'Hola Cristian';
     try {
       return encodeURIComponent(msg);
     } catch {
-      return 'Hola%20Cristian%20Bedoya%20%E2%80%94%20Full-Stack%20%2B%20IA.%20Me%20gustar%C3%ADa%20conversar%20sobre%20un%20proyecto.';
+      return 'Hola%20Cristian';
     }
-  }, [t]);
+  }, []);
 
   return (
     <section id="contact" className="contact">
