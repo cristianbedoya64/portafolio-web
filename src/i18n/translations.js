@@ -383,22 +383,32 @@ export const TRANSLATIONS = {
         'Aquí comparto mis proyectos experimentales con IA, desde asistentes hasta modelos generativos.',
       experiments: [
         {
-          title: 'Asistente IA Personalizado',
+          title: 'Chat educativo para niños (aprende inglés jugando)',
           description:
-            'Un chatbot con GPT-4 que responde con base en mi portafolio y estilo de comunicación.',
-          tech: 'React + OpenAI API',
+            'Un chat guiado y seguro con personajes amigables que enseña vocabulario, pronunciación y frases básicas en inglés mediante juegos y retos.',
+          tech: 'React + Web Speech API + Whisper/OpenAI + Moderation',
+          link: '#',
         },
         {
-          title: 'Generador de Imágenes',
+          title: 'Revisor de Pull Requests con IA (accesibilidad y performance)',
           description:
-            'Proyecto que usa Stable Diffusion para crear imágenes basadas en descripciones.',
-          tech: 'Python + Diffusers',
+            'Analiza PRs para detectar problemas de accesibilidad, performance y aspectos básicos de seguridad; sugiere cambios concretos y comenta automáticamente en GitHub.',
+          tech: 'GitHub Actions + Node.js + OpenAI Functions + axe-core + ESLint',
+          link: '#',
         },
         {
-          title: 'Analizador de Sentimientos',
+          title: 'Asistente RAG para documentación interna',
           description:
-            'Sistema que analiza opiniones en redes sociales con NLP y Machine Learning.',
-          tech: 'Flask + Transformers',
+            'Busca y responde con citas de políticas, FAQs y documentación interna; ideal para onboarding y soporte interno con respuestas verificables.',
+          tech: 'Next.js + PostgreSQL/pgvector o Pinecone + Embeddings + OpenAI',
+          link: '#',
+        },
+        {
+          title: 'Analizador de CVs y ofertas (matching y brechas)',
+          description:
+            'Extrae habilidades clave, puntúa compatibilidad con la oferta, resalta brechas y sugiere mejoras y preguntas técnicas para la entrevista.',
+          tech: 'FastAPI/Node + spaCy/Transformers + OpenAI + Prisma/PostgreSQL',
+          link: '#',
         },
       ],
     },
@@ -820,20 +830,32 @@ export const TRANSLATIONS = {
       subtitle: 'I share experimental projects exploring AI, from assistants to generative models.',
       experiments: [
         {
-          title: 'Personalised AI Assistant',
+          title: 'Kids educational chat (learn English through play)',
           description:
-            'A GPT-4 chatbot that answers based on my portfolio and communication style.',
-          tech: 'React + OpenAI API',
+            'A safe, guided chat with friendly characters teaching vocabulary, pronunciation, and basic phrases via games and challenges.',
+          tech: 'React + Web Speech API + Whisper/OpenAI + Moderation',
+          link: '#',
         },
         {
-          title: 'Image Generator',
-          description: 'Project using Stable Diffusion to create images from text prompts.',
-          tech: 'Python + Diffusers',
+          title: 'AI Pull Request reviewer (accessibility & performance)',
+          description:
+            'Analyzes PRs to flag accessibility, performance, and light security issues; proposes concrete changes and auto-comments via GitHub.',
+          tech: 'GitHub Actions + Node.js + OpenAI Functions + axe-core + ESLint',
+          link: '#',
         },
         {
-          title: 'Sentiment Analyzer',
-          description: 'System that processes social media opinions with NLP and ML.',
-          tech: 'Flask + Transformers',
+          title: 'RAG knowledge base assistant for internal docs',
+          description:
+            'Searches and answers with citations from policies, FAQs, and internal docs; ideal for onboarding and internal support with verifiable answers.',
+          tech: 'Next.js + PostgreSQL/pgvector or Pinecone + Embeddings + OpenAI',
+          link: '#',
+        },
+        {
+          title: 'Resume and job description matcher (skills gaps)',
+          description:
+            'Extracts key skills, scores role fit, highlights gaps, and suggests improvements and targeted interview questions.',
+          tech: 'FastAPI/Node + spaCy/Transformers + OpenAI + Prisma/PostgreSQL',
+          link: '#',
         },
       ],
     },

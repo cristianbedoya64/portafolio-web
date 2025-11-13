@@ -42,12 +42,13 @@ export default function AI() {
           {experiments.map((exp, index) => (
             <motion.a
               key={index}
-              href={exp.link}
+              href={exp.link || '#'}
               className="ai-card"
               target="_blank"
               rel="noopener noreferrer"
               whileHover={cardHover}
               whileTap={cardTap}
+              aria-label={exp?.title ? `Abrir experimento: ${exp.title}` : 'Abrir experimento'}
             >
               <h3>{exp.title}</h3>
               <p className="ai-description">{exp.description}</p>
