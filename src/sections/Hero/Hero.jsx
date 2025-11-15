@@ -4,6 +4,13 @@ import './Hero.css';
 import { useLanguage } from '../../contexts/LanguageContext.jsx';
 import { useEffects } from '../../contexts/EffectsContext.jsx';
 
+const TYPEWRITER_CONFIG = {
+  TYPE_SPEED: 110, // slower typing for readability
+  DELETE_SPEED: 70,
+  HOLD_FULL: 4500, // keep each role fully visible a bit over 4s
+  HOLD_EMPTY: 850, // pause before typing the next role
+};
+
 export default function Hero() {
   const { t, language } = useLanguage();
   const { effectsEnabled } = useEffects();
@@ -49,45 +56,66 @@ export default function Hero() {
     return Array.isArray(raw) && raw.length ? raw : [highlight];
   }, [t, highlight]);
 
-  // Typewriter state for rotating roles
+  // Typewriter state for rotating roles with custom timings
   const [roleIndex, setRoleIndex] = useState(0);
   const [displayText, setDisplayText] = useState(roles[0] || highlight);
   const [isDeleting, setIsDeleting] = useState(false);
   const timerRef = useRef(null);
 
+  // Reset animation when translations change drastically
+  useEffect(() => {
+    setRoleIndex(0);
+    setDisplayText(roles[0] || highlight);
+    setIsDeleting(false);
+  }, [roles, highlight]);
+
   useEffect(() => {
     const isTestEnv = import.meta.env.MODE === 'test' || Boolean(import.meta.env.VITEST);
     const enableTypewriter =
       effectsEnabled && !shouldReduceMotion && !isTestEnv && roles.length > 1;
+
     if (!enableTypewriter) {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+        timerRef.current = null;
+      }
       setDisplayText(roles[0] || highlight);
-      return; // no animation
+      setRoleIndex(0);
+      setIsDeleting(false);
+      return;
     }
 
-    const full = roles[roleIndex];
-    const currentLen = displayText.length;
-    const TYPING = 55;
-    const DELETING = 35;
-    const PAUSE_FULL = 1100;
-    const PAUSE_EMPTY = 260;
-    let delay;
-    if (!isDeleting && currentLen < full.length) {
-      setDisplayText(full.slice(0, currentLen + 1));
-      delay = TYPING;
-    } else if (!isDeleting && currentLen === full.length) {
-      delay = PAUSE_FULL;
-      setIsDeleting(true);
-    } else if (isDeleting && currentLen > 0) {
-      setDisplayText(full.slice(0, currentLen - 1));
-      delay = DELETING;
-    } else if (isDeleting && currentLen === 0) {
-      setIsDeleting(false);
-      setRoleIndex((i) => (i + 1) % roles.length);
-      delay = PAUSE_EMPTY;
+    const fullText = roles[roleIndex] || '';
+    const currentLength = displayText.length;
+    const { TYPE_SPEED, DELETE_SPEED, HOLD_FULL, HOLD_EMPTY } = TYPEWRITER_CONFIG;
+
+    let delay = TYPE_SPEED;
+    let nextAction = () => {};
+
+    if (!isDeleting && currentLength < fullText.length) {
+      nextAction = () => setDisplayText(fullText.slice(0, currentLength + 1));
+    } else if (!isDeleting && currentLength === fullText.length) {
+      delay = HOLD_FULL;
+      nextAction = () => setIsDeleting(true);
+    } else if (isDeleting && currentLength > 0) {
+      delay = DELETE_SPEED;
+      nextAction = () => setDisplayText(fullText.slice(0, currentLength - 1));
+    } else if (isDeleting && currentLength === 0) {
+      delay = HOLD_EMPTY;
+      nextAction = () => {
+        setIsDeleting(false);
+        setRoleIndex((idx) => (idx + 1) % roles.length);
+      };
     }
-    timerRef.current = setTimeout(() => {}, delay);
-    return () => timerRef.current && clearTimeout(timerRef.current);
-  }, [displayText, isDeleting, roleIndex, roles, effectsEnabled, shouldReduceMotion, highlight]);
+
+    timerRef.current = setTimeout(() => nextAction(), delay);
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+        timerRef.current = null;
+      }
+    };
+  }, [displayText, isDeleting, roleIndex, roles, highlight, effectsEnabled, shouldReduceMotion]);
 
   const nameChars = useMemo(() => Array.from(nameText || ''), [nameText]);
 
