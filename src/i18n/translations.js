@@ -426,6 +426,13 @@ export const TRANSLATIONS = {
       subtitle: 'Un vistazo rápido a las mejoras que mantienen este portafolio en evolución.',
       entries: [
         {
+          dateLabel: '14 Nov 2025',
+          dateTime: '2025-11-14',
+          title: 'Deploy estable en GitHub Pages',
+          description:
+            'El portafolio ahora está publicado en GitHub Pages con PWA ajustada para /portafolio-web/, listo para compartir con reclutadores.',
+        },
+        {
           dateLabel: '13 Nov 2025',
           dateTime: '2025-11-13',
           title: 'Botones de proyectos sin enlaces rotos',
@@ -1026,6 +1033,13 @@ export const TRANSLATIONS = {
       title: 'Recent updates',
       subtitle: 'A living changelog that showcases how this portfolio keeps evolving.',
       entries: [
+        {
+          dateLabel: 'Nov 14, 2025',
+          dateTime: '2025-11-14',
+          title: 'Stable GitHub Pages deploy',
+          description:
+            'The portfolio is now live on GitHub Pages with a PWA configured for /portafolio-web/, ready to be shared with recruiters.',
+        },
         {
           dateLabel: 'Nov 13, 2025',
           dateTime: '2025-11-13',

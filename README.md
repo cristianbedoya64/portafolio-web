@@ -2,7 +2,7 @@
 
 Aplicación de portafolio personal construida como si fuera un producto real: React + Vite, animaciones con Framer Motion, i18n, PWA, analíticas opcionales y un enfoque fuerte en accesibilidad, rendimiento y observabilidad.
 
-- **Demo producción:** _[añadir URL de despliegue aquí]_
+- **Demo producción:** https://cristianbedoya64.github.io/portafolio-web/
 - **Repositorio:** este proyecto (`portafolio-web`)
 
 Este repositorio está pensado para mostrar cómo diseño y ejecuto frontends modernos: rápidos, medibles, accesibles y fáciles de mantener.
@@ -13,7 +13,7 @@ Este repositorio está pensado para mostrar cómo diseño y ejecuto frontends mo
 
 Personal portfolio app built as a real-world product: React + Vite, Framer Motion animations, i18n, PWA, optional analytics and a strong focus on accessibility, performance and observability.
 
-- **Production demo:** _[add live URL here]_
+- **Production demo:** https://cristianbedoya64.github.io/portafolio-web/
 - **Repository:** this project (`portafolio-web`)
 
 This repository is meant to showcase how I design and build modern frontends: fast, measurable, accessible and maintainable.
