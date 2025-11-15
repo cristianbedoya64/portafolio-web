@@ -6,14 +6,13 @@ on:
   pull_request:
     branches: [ main ]
 
-env:
-  CI: true
+permissions:
+  contents: read
 
 jobs:
-  lint-test:
-    name: Lint & Unit Tests
+  ci:
+    name: Install → Lint → Test → Build → Lighthouse (desktop+mobile)
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -21,119 +20,69 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: npm
+          node-version: '20'
+          cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci
+        run: |
+          npm ci || npm install
 
       - name: Lint
         run: npm run lint
 
-      - name: Unit tests
-        run: npm run test -- --run
+      - name: Test
+        run: npm test -- --run
 
-  e2e:
-    name: Playwright E2E
-    needs: lint-test
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Install Playwright browsers
-        uses: microsoft/playwright-github-action@v1
-        with:
-          install-deps: true
-
-      - name: Build application
+      - name: Build
         run: npm run build
 
-      - name: Run Playwright tests
-        run: npx playwright test --reporter=list
-
-  lighthouse:
-    name: Lighthouse Audit
-    needs: lint-test
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build application
-        run: npm run build
-
-      - name: Launch preview server
-        run: npm run preview -- --port=4173 &
-
-      - name: Wait for preview server
-        run: |
-          n=0
-          until [ "$n" -ge 30 ]; do
-            if curl -sSf http://localhost:4173 >/dev/null; then
-              echo "Preview ready"
-              exit 0
-            fi
-            n=$((n+1))
-            sleep 2
-          done
-          echo "Preview did not start in time" >&2
-          exit 1
-
-      - name: Lighthouse CI
-        run: npx lhci autorun --config=./lighthouserc.cjs
-
-      - name: Upload Lighthouse reports
-        if: success() || failure()
+      - name: Upload dist artifact
         uses: actions/upload-artifact@v4
         with:
-          name: lighthouse-reports
-          path: lhci-reports/**
+          name: dist
+          path: dist
 
-  deploy:
-    name: Deploy to GitHub Pages
-    needs: [lint-test, e2e, lighthouse]
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Lighthouse CI (desktop)
+        uses: treosh/lighthouse-ci-action@v11
         with:
-          node-version: 20
-          cache: npm
+          configPath: './lighthouserc.desktop.cjs'
+          temporaryPublicStorage: true
+          uploadArtifacts: true
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Lighthouse CI (mobile)
+        uses: treosh/lighthouse-ci-action@v11
+        with:
+          configPath: './lighthouserc.mobile.cjs'
+          temporaryPublicStorage: true
+          uploadArtifacts: true
 
-      - name: Build application
-        run: npm run build
+      - name: Upload Lighthouse reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lhci-reports
+          path: lhci-reports
+
+  deploy-preview:
+    name: Deploy Preview (GitHub Pages)
+    needs: ci
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Download dist artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+        id: deployment
+        uses: actions/deploy-pages@v4

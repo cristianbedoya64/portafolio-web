@@ -3,34 +3,23 @@ import { motion, useReducedMotion } from 'framer-motion';
 import './Hero.css';
 import { useLanguage } from '../../contexts/LanguageContext.jsx';
 import { useEffects } from '../../contexts/EffectsContext.jsx';
-import useTilt from '../../hooks/useTilt.js';
 
 export default function Hero() {
   const { t, language } = useLanguage();
   const { effectsEnabled } = useEffects();
   const shouldReduceMotion = useReducedMotion();
 
-  // Photo loading state for progressive reveal
+  // Foto de perfil – usar <picture> con AVIF + WebP + JPG como fallback para máxima compatibilidad
   const [imgLoaded, setImgLoaded] = useState(false);
-  const [imgError, setImgError] = useState(false);
-  const [fallbackStep, setFallbackStep] = useState(0);
   const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '/');
   const srcAvif = `${base}profile.avif`;
   const srcWebp = `${base}profile.webp`;
   const srcJpg = `${base}profile.jpg`;
-  const srcJfif = `${base}profile.jpg.jfif`;
-  const [currentSrc, setCurrentSrc] = useState(srcAvif);
+  const [hadError, setHadError] = useState(false);
 
-  const disableTilt = !effectsEnabled || shouldReduceMotion;
-  const tiltRef = useTilt(
-    {
-      max: 10,
-      glare: true,
-      'max-glare': 0.15,
-      scale: 1.03,
-    },
-    disableTilt,
-  );
+  // Unificar efecto con tarjetas de Skills: quitar VanillaTilt y usar hover lift + gradient (CSS).
+  const tiltRef = useRef(null);
+  const disableHoverLift = shouldReduceMotion; // Sólo se desactiva si reduce-motion
 
   const altText = useMemo(() => {
     const name = t('hero.name') || 'Perfil';
@@ -141,12 +130,18 @@ export default function Hero() {
           <div className="hero-photo-glow" />
           <div className="hero-photo-ring" />
           {/* Separar el contenedor tilt del motion para evitar colisiones de transform */}
-          <div
+          <motion.div
             ref={tiltRef}
-            className={
-              effectsEnabled && !shouldReduceMotion
-                ? 'hero-photo-tilt'
-                : 'hero-photo-tilt is-static'
+            className={!disableHoverLift ? 'hero-photo-tilt' : 'hero-photo-tilt is-static'}
+            whileHover={
+              !disableHoverLift
+                ? { scale: 1.04, transition: { type: 'spring', stiffness: 200, damping: 18 } }
+                : undefined
+            }
+            whileTap={
+              !disableHoverLift
+                ? { scale: 0.98, transition: { type: 'spring', stiffness: 250, damping: 20 } }
+                : undefined
             }
           >
             <motion.div
@@ -155,38 +150,29 @@ export default function Hero() {
               animate={imgLoaded ? { opacity: 1, scale: 1 } : { opacity: 0.85, scale: 0.98 }}
               transition={{ duration: 0.6, ease: 'easeOut' }}
             >
-              {!imgError ? (
-                <img
-                  src={currentSrc}
-                  alt={altText}
-                  className={imgLoaded ? 'hero-photo-img' : 'hero-photo-img is-loading'}
-                  width="192"
-                  height="192"
-                  decoding="async"
-                  fetchpriority="high"
-                  onLoad={() => setImgLoaded(true)}
-                  onError={() => {
-                    if (fallbackStep === 0) {
-                      setFallbackStep(1);
-                      setCurrentSrc(srcWebp);
-                    } else if (fallbackStep === 1) {
-                      setFallbackStep(2);
-                      setCurrentSrc(srcJpg);
-                    } else if (fallbackStep === 2) {
-                      setFallbackStep(3);
-                      setCurrentSrc(srcJfif);
-                    } else {
-                      setImgError(true);
-                    }
-                  }}
-                />
+              {!hadError ? (
+                <picture>
+                  <source type="image/avif" srcSet={srcAvif} />
+                  <source type="image/webp" srcSet={srcWebp} />
+                  <img
+                    src={srcJpg}
+                    alt={altText}
+                    className={imgLoaded ? 'hero-photo-img' : 'hero-photo-img is-loading'}
+                    width="208"
+                    height="208"
+                    decoding="async"
+                    fetchpriority="high"
+                    onLoad={() => setImgLoaded(true)}
+                    onError={() => setHadError(true)}
+                  />
+                </picture>
               ) : (
                 <div className="hero-photo-fallback" aria-label={altText} role="img">
                   <span>{initials}</span>
                 </div>
               )}
             </motion.div>
-          </div>
+          </motion.div>
         </div>
         <h1 className="hero-title">
           {titlePrefix}{' '}

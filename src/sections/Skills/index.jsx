@@ -2,29 +2,11 @@ import React, { lazy, Suspense, useEffect, useRef, useState, useCallback } from 
 import { motion, useReducedMotion, AnimatePresence } from 'framer-motion';
 import './Skills.css';
 import { useLanguage } from '../../contexts/LanguageContext.jsx';
-import useTilt from '../../hooks/useTilt.js';
 import { useEffects } from '../../contexts/EffectsContext.jsx';
 
 const ParticlesBackground = lazy(() => import('../../components/ParticlesBackground.jsx'));
 
-const TILT_OPTIONS = {
-  max: 14,
-  scale: 1.04,
-  speed: 600,
-  glare: true,
-  'max-glare': 0.18,
-};
-
-const SkillCard = ({
-  card,
-  shouldReduceMotion,
-  effectsEnabled,
-  cardHover,
-  isExpanded,
-  onToggle,
-  index,
-}) => {
-  const tiltRef = useTilt(TILT_OPTIONS, shouldReduceMotion || !effectsEnabled);
+const SkillCard = ({ card, shouldReduceMotion, cardHover, isExpanded, onToggle, index }) => {
   const handleKey = useCallback(
     (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
@@ -37,7 +19,6 @@ const SkillCard = ({
 
   return (
     <motion.div
-      ref={tiltRef}
       className={`skills-item${isExpanded ? ' expanded' : ''}`}
       role="button"
       tabIndex={0}
@@ -212,7 +193,6 @@ const Skills = () => {
                 card={card}
                 index={index}
                 shouldReduceMotion={shouldReduceMotion}
-                effectsEnabled={effectsEnabled}
                 cardHover={cardHover}
                 isExpanded={expandedIndex === index}
                 onToggle={() => toggleIndex(index)}

@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback, useState, useEffect } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import './Projects.css';
 import { useLanguage } from '../../contexts/LanguageContext.jsx';
@@ -37,10 +37,14 @@ function prefetchLink(href) {
 }
 
 export default function Projects() {
-  const { t, language } = useLanguage();
-  const rawProjects = t('projects.cards');
-  const projectCards = Array.isArray(rawProjects) ? rawProjects : [];
+  const { t, language, translations } = useLanguage();
+  // Estabiliza la referencia de projectCards usando translations, que cambia solo con el idioma
+  const projectCards = useMemo(() => {
+    const list = translations?.projects?.cards;
+    return Array.isArray(list) ? list : [];
+  }, [translations]);
   const shouldReduceMotion = useReducedMotion();
+  const [detailCardIndex, setDetailCardIndex] = useState(null);
 
   const containerInitial = shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 36 };
   const containerWhileInView = shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 };
@@ -50,6 +54,17 @@ export default function Projects() {
   const cardHover = shouldReduceMotion ? undefined : { scale: 1.04, y: -4 };
 
   const jsonLd = useMemo(() => buildJsonLd(projectCards, language), [projectCards, language]);
+  const activeProject =
+    typeof detailCardIndex === 'number' && projectCards[detailCardIndex]
+      ? projectCards[detailCardIndex]
+      : null;
+  const detailCard = useMemo(() => {
+    if (!activeProject?.buildDetails) return null;
+    return {
+      projectName: activeProject.title,
+      ...activeProject.buildDetails,
+    };
+  }, [activeProject]);
   const handleAnalyticsClick = useCallback((projectTitle, linkLabel) => {
     try {
       if (typeof window !== 'undefined' && typeof window.plausible === 'function') {
@@ -61,6 +76,119 @@ export default function Projects() {
       /* ignore */
     }
   }, []);
+  const handleOpenDetails = useCallback((projectIndex) => {
+    setDetailCardIndex(typeof projectIndex === 'number' ? projectIndex : null);
+  }, []);
+
+  const handleCloseDetails = useCallback(() => {
+    setDetailCardIndex(null);
+  }, []);
+
+  useEffect(() => {
+    if (!detailCard) return undefined;
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        handleCloseDetails();
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [detailCard, handleCloseDetails]);
+
+  const detailOverlay = detailCard
+    ? (() => {
+        const stackLabel =
+          detailCard.stackLabel || (language === 'en' ? 'Main stack' : 'Stack principal');
+        const metricsLabel =
+          detailCard.metricsLabel || (language === 'en' ? 'Measurable impact' : 'Impacto medible');
+        const closeLabel =
+          detailCard.closeLabel || (language === 'en' ? 'Close details' : 'Cerrar detalle');
+
+        return (
+          <div
+            className="project-detail-overlay"
+            role="dialog"
+            aria-modal="true"
+            aria-label={detailCard.title || detailCard.projectName}
+            onClick={handleCloseDetails}
+          >
+            <motion.div
+              className="project-detail-card"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.25, ease: 'easeOut' }}
+              onClick={(event) => event.stopPropagation()}
+            >
+              <div className="project-detail-card-head">
+                {detailCard.timeline && (
+                  <span className="project-detail-timeline">{detailCard.timeline}</span>
+                )}
+                <button
+                  type="button"
+                  className="project-detail-close"
+                  onClick={handleCloseDetails}
+                  aria-label={closeLabel}
+                >
+                  ×
+                </button>
+              </div>
+
+              <div className="project-detail-body">
+                <p className="project-detail-chip">{detailCard.projectName}</p>
+                <h3>{detailCard.title}</h3>
+                {detailCard.subtitle && (
+                  <p className="project-detail-subtitle">{detailCard.subtitle}</p>
+                )}
+                {detailCard.summary && (
+                  <p className="project-detail-summary">{detailCard.summary}</p>
+                )}
+
+                {Array.isArray(detailCard.stack) && detailCard.stack.length > 0 && (
+                  <div className="project-detail-section">
+                    <p className="project-detail-section-title">{stackLabel}</p>
+                    <div className="project-detail-chips">
+                      {detailCard.stack.map((item) => (
+                        <span key={item}>{item}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {Array.isArray(detailCard.sections) && detailCard.sections.length > 0 && (
+                  <div className="project-detail-grid">
+                    {detailCard.sections.map((section) => (
+                      <div key={section.title} className="project-detail-section-card">
+                        <p className="project-detail-section-title">{section.title}</p>
+                        {Array.isArray(section.items) ? (
+                          <ul>
+                            {section.items.map((item, index) => (
+                              <li key={`${section.title}-${index}`}>{item}</li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <p>{section.description}</p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {Array.isArray(detailCard.metrics) && detailCard.metrics.length > 0 && (
+                  <div className="project-detail-section">
+                    <p className="project-detail-section-title">{metricsLabel}</p>
+                    <ul className="project-detail-metrics">
+                      {detailCard.metrics.map((metric, index) => (
+                        <li key={`metric-${index}`}>{metric}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          </div>
+        );
+      })()
+    : null;
 
   return (
     <section id="projects" className="projects">
@@ -112,6 +240,21 @@ export default function Projects() {
                   <p className="project-card-description">{project.description}</p>
                 )}
 
+                {Array.isArray(project.outcomes) && project.outcomes.length > 0 && (
+                  <ul
+                    className="project-card-outcomes"
+                    aria-label={
+                      language === 'en'
+                        ? `${project.title} outcomes`
+                        : `Resultados de ${project.title}`
+                    }
+                  >
+                    {project.outcomes.map((line, i) => (
+                      <li key={`${project.title}-outcome-${i}`}>{line}</li>
+                    ))}
+                  </ul>
+                )}
+
                 {highlights.length > 0 && (
                   <ul className="project-card-tags" aria-label={`${project.title} tech stack`}>
                     {highlights.map((item) => (
@@ -129,10 +272,30 @@ export default function Projects() {
                         ? `project-link--${link.variant}`
                         : 'project-link--primary';
 
+                      const extraClass = link.type === 'details' ? 'project-link--details' : '';
+
+                      if (link.type === 'details') {
+                        return (
+                          <button
+                            key={`${project.title}-${link.label}`}
+                            type="button"
+                            className={`project-link ${variant} ${extraClass}`}
+                            aria-label={link.aria || link.label}
+                            role="listitem"
+                            onClick={() => {
+                              handleAnalyticsClick(project.title, link.label);
+                              handleOpenDetails(index);
+                            }}
+                          >
+                            {link.label}
+                          </button>
+                        );
+                      }
+
                       return (
                         <a
                           key={`${project.title}-${link.label}`}
-                          className={`project-link ${variant}`}
+                          className={`project-link ${variant} ${extraClass}`}
                           href={href}
                           target={isExternal ? '_blank' : undefined}
                           rel={isExternal ? 'noopener noreferrer' : undefined}
@@ -153,6 +316,8 @@ export default function Projects() {
           })}
         </div>
       </motion.div>
+
+      {detailOverlay}
     </section>
   );
 }

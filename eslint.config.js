@@ -1,8 +1,8 @@
-import js from '@eslint/js'
-import globals from 'globals'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
-import { defineConfig, globalIgnores } from 'eslint/config'
+import js from '@eslint/js';
+import globals from 'globals';
+import reactHooks from 'eslint-plugin-react-hooks';
+import reactRefresh from 'eslint-plugin-react-refresh';
+import { defineConfig, globalIgnores } from 'eslint/config';
 
 export default defineConfig([
   globalIgnores(['dist']),
@@ -24,12 +24,24 @@ export default defineConfig([
     },
     rules: {
       // allow PascalCase component names and the `motion` import (used in JSX as <motion.x>)
-      'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]|^motion$'}],
+      'no-unused-vars': [
+        'error',
+        { varsIgnorePattern: '^[A-Z_]|^motion$', argsIgnorePattern: '^_' },
+      ],
     },
   },
   // Node / config files (allow require/module/process)
   {
-    files: ['playwright.config.js', '.eslintrc.js', 'vite.config.js', 'postcss.config.js', 'tests/e2e/**'],
+    files: [
+      'playwright.config.js',
+      '.eslintrc.js',
+      'vite.config.js',
+      'postcss.config.js',
+      'tests/e2e/**',
+      'scripts/**',
+      'lighthouserc.*.cjs',
+      'vitest.config.js',
+    ],
     languageOptions: {
       globals: globals.node,
       parserOptions: { sourceType: 'module', ecmaVersion: 'latest' },
@@ -40,11 +52,17 @@ export default defineConfig([
   {
     files: ['**/*.test.*', 'tests/**'],
     languageOptions: {
-      globals: globals.vitest || { describe: true, test: true, expect: true, beforeEach: true, afterEach: true },
+      globals: globals.vitest || {
+        describe: true,
+        test: true,
+        expect: true,
+        beforeEach: true,
+        afterEach: true,
+      },
       parserOptions: { ecmaVersion: 'latest', ecmaFeatures: { jsx: true } },
     },
     rules: {
       'no-empty': ['error', { allowEmptyCatch: true }],
     },
   },
-])
+]);

@@ -1,7 +1,6 @@
 module.exports = {
   ci: {
     collect: {
-      // Build the site and serve statically to avoid flakiness with preview servers on Windows.
       buildCommand: 'npm run build',
       staticDistDir: './dist',
       url: ['/', '/index.html'],
@@ -13,15 +12,13 @@ module.exports = {
         extraHeaders: JSON.stringify({ 'Accept-Language': 'es-ES' }),
         throttlingMethod: 'simulate',
         chromeFlags: ['--no-sandbox', '--disable-dev-shm-usage'],
-        // Performance budgets
-        budgets: require('./performance-budget.json'),
+        budgets: require('./performance-budget.mobile.json'),
       },
     },
     assert: {
       preset: 'lighthouse:recommended',
       assertions: {
         'categories:performance': ['warn', { minScore: 0.9 }],
-        // Downgrade accessibility to warn so audit doesn't hard-fail while iterating.
         'categories:accessibility': ['warn', { minScore: 0.95 }],
         'categories:best-practices': ['warn', { minScore: 0.9 }],
         'categories:seo': ['warn', { minScore: 0.9 }],
@@ -30,8 +27,8 @@ module.exports = {
     },
     upload: {
       target: 'filesystem',
-      outputDir: './lhci-reports',
-      reportFilenamePattern: 'lighthouse-%%DATETIME%%-report.%%EXTENSION%%',
+      outputDir: './lhci-reports/mobile',
+      reportFilenamePattern: 'lighthouse-mobile-%%DATETIME%%-report.%%EXTENSION%%',
     },
   },
 };

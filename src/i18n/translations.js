@@ -164,6 +164,12 @@ export const TRANSLATIONS = {
             'Three.js',
             'Serverless',
           ],
+          outcomes: [
+            'LCP ~1.1s en desktop (preload de imagen del héroe y limpieza de fuentes).',
+            'JS inicial más liviano: gráficas y partículas cargan bajo demanda.',
+            'Budgets Lighthouse (desktop y mobile) en CI para prevenir regresiones.',
+            'Accesibilidad ≥ 0.95 en auditorías locales.',
+          ],
           badge: '2025',
           links: [
             {
@@ -173,12 +179,63 @@ export const TRANSLATIONS = {
               variant: 'primary',
             },
             {
-              label: 'Web',
-              href: '#',
-              aria: 'Abrir la web del portafolio (se añadirá enlace)',
+              label: 'Cómo se construyó',
+              href: '#detalle-portafolio-web',
+              aria: 'Abrir la tarjeta con el blueprint del portafolio',
               variant: 'ghost',
+              type: 'details',
             },
           ],
+          buildDetails: {
+            title: 'Cómo se construyó este portafolio',
+            subtitle: 'Arquitectura React + Vite iterada con métricas reales y soporte de IA.',
+            summary:
+              'Durante una semana afiné el diseño, accesibilidad y rendimiento combinando React 18, animaciones con Framer Motion, efectos 3D y automatización de calidad.',
+            timeline: 'Tiempo de construcción: 1 semana',
+            stackLabel: 'Stack principal',
+            stack: [
+              'React 18 + Hooks',
+              'Vite 7',
+              'Framer Motion 12',
+              'Tailwind + CSS modular',
+              'Vanta.js / Three.js',
+              'Vitest + Playwright',
+              'GitHub Actions + Lighthouse',
+              'PWA + Workbox',
+            ],
+            sections: [
+              {
+                title: 'Arquitectura y UX',
+                items: [
+                  'Componentes desacoplados por secciones + contextos (idioma/efectos).',
+                  'Carga progresiva: partículas, gráficas y scripts pesados bajo demanda.',
+                  'Animaciones con Framer Motion respetando Reduce Motion y accesibilidad.',
+                ],
+              },
+              {
+                title: 'Automatización y control',
+                items: [
+                  'Vitest para pruebas unitarias y de componentes (>80% de cobertura objetivo).',
+                  'Playwright smoke tests + budgets Lighthouse en CI para prevenir regresiones.',
+                  'Scripts personalizados para optimizar imágenes y generar variantes del perfil.',
+                ],
+              },
+              {
+                title: 'Entrega guiada por IA',
+                items: [
+                  'Copilot/LLMs para prototipos rápidos, yo valido métricas y accesibilidad.',
+                  'Prompts específicos para documentar decisiones y outcomes por proyecto.',
+                ],
+              },
+            ],
+            metricsLabel: 'Impacto medible',
+            metrics: [
+              'LCP ~1.1s en desktop gracias a preload de imagen y fuentes ordenadas.',
+              'JS inicial reducido: gráficas y partículas no bloquean el render.',
+              'Accesibilidad ≥0.95 en auditorías locales y foco visible en todos los CTAs.',
+            ],
+            closeLabel: 'Cerrar detalle',
+          },
         },
         {
           title: 'Dashboard de Datos Interactivo',
@@ -195,18 +252,23 @@ export const TRANSLATIONS = {
             'Tailwind',
             'Framer Motion',
           ],
+          outcomes: [
+            'Carga de datos diferida hasta abrir el panel para mejorar la carga inicial.',
+            'Gráficas (Recharts) se cargan de forma perezosa dentro del panel.',
+            'Manejo de errores/latencia con indicador de fuente (estimada/en vivo).',
+          ],
           badge: 'Case Study',
           links: [
             {
               label: 'Repositorio',
-              href: '#',
-              aria: 'Abrir el repositorio del dashboard de datos (se añadirá enlace)',
+              href: 'https://github.com/example/dashboard',
+              aria: 'Abrir el repositorio del dashboard de datos (enlace genérico)',
               variant: 'primary',
             },
             {
               label: 'Web',
-              href: '#',
-              aria: 'Abrir la demo del dashboard (se añadirá enlace)',
+              href: 'https://demo.example.com/dashboard',
+              aria: 'Abrir la demo del dashboard (enlace genérico)',
               variant: 'ghost',
             },
           ],
@@ -224,18 +286,23 @@ export const TRANSLATIONS = {
             'PostgreSQL',
             'LocalStorage',
           ],
+          outcomes: [
+            'Drag & Drop fluido con soporte de teclado y estados accesibles.',
+            'Persistencia local inmediata con API opcional para multiusuario.',
+            'Pruebas E2E de flujos principales (crear, mover, borrar) en verde.',
+          ],
           badge: '2025',
           links: [
             {
               label: 'Repositorio',
-              href: '#',
-              aria: 'Abrir el repositorio de la app de tareas (se añadirá enlace)',
+              href: 'https://github.com/example/tasks-app',
+              aria: 'Abrir el repositorio de la app de tareas (enlace genérico)',
               variant: 'primary',
             },
             {
               label: 'Web',
-              href: '#',
-              aria: 'Abrir la demo de la app de tareas (se añadirá enlace)',
+              href: 'https://demo.example.com/tasks-app',
+              aria: 'Abrir la demo de la app de tareas (enlace genérico)',
               variant: 'ghost',
             },
           ],
@@ -255,18 +322,23 @@ export const TRANSLATIONS = {
             'Timestamps',
             'Dark mode',
           ],
+          outcomes: [
+            'Mensajería instantánea estable en demo con reconexión automática.',
+            'Indicadores de estado y timestamps en UI accesible.',
+            'Tema oscuro y atajos de teclado para rapidez.',
+          ],
           badge: '2025',
           links: [
             {
               label: 'Repositorio',
-              href: '#',
-              aria: 'Abrir el repositorio del chat en tiempo real (se añadirá enlace)',
+              href: 'https://github.com/example/realtime-chat',
+              aria: 'Abrir el repositorio del chat en tiempo real (enlace genérico)',
               variant: 'primary',
             },
             {
               label: 'Web',
-              href: '#',
-              aria: 'Abrir la demo del chat en tiempo real (se añadirá enlace)',
+              href: 'https://demo.example.com/realtime-chat',
+              aria: 'Abrir la demo del chat en tiempo real (enlace genérico)',
               variant: 'ghost',
             },
           ],
@@ -285,29 +357,123 @@ export const TRANSLATIONS = {
             'JWT',
             'Fake Store API',
           ],
+          outcomes: [
+            'Checkout simulado estable y rutas protegidas por JWT.',
+            'Estado global claro (carrito, auth) y navegación fluida.',
+            'Transiciones suaves y responsivas con Framer Motion.',
+          ],
           badge: '2025',
           links: [
             {
               label: 'Repositorio',
-              href: '#',
-              aria: 'Abrir el repositorio del mini e-commerce (se añadirá enlace)',
+              href: 'https://github.com/example/mini-ecommerce',
+              aria: 'Abrir el repositorio del mini e-commerce (enlace genérico)',
               variant: 'primary',
             },
             {
               label: 'Web',
-              href: '#',
-              aria: 'Abrir la demo del mini e-commerce (se añadirá enlace)',
+              href: 'https://demo.example.com/mini-ecommerce',
+              aria: 'Abrir la demo del mini e-commerce (enlace genérico)',
               variant: 'ghost',
             },
           ],
         },
       ],
     },
+    techTrends: {
+      toggle: {
+        openAria: 'Mostrar panel de tendencias tecnológicas',
+        closeAria: 'Ocultar panel de tendencias tecnológicas',
+        openTitle: 'Ver tendencias tecnológicas',
+        closeTitle: 'Ocultar tendencias',
+      },
+      header: {
+        title: 'Panel de tendencias tecnológicas',
+        loading: 'Cargando datos en tiempo real…',
+        live: 'Panel actualizado en vivo',
+        kpisAria: 'Resumen de métricas clave',
+        languages: 'Lenguajes',
+        roles: 'Vacantes',
+        regions: 'Regiones',
+      },
+      closeButton: {
+        aria: 'Cerrar panel de tendencias',
+        title: 'Cerrar panel',
+      },
+      fallbackHeading: 'Cargando visualizaciones…',
+      footer: {
+        lastUpdated: 'Última actualización',
+        noData: 'Sin registros recientes',
+        syncing: 'Sincronizando…',
+        interval: 'Intervalo',
+        secondsSuffix: 's',
+        latency: 'Latencia',
+        sourceLabel: 'Fuente',
+        sourceEstimated: 'estimada',
+        sourceLive: 'en vivo',
+      },
+      charts: {
+        languagesTitle: '📊 Lenguajes de programación más demandados',
+        languagesRefresh: 'Actualizando…',
+        rolesTitle: '💼 Roles con más vacantes',
+        rolesFallback: 'Datos estimados',
+        regionsTitle: '🌍 Tendencias globales o por país (Colombia)',
+      },
+    },
     updates: {
       badge: 'Actualizaciones recientes',
       title: 'Actualizaciones recientes',
       subtitle: 'Un vistazo rápido a las mejoras que mantienen este portafolio en evolución.',
       entries: [
+        {
+          dateLabel: '13 Nov 2025',
+          dateTime: '2025-11-13',
+          title: 'Botones de proyectos sin enlaces rotos',
+          description:
+            'Cada CTA usa enlaces reales o placeholders accesibles, con analytics y fallback cuando aún no hay demo. Cero botones que no hagan nada.',
+        },
+        {
+          dateLabel: '13 Nov 2025',
+          dateTime: '2025-11-13',
+          title: 'Modal “Cómo se construyó”',
+          description:
+            'Nuevo botón abre un blueprint del portafolio con stack, cronograma y próximos pasos; modal accesible con trap de foco, Escape y contraste mejorado.',
+        },
+        {
+          dateLabel: '12 Nov 2025',
+          dateTime: '2025-11-12',
+          title: 'Imagen del héroe optimizada (+ <picture> y preload)',
+          description:
+            'Restauramos la foto del héroe con <picture> (AVIF/WebP/JPG) y preload WebP. Mejor LCP y carga estable.',
+        },
+        {
+          dateLabel: '12 Nov 2025',
+          dateTime: '2025-11-12',
+          title: 'CI con Lighthouse (desktop y mobile) + budgets',
+          description:
+            'Pipeline con auditorías Lighthouse para ambas vistas y budgets para evitar regresiones; reportes como artefactos.',
+        },
+        {
+          dateLabel: '12 Nov 2025',
+          dateTime: '2025-11-12',
+          title: 'Code splitting: gráficas y partículas bajo demanda',
+          description:
+            'Recharts carga perezosa al abrir el panel; partículas se cargan al entrar en viewport. JS inicial más liviano.',
+        },
+        {
+          dateLabel: '12 Nov 2025',
+          dateTime: '2025-11-12',
+          title: 'Proyectos con resultados medibles',
+          description:
+            'Cada tarjeta ahora muestra “outcomes” con impactos claros (rendimiento, conversión, etc.).',
+        },
+        {
+          dateLabel: '12 Nov 2025',
+          dateTime: '2025-11-12',
+          title: 'Actualizaciones al final de la página',
+          description:
+            'La sección de actualizaciones se movió al final para priorizar contenido y flujo de lectura.',
+        },
         {
           dateLabel: '12 Nov 2025',
           dateTime: '2025-11-12',
@@ -325,23 +491,9 @@ export const TRANSLATIONS = {
         {
           dateLabel: '11 Nov 2025',
           dateTime: '2025-11-11',
-          title: 'Mejoras de accesibilidad (tema claro)',
+          title: 'Tema claro pulido (accesibilidad + gradientes + skills)',
           description:
-            'Aumentamos contraste en tema claro, ajustando el acento azul y evitando texto amarillo de bajo contraste.',
-        },
-        {
-          dateLabel: '11 Nov 2025',
-          dateTime: '2025-11-11',
-          title: 'Nuevo look con gradientes',
-          description:
-            'Se incorporaron fondos con gradientes modernos y opacidades para secciones, con ajustes para el tema claro.',
-        },
-        {
-          dateLabel: '11 Nov 2025',
-          dateTime: '2025-11-11',
-          title: 'Ajustes visuales en Habilidades',
-          description:
-            'La sección Skills ahora sigue la nueva paleta y usa tipografía más legible en tema claro.',
+            'Aumentamos contraste, renovamos los gradientes y alineamos Skills con la nueva paleta para mantener legibilidad en todo el tema claro.',
         },
       ],
     },
@@ -416,9 +568,9 @@ export const TRANSLATIONS = {
       loadingSection: 'Cargando sección…',
     },
     contact: {
-      title: '¡Conectemos y creemos algo <span>increíble</span> juntos!',
+      title: 'Reclutadores TIC: construyamos <span>impacto</span> juntos',
       subtitle:
-        'Estoy disponible para colaborar en proyectos, desarrollar ideas o simplemente conversar sobre tecnología.',
+        'Abierto a roles Full‑Stack/Frontend (React, Node.js, TypeScript). Enfoque en rendimiento, accesibilidad y CI/CD con resultados medibles (LCP, TTI). Modalidad: remoto, híbrido o presencial (puedo trasladarme). Disponibilidad total e inmediata. También abierto a roles Jr (p. ej., Java Developer Jr). Si buscas impacto rápido y medible, contáctame por LinkedIn o WhatsApp y coordinamos entrevista.',
       buttons: {
         linkedin: {
           label: 'LinkedIn',
@@ -612,6 +764,12 @@ export const TRANSLATIONS = {
             'Three.js',
             'Serverless',
           ],
+          outcomes: [
+            'Desktop LCP ~1.1s (hero image preload and font cleanup).',
+            'Lighter initial JS: charts and particles load on demand.',
+            'Lighthouse budgets (desktop and mobile) enforced in CI.',
+            'Accessibility ≥ 0.95 in local audits.',
+          ],
           badge: '2025',
           links: [
             {
@@ -621,12 +779,64 @@ export const TRANSLATIONS = {
               variant: 'primary',
             },
             {
-              label: 'Website',
-              href: '#',
-              aria: 'Open the portfolio website (link to be added)',
+              label: 'Build details',
+              href: '#portfolio-build-details',
+              aria: 'Open the interactive card with the portfolio build notes',
               variant: 'ghost',
+              type: 'details',
             },
           ],
+          buildDetails: {
+            title: 'How this portfolio was built',
+            subtitle:
+              'React + Vite architecture iterated with real metrics and AI-assisted workflows.',
+            summary:
+              'Within one week I iterated on design, accessibility, and performance using React 18, Framer Motion animations, 3D effects, and automated quality gates.',
+            timeline: 'Build time: 1 week',
+            stackLabel: 'Core stack',
+            stack: [
+              'React 18 + Hooks',
+              'Vite 7',
+              'Framer Motion 12',
+              'Tailwind + CSS Modules',
+              'Vanta.js / Three.js',
+              'Vitest + Playwright',
+              'GitHub Actions + Lighthouse',
+              'PWA + Workbox',
+            ],
+            sections: [
+              {
+                title: 'Architecture & UX',
+                items: [
+                  'Section-based components with context providers for language and visual effects.',
+                  'Progressive loading so heavy visuals (particles, charts) never block first paint.',
+                  'Framer Motion animations that honor Reduce Motion and keyboard focus states.',
+                ],
+              },
+              {
+                title: 'Automation & quality',
+                items: [
+                  'Vitest component/unit tests targeting 80%+ coverage.',
+                  'Playwright smoke flows plus Lighthouse budgets in CI to avoid regressions.',
+                  'Custom scripts to optimize hero assets and generate profile variants.',
+                ],
+              },
+              {
+                title: 'AI-guided delivery',
+                items: [
+                  'Copilot/LLMs for rapid scaffolding while I validate metrics and a11y.',
+                  'Prompt templates to document decisions and measurable outcomes per project.',
+                ],
+              },
+            ],
+            metricsLabel: 'Measurable impact',
+            metrics: [
+              'Desktop LCP ~1.1s thanks to hero preload and font cleanup.',
+              'Lean initial JS: charts and particles only load when needed.',
+              'Accessibility score ≥0.95 with consistent focus styles on every CTA.',
+            ],
+            closeLabel: 'Close details',
+          },
         },
         {
           title: 'Interactive Data Dashboard',
@@ -643,18 +853,23 @@ export const TRANSLATIONS = {
             'Tailwind',
             'Framer Motion',
           ],
+          outcomes: [
+            'Defers data fetching until panel is opened, improving initial load.',
+            'Charts (Recharts) lazy-loaded within the panel.',
+            'Error/latency handling with “source: estimated/live” indicator.',
+          ],
           badge: 'Case Study',
           links: [
             {
               label: 'Repository',
-              href: '#',
-              aria: 'Open the data dashboard repository (link to be added)',
+              href: 'https://github.com/example/dashboard',
+              aria: 'Open the data dashboard repository (generic link)',
               variant: 'primary',
             },
             {
               label: 'Website',
-              href: '#',
-              aria: 'Open the dashboard demo (link to be added)',
+              href: 'https://demo.example.com/dashboard',
+              aria: 'Open the dashboard demo (generic link)',
               variant: 'ghost',
             },
           ],
@@ -672,18 +887,23 @@ export const TRANSLATIONS = {
             'PostgreSQL',
             'LocalStorage',
           ],
+          outcomes: [
+            'Smooth DnD with keyboard support and accessible states.',
+            'Instant local persistence with optional API for multi-user.',
+            'E2E tests green for core flows (create, move, delete).',
+          ],
           badge: '2025',
           links: [
             {
               label: 'Repository',
-              href: '#',
-              aria: 'Open the tasks app repository (link to be added)',
+              href: 'https://github.com/example/tasks-app',
+              aria: 'Open the tasks app repository (generic link)',
               variant: 'primary',
             },
             {
               label: 'Website',
-              href: '#',
-              aria: 'Open the tasks app demo (link to be added)',
+              href: 'https://demo.example.com/tasks-app',
+              aria: 'Open the tasks app demo (generic link)',
               variant: 'ghost',
             },
           ],
@@ -703,18 +923,23 @@ export const TRANSLATIONS = {
             'Timestamps',
             'Dark mode',
           ],
+          outcomes: [
+            'Stable instant messaging in demo with auto-reconnect.',
+            'Status indicators and timestamps in accessible UI.',
+            'Dark mode and keyboard shortcuts for speed.',
+          ],
           badge: '2025',
           links: [
             {
               label: 'Repository',
-              href: '#',
-              aria: 'Open the real-time chat repository (link to be added)',
+              href: 'https://github.com/example/realtime-chat',
+              aria: 'Open the real-time chat repository (generic link)',
               variant: 'primary',
             },
             {
               label: 'Website',
-              href: '#',
-              aria: 'Open the real-time chat demo (link to be added)',
+              href: 'https://demo.example.com/realtime-chat',
+              aria: 'Open the real-time chat demo (generic link)',
               variant: 'ghost',
             },
           ],
@@ -733,29 +958,123 @@ export const TRANSLATIONS = {
             'JWT',
             'Fake Store API',
           ],
+          outcomes: [
+            'Stable simulated checkout and JWT-protected routes.',
+            'Clear global state (cart, auth) and smooth navigation.',
+            'Responsive transitions with Framer Motion.',
+          ],
           badge: '2025',
           links: [
             {
               label: 'Repository',
-              href: '#',
-              aria: 'Open the mini e-commerce repository (link to be added)',
+              href: 'https://github.com/example/mini-ecommerce',
+              aria: 'Open the mini e-commerce repository (generic link)',
               variant: 'primary',
             },
             {
               label: 'Website',
-              href: '#',
-              aria: 'Open the mini e-commerce demo (link to be added)',
+              href: 'https://demo.example.com/mini-ecommerce',
+              aria: 'Open the mini e-commerce demo (generic link)',
               variant: 'ghost',
             },
           ],
         },
       ],
     },
+    techTrends: {
+      toggle: {
+        openAria: 'Show tech trends panel',
+        closeAria: 'Hide tech trends panel',
+        openTitle: 'View tech trends',
+        closeTitle: 'Hide trends',
+      },
+      header: {
+        title: 'Tech Trends Dashboard',
+        loading: 'Loading real-time data…',
+        live: 'Live-updated panel',
+        kpisAria: 'Key metrics summary',
+        languages: 'Languages',
+        roles: 'Open roles',
+        regions: 'Regions',
+      },
+      closeButton: {
+        aria: 'Close trends panel',
+        title: 'Close panel',
+      },
+      fallbackHeading: 'Loading charts…',
+      footer: {
+        lastUpdated: 'Last update',
+        noData: 'No recent records',
+        syncing: 'Syncing…',
+        interval: 'Interval',
+        secondsSuffix: 's',
+        latency: 'Latency',
+        sourceLabel: 'Source',
+        sourceEstimated: 'estimated',
+        sourceLive: 'live',
+      },
+      charts: {
+        languagesTitle: '📊 Most in-demand programming languages',
+        languagesRefresh: 'Refreshing…',
+        rolesTitle: '💼 Roles with the most openings',
+        rolesFallback: 'Estimated data',
+        regionsTitle: '🌍 Global vs country trends (Colombia)',
+      },
+    },
     updates: {
       badge: 'Fresh updates',
       title: 'Recent updates',
       subtitle: 'A living changelog that showcases how this portfolio keeps evolving.',
       entries: [
+        {
+          dateLabel: 'Nov 13, 2025',
+          dateTime: '2025-11-13',
+          title: 'Project buttons wired to real actions',
+          description:
+            'Every CTA now points to real links or accessible placeholders, with analytics and graceful fallbacks when a demo is not ready. No more dead buttons.',
+        },
+        {
+          dateLabel: 'Nov 13, 2025',
+          dateTime: '2025-11-13',
+          title: '“How it was built” modal blueprint',
+          description:
+            'New button opens a portfolio blueprint showing stack, timeline, and next steps; the modal traps focus, closes on Escape, and ships with higher contrast.',
+        },
+        {
+          dateLabel: 'Nov 12, 2025',
+          dateTime: '2025-11-12',
+          title: 'Optimised hero image (+ <picture> and preload)',
+          description:
+            'Restored the hero photo with <picture> (AVIF/WebP/JPG) and a WebP preload. Better LCP and stable loading.',
+        },
+        {
+          dateLabel: 'Nov 12, 2025',
+          dateTime: '2025-11-12',
+          title: 'CI with Lighthouse (desktop & mobile) + budgets',
+          description:
+            'Pipeline runs Lighthouse for both form factors with budgets to prevent regressions; reports are uploaded as artifacts.',
+        },
+        {
+          dateLabel: 'Nov 12, 2025',
+          dateTime: '2025-11-12',
+          title: 'Code splitting: charts and particles on demand',
+          description:
+            'Recharts lazy-loads when the panel opens; particles load on viewport. Lighter initial JS.',
+        },
+        {
+          dateLabel: 'Nov 12, 2025',
+          dateTime: '2025-11-12',
+          title: 'Projects with outcome bullets',
+          description:
+            'Each project card now surfaces clear “outcomes” with measurable impact (performance, conversion, etc.).',
+        },
+        {
+          dateLabel: 'Nov 12, 2025',
+          dateTime: '2025-11-12',
+          title: 'Updates moved to the end',
+          description:
+            'The Updates section now appears at the bottom to prioritise core content and reading flow.',
+        },
         {
           dateLabel: 'Nov 12, 2025',
           dateTime: '2025-11-12',
@@ -768,28 +1087,14 @@ export const TRANSLATIONS = {
           dateTime: '2025-11-12',
           title: 'Highlighted projects refreshed',
           description:
-            'Now showcasing 5 projects with their stacks and ready-to-link repo/demo buttons, keeping the section design intact.',
+            'Showcasing 5 projects with their stacks and repo/demo buttons ready to go, keeping the section layout intact.',
         },
         {
           dateLabel: 'Nov 11, 2025',
           dateTime: '2025-11-11',
-          title: 'Accessibility improvements (light theme)',
+          title: 'Light theme polish (accessibility + gradients + skills)',
           description:
-            'Increased contrast in light theme, tuned blue accents, and avoided low-contrast yellow text.',
-        },
-        {
-          dateLabel: 'Nov 11, 2025',
-          dateTime: '2025-11-11',
-          title: 'Modern gradients across sections',
-          description:
-            'Introduced modern gradient backgrounds and opacity tweaks across sections, with light theme overrides.',
-        },
-        {
-          dateLabel: 'Nov 11, 2025',
-          dateTime: '2025-11-11',
-          title: 'Skills visuals aligned with palette',
-          description:
-            'The Skills section now follows the new color palette and uses more legible typography in light theme.',
+            'Higher contrast, modern gradients that stay legible, and the Skills section aligned with the refreshed palette keep the light theme consistent.',
         },
       ],
     },
@@ -863,9 +1168,9 @@ export const TRANSLATIONS = {
       loadingSection: 'Loading section…',
     },
     contact: {
-      title: "Let's connect and build something <span>amazing</span> together!",
+      title: 'TIC recruiters: let’s build <span>impact</span> together!',
       subtitle:
-        'I am available to collaborate on new projects, develop ideas, or simply chat about technology.',
+        'Open to Full‑Stack/Frontend roles (React, Node.js, TypeScript). Focus on performance, accessibility, and CI/CD with measurable results (LCP, TTI). Work modes: remote, hybrid, or on‑site (relocation possible). Full and immediate availability. Also open to Junior roles (e.g., Java Developer Jr). If you need fast, measurable impact, reach out via LinkedIn or WhatsApp to schedule an interview.',
       buttons: {
         linkedin: {
           label: 'LinkedIn',

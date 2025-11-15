@@ -6,9 +6,9 @@ import { renderWithLanguage } from '../../tests/utils/renderWithLanguage.js';
 describe('Contact section', () => {
   test('renderiza título y subtítulo', () => {
     renderWithLanguage(<Contact />);
-    const title = screen.getByText(/Conectemos y creemos algo/i);
+    const title = screen.getByText(/Reclutadores TIC/i);
     expect(title).toBeInTheDocument();
-    const subtitle = screen.getByText(/Estoy disponible para colaborar/i);
+    const subtitle = screen.getByText(/LinkedIn o WhatsApp/i);
     expect(subtitle).toBeInTheDocument();
   });
 

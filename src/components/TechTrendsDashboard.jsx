@@ -1,20 +1,12 @@
 // Tech Trends Dashboard – Muestra métricas actualizadas del sector tecnológico con visualización animada y datos reales
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { Suspense, useCallback, useEffect, useRef, useState, lazy } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  Cell,
-  Pie,
-  PieChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from 'recharts';
 import './TechTrendsDashboard.css';
 import { FALLBACK_TRENDS, getTechTrends } from '../api/trendsService.js';
+import { useLanguage } from '../contexts/LanguageContext.jsx';
+
+// Lazy-load charts (and thus recharts) only when the panel is open
+const TechTrendsCharts = lazy(() => import('./TechTrendsCharts.jsx'));
 
 const REFRESH_INTERVAL = 30000;
 const BAR_COLORS = ['#38bdf8', '#2563eb', '#fbbf24', '#22d3ee', '#f59e0b'];
@@ -26,6 +18,8 @@ const panelVariants = {
 };
 
 export default function TechTrendsDashboard() {
+  const { language, translations } = useLanguage();
+  const techText = translations.techTrends || {};
   // Panel starts closed by default; persist user choice across sessions
   const [isOpen, setIsOpen] = useState(() => {
     try {
@@ -91,22 +85,33 @@ export default function TechTrendsDashboard() {
     }
   }, []);
 
+  // Mount tracking only; defer network until panel is opened to improve initial load & Lighthouse metrics.
   useEffect(() => {
     mountedRef.current = true;
-    fetchTrends({ initial: true });
-
-    const intervalId = setInterval(() => {
-      fetchTrends({ initial: false });
-    }, REFRESH_INTERVAL);
-
     return () => {
       mountedRef.current = false;
       if (controllerRef.current) {
         controllerRef.current.abort();
       }
+    };
+  }, []);
+
+  // Perform fetches only when dashboard is open.
+  useEffect(() => {
+    if (!isOpen) return; // Skip network activity if user hasn't opened the panel.
+
+    fetchTrends({ initial: true });
+    const intervalId = setInterval(() => {
+      fetchTrends({ initial: false });
+    }, REFRESH_INTERVAL);
+
+    return () => {
+      if (controllerRef.current) {
+        controllerRef.current.abort();
+      }
       clearInterval(intervalId);
     };
-  }, [fetchTrends]);
+  }, [isOpen, fetchTrends]);
 
   const toggleDashboard = () => setIsOpen((prev) => !prev);
 
@@ -131,13 +136,17 @@ export default function TechTrendsDashboard() {
   const rolesSummary = rolesData.slice(0, 4);
   const regionsSummary = regionsData.slice(0, 4);
 
-  const formatCount = useCallback((value) => {
-    try {
-      return new Intl.NumberFormat('es-CO', { maximumFractionDigits: 0 }).format(value ?? 0);
-    } catch {
-      return String(value ?? 0);
-    }
-  }, []);
+  const formatCount = useCallback(
+    (value) => {
+      const locale = language === 'es' ? 'es-CO' : 'en-US';
+      try {
+        return new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(value ?? 0);
+      } catch {
+        return String(value ?? 0);
+      }
+    },
+    [language],
+  );
 
   const pct = useCallback((part, total) => {
     const p = Number(part ?? 0);
@@ -145,6 +154,35 @@ export default function TechTrendsDashboard() {
     if (!t || t <= 0) return '0%';
     return `${Math.round((p / t) * 100)}%`;
   }, []);
+
+  const toggleAriaLabel = isOpen
+    ? (techText.toggle?.closeAria ?? 'Ocultar panel de tendencias tecnológicas')
+    : (techText.toggle?.openAria ?? 'Mostrar panel de tendencias tecnológicas');
+  const toggleTitle = isOpen
+    ? (techText.toggle?.closeTitle ?? 'Ocultar tendencias')
+    : (techText.toggle?.openTitle ?? 'Ver tendencias tecnológicas');
+  const footerText = techText.footer || {};
+  const timeLocale = language === 'es' ? 'es-CO' : 'en-US';
+  const lastUpdateText = lastUpdated
+    ? `${footerText.lastUpdated ?? 'Última actualización'}: ${lastUpdated.toLocaleTimeString(
+        timeLocale,
+        {
+          hour: '2-digit',
+          minute: '2-digit',
+        },
+      )}`
+    : (footerText.noData ?? 'Sin registros recientes');
+  const intervalText = `${footerText.interval ?? 'Intervalo'}: ${Math.round(REFRESH_INTERVAL / 1000)}${
+    footerText.secondsSuffix ?? 's'
+  }`;
+  const latencyText =
+    typeof fetchMs === 'number' ? ` • ${footerText.latency ?? 'Latencia'} ~${fetchMs}ms` : '';
+  const sourceText = ` • ${footerText.sourceLabel ?? 'Fuente'}: ${
+    isFallback ? (footerText.sourceEstimated ?? 'estimada') : (footerText.sourceLive ?? 'en vivo')
+  }`;
+  const footerStatus = refreshing
+    ? (footerText.syncing ?? 'Sincronizando...')
+    : `${intervalText}${latencyText}${sourceText}`;
 
   return (
     <div className="tech-trends-root" aria-live="polite">
@@ -155,12 +193,8 @@ export default function TechTrendsDashboard() {
         aria-pressed={isOpen}
         aria-expanded={isOpen}
         aria-controls="tech-trends-panel"
-        aria-label={
-          isOpen
-            ? 'Ocultar panel de tendencias tecnológicas'
-            : 'Mostrar panel de tendencias tecnológicas'
-        }
-        title={isOpen ? 'Ocultar tendencias' : 'Ver tendencias tecnológicas'}
+        aria-label={toggleAriaLabel}
+        title={toggleTitle}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
@@ -181,229 +215,74 @@ export default function TechTrendsDashboard() {
           >
             <header className="tech-trends-header">
               <div>
-                <h2>Tech Trends Dashboard</h2>
+                <h2>{techText.header?.title ?? 'Tech Trends Dashboard'}</h2>
                 <p className="tech-trends-meta">
-                  {loading ? 'Cargando datos en tiempo real...' : 'Panel actualizado en vivo'}
+                  {loading
+                    ? (techText.header?.loading ?? 'Cargando datos en tiempo real...')
+                    : (techText.header?.live ?? 'Panel actualizado en vivo')}
                 </p>
-                <div className="tech-trends-kpis" aria-label="Resumen de métricas clave">
-                  <span className="tech-trends-kpi">Lenguajes: {formatCount(totalLanguages)}</span>
-                  <span className="tech-trends-kpi">Vacantes: {formatCount(totalRoles)}</span>
-                  <span className="tech-trends-kpi">Regiones: {regionsData.length}</span>
+                <div
+                  className="tech-trends-kpis"
+                  aria-label={techText.header?.kpisAria ?? 'Resumen de métricas clave'}
+                >
+                  <span className="tech-trends-kpi">
+                    {(techText.header?.languages ?? 'Lenguajes') + ': '}
+                    {formatCount(totalLanguages)}
+                  </span>
+                  <span className="tech-trends-kpi">
+                    {(techText.header?.roles ?? 'Vacantes') + ': '}
+                    {formatCount(totalRoles)}
+                  </span>
+                  <span className="tech-trends-kpi">
+                    {(techText.header?.regions ?? 'Regiones') + ': '}
+                    {regionsData.length}
+                  </span>
                 </div>
               </div>
               <button
                 type="button"
                 className="tech-trends-close"
                 onClick={toggleDashboard}
-                aria-label="Cerrar panel de tendencias"
-                title="Cerrar panel"
+                aria-label={techText.closeButton?.aria ?? 'Cerrar panel de tendencias'}
+                title={techText.closeButton?.title ?? 'Cerrar panel'}
               >
                 x
               </button>
             </header>
 
             <div className="tech-trends-body">
-              <section className="tech-trends-section">
-                <div className="tech-trends-section-header">
-                  <h3>📊 Lenguajes de programación más demandados</h3>
-                  {refreshing && <span className="tech-trends-status">Actualizando...</span>}
-                </div>
-                <div className="tech-trends-chart">
-                  <ResponsiveContainer width="100%" height={220}>
-                    <BarChart
-                      data={languagesData}
-                      margin={{ top: 16, right: 12, left: -16, bottom: 4 }}
-                    >
-                      <CartesianGrid stroke="rgba(148, 163, 184, 0.25)" strokeDasharray="4 6" />
-                      <XAxis
-                        dataKey="name"
-                        stroke="rgba(148, 163, 184, 0.8)"
-                        tickLine={false}
-                        axisLine={false}
-                      />
-                      <YAxis
-                        stroke="rgba(148, 163, 184, 0.5)"
-                        width={32}
-                        tickLine={false}
-                        axisLine={false}
-                        allowDecimals={false}
-                      />
-                      <Tooltip
-                        cursor={{ fill: 'rgba(59, 130, 246, 0.1)' }}
-                        contentStyle={{
-                          background: 'rgba(15, 23, 42, 0.9)',
-                          border: '1px solid rgba(56, 189, 248, 0.4)',
-                          borderRadius: 12,
-                        }}
-                        labelStyle={{ color: '#f8fafc' }}
-                        itemStyle={{ color: '#fbbf24' }}
-                        formatter={(value, name) => [
-                          `${formatCount(value)} (${pct(value, totalLanguages)})`,
-                          name,
-                        ]}
-                      />
-                      <Bar dataKey="value" radius={[6, 6, 0, 0]}>
-                        {languagesData.map((entry, index) => (
-                          <Cell
-                            key={`lang-${entry.name}`}
-                            fill={BAR_COLORS[index % BAR_COLORS.length]}
-                          />
-                        ))}
-                      </Bar>
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-                <div className="tech-trends-summary">
-                  <ul className="tech-trends-list">
-                    {languagesSummary.map((item) => (
-                      <li key={`languages-${item.name}`}>
-                        <span className="tech-trends-list-name">{item.name}</span>
-                        <span className="tech-trends-list-value">{formatCount(item.value)}</span>
-                        <span className="tech-trends-badge">{pct(item.value, totalLanguages)}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </section>
-
-              <section className="tech-trends-section">
-                <div className="tech-trends-section-header">
-                  <h3>💼 Roles con más vacantes</h3>
-                  {isFallback && <span className="tech-trends-status">Datos estimados</span>}
-                </div>
-                <div className="tech-trends-chart">
-                  <ResponsiveContainer width="100%" height={220}>
-                    <BarChart
-                      data={rolesData}
-                      layout="vertical"
-                      margin={{ top: 8, right: 12, left: 24, bottom: 8 }}
-                    >
-                      <CartesianGrid
-                        stroke="rgba(148, 163, 184, 0.25)"
-                        strokeDasharray="4 6"
-                        horizontal={false}
-                      />
-                      <XAxis
-                        type="number"
-                        stroke="rgba(148, 163, 184, 0.5)"
-                        axisLine={false}
-                        tickLine={false}
-                      />
-                      <YAxis
-                        type="category"
-                        dataKey="name"
-                        stroke="rgba(148, 163, 184, 0.8)"
-                        axisLine={false}
-                        tickLine={false}
-                      />
-                      <Tooltip
-                        cursor={{ fill: 'rgba(15, 118, 110, 0.12)' }}
-                        contentStyle={{
-                          background: 'rgba(15, 23, 42, 0.9)',
-                          border: '1px solid rgba(56, 189, 248, 0.4)',
-                          borderRadius: 12,
-                        }}
-                        labelStyle={{ color: '#f8fafc' }}
-                        itemStyle={{ color: '#38bdf8' }}
-                        formatter={(value, name) => [
-                          `${formatCount(value)} (${pct(value, totalRoles)})`,
-                          name,
-                        ]}
-                      />
-                      <Bar dataKey="value" radius={[0, 6, 6, 0]}>
-                        {rolesData.map((entry, index) => (
-                          <Cell
-                            key={`role-${entry.name}`}
-                            fill={BAR_COLORS[index % BAR_COLORS.length]}
-                          />
-                        ))}
-                      </Bar>
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-                <div className="tech-trends-summary">
-                  <ul className="tech-trends-list">
-                    {rolesSummary.map((item) => (
-                      <li key={`roles-${item.name}`}>
-                        <span className="tech-trends-list-name">{item.name}</span>
-                        <span className="tech-trends-list-value">{formatCount(item.value)}</span>
-                        <span className="tech-trends-badge">{pct(item.value, totalRoles)}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </section>
-
-              <section className="tech-trends-section">
-                <div className="tech-trends-section-header">
-                  <h3>🌍 Tendencias globales o por país (Colombia)</h3>
-                  {error && !isFallback && (
-                    <span className="tech-trends-status">{error.message}</span>
-                  )}
-                </div>
-                <div className="tech-trends-chart">
-                  <ResponsiveContainer width="100%" height={240}>
-                    <PieChart>
-                      <Tooltip
-                        contentStyle={{
-                          background: 'rgba(15, 23, 42, 0.9)',
-                          border: '1px solid rgba(56, 189, 248, 0.4)',
-                          borderRadius: 12,
-                        }}
-                        labelStyle={{ color: '#f8fafc' }}
-                        itemStyle={{ color: '#38bdf8' }}
-                        formatter={(value, name) => [
-                          `${formatCount(value)} (${pct(value, totalRegions)})`,
-                          name,
-                        ]}
-                      />
-                      <Pie
-                        data={regionsData}
-                        dataKey="value"
-                        nameKey="name"
-                        cx="50%"
-                        cy="50%"
-                        innerRadius={50}
-                        outerRadius={90}
-                        paddingAngle={4}
-                      >
-                        {regionsData.map((entry, index) => (
-                          <Cell
-                            key={`region-${entry.name}`}
-                            fill={PIE_COLORS[index % PIE_COLORS.length]}
-                          />
-                        ))}
-                      </Pie>
-                    </PieChart>
-                  </ResponsiveContainer>
-                </div>
-                <div className="tech-trends-summary">
-                  <ul className="tech-trends-list">
-                    {regionsSummary.map((item) => (
-                      <li key={`regions-${item.name}`}>
-                        <span className="tech-trends-list-name">{item.name}</span>
-                        <span className="tech-trends-list-value">{formatCount(item.value)}</span>
-                        <span className="tech-trends-badge">{pct(item.value, totalRegions)}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </section>
+              <Suspense
+                fallback={
+                  <div className="tech-trends-section" aria-hidden="true">
+                    <div className="tech-trends-section-header">
+                      <h3>{techText.fallbackHeading ?? 'Cargando visualizaciones…'}</h3>
+                    </div>
+                    <div className="tech-trends-chart" />
+                  </div>
+                }
+              >
+                <TechTrendsCharts
+                  languagesData={languagesData}
+                  rolesData={rolesData}
+                  regionsData={regionsData}
+                  totalLanguages={totalLanguages}
+                  totalRoles={totalRoles}
+                  totalRegions={totalRegions}
+                  languagesSummary={languagesSummary}
+                  rolesSummary={rolesSummary}
+                  regionsSummary={regionsSummary}
+                  formatCount={formatCount}
+                  pct={pct}
+                  refreshing={refreshing}
+                  isFallback={isFallback}
+                  errorMessage={error && !isFallback ? error.message : ''}
+                />
+              </Suspense>
             </div>
 
             <footer className="tech-trends-footer">
-              <span>
-                {lastUpdated
-                  ? `Última actualización: ${lastUpdated.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`
-                  : 'Sin registros recientes'}
-              </span>
-              <span>
-                {refreshing
-                  ? 'Sincronizando...'
-                  : `Intervalo: ${Math.round(REFRESH_INTERVAL / 1000)}s`}
-                {typeof fetchMs === 'number' ? ` • Latencia ~${fetchMs}ms` : ''}
-                {` • Fuente: ${isFallback ? 'estimada' : 'en vivo'}`}
-              </span>
+              <span>{lastUpdateText}</span>
+              <span>{footerStatus}</span>
             </footer>
           </motion.aside>
         )}

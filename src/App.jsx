@@ -30,10 +30,10 @@ export default function App() {
         <About />
         <Skills />
         <Projects />
-        <Updates />
         <LinkedIn />
         <AI />
         <Contact />
+        <Updates />
       </main>
       <TechTrendsDashboard />
       <FloatingWhatsApp />

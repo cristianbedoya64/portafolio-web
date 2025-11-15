@@ -29,15 +29,7 @@
       content="Portafolio profesional con proyectos, habilidades y contacto."
     />
 
-    <!-- Preload fonts (adjust to actual font files if present) -->
-    <link
-      rel="preload"
-      href="/fonts/Poppins-Regular.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    <link rel="preload" href="/fonts/Poppins-Bold.woff2" as="font" type="font/woff2" crossorigin />
+    <!-- Remove non-existent font preloads to avoid 404s affecting performance -->
 
     <!-- Load Google Fonts via link (avoids @import in CSS which can break PostCSS processing) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -48,6 +40,13 @@
     />
 
     <title>Cristian Bedoya — Portafolio Full Stack</title>
+    <!-- Preload LCP candidate (hero image) in a broadly supported modern format (WebP) -->
+    <link
+      rel="preload"
+      as="image"
+      href="/profile.webp"
+      imagesizes="(max-width: 768px) 208px, 208px"
+    />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
