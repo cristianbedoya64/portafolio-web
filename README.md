@@ -1,104 +1,203 @@
-# Portafolio Web – Cristian Bedoya
+## 🇪🇸 Portafolio Web – Cristian Bedoya
 
-Sitio personal construido con Vite + React, animaciones con Framer Motion, i18n y enfoque en accesibilidad y rendimiento. Incluye pruebas unitarias, E2E y CI con Lighthouse (budgets desktop y mobile).
+Aplicación de portafolio personal construida como si fuera un producto real: React + Vite, animaciones con Framer Motion, i18n, PWA, analíticas opcionales y un enfoque fuerte en accesibilidad, rendimiento y observabilidad.
 
-## Instantánea de métricas actuales (build local)
+- **Demo producción:** _[añadir URL de despliegue aquí]_
+- **Repositorio:** este proyecto (`portafolio-web`)
+
+Este repositorio está pensado para mostrar cómo diseño y ejecuto frontends modernos: rápidos, medibles, accesibles y fáciles de mantener.
+
+---
+
+## 🇬🇧 Portfolio Web – Cristian Bedoya
+
+Personal portfolio app built as a real-world product: React + Vite, Framer Motion animations, i18n, PWA, optional analytics and a strong focus on accessibility, performance and observability.
+
+- **Production demo:** _[add live URL here]_
+- **Repository:** this project (`portafolio-web`)
+
+This repository is meant to showcase how I design and build modern frontends: fast, measurable, accessible and maintainable.
+
+---
+
+## 🇪🇸 Resumen rápido / 🇬🇧 Quick Overview
+
+- **Stack:** React 18, Vite, CSS Modules/archivos CSS, Framer Motion, Recharts (gráficas), Playwright, Vitest, ESLint, Lighthouse CI, `vite-plugin-pwa`.
+- **Arquitectura:** secciones por dominio (`src/sections`), componentes reutilizables (`src/components`), hooks (`src/hooks`), contextos (`src/contexts`), i18n centralizado (`src/i18n/translations.js`).
+- **Experiencia de usuario:** navegación suave, modo de efectos controlado por el usuario, panel de tendencias tecnológicas con gráficas lazy y contenido bilingüe.
+- **Calidad:** tests unitarios (Vitest), E2E (Playwright), linting, CI con builds y auditorías Lighthouse (desktop + mobile) con budgets.
+- **Producción:** PWA lista para hosting estático, optimización de imágenes automatizada, analíticas opcionales con Plausible.
+
+---
+
+## 🇪🇸 Para quién es este repo / 🇬🇧 Who is this repo for
+
+- **Hiring managers / Tech leads:** ver cómo aplico buenas prácticas de rendimiento, accesibilidad, i18n y CI en un proyecto pequeño pero completo.
+- **Reclutadores no técnicos:** revisar la demo en producción y la sección de casos de estudio para entender el impacto sin entrar en el código.
+- **Desarrolladores:** explorar la estructura de carpetas, las decisiones de arquitectura y los scripts para reproducir o extender el proyecto.
+
+---
+
+## 🇪🇸 Cómo revisarlo en 1–5 minutos / 🇬🇧 How to review in 1–5 minutes
+
+**Si tienes 1 minuto / If you have 1 minute**
+
+- Abre la demo en producción y:
+  - Cambia de idioma ES/EN.
+  - Abre el panel de tendencias tecnológicas (dashboard) y mira las gráficas.
+  - Revisa la sensación de velocidad inicial y la legibilidad del contenido.
+
+**Si tienes 5 minutos / If you have 5 minutes**
+
+- Revisa rápidamente:
+  - `src/sections/Hero` (estructura del héroe, imagen responsiva, animaciones).
+  - `src/components/TechTrendsDashboard.jsx` + `src/components/TechTrendsCharts.jsx` (lazy loading, gráficas, i18n y accesibilidad).
+  - `src/i18n/translations.js` (diseño de traducciones y textos reutilizables).
+  - `/.github/workflows/ci.yml` + `lighthouserc.*` (pipeline, budgets y auditorías Lighthouse).
+
+---
+
+## 🇪🇸 Caso de estudio breve / 🇬🇧 Short case study
+
+> Nota: las cifras exactas pueden variar según el entorno. Aquí se usa una compilación reciente local como referencia.
+
+**Problema / Problem**
+
+El objetivo era tener un portafolio que no fuera solo una landing estática, sino una aplicación que demostrara buenas prácticas de rendimiento, accesibilidad e internacionalización, con un panel de datos (trends) sin convertir la home en una SPA pesada.
+
+**Acción / Action**
+
+- Separar por dominios (`sections`, `components`, `hooks`, `contexts`) para escalar secciones sin romper la estructura.
+- Implementar i18n centralizado con contexto de idioma y traducciones reutilizables.
+- Implementar un panel de tendencias (Tech Trends Dashboard) con gráficas (Recharts) cargadas de forma lazy solo cuando el usuario abre el panel.
+- Optimizar la imagen del héroe con `picture` (AVIF/WebP + JPG) y `preload` de la variante WebP.
+- Añadir budgets de Lighthouse (desktop y mobile) para evitar regresiones de performance en CI.
+
+**Resultados aproximados / Approximate results (build local)**
+
+- JS de entrada (app): `assets/index-*.js` ≈ **15.9 kB** gzip.
+- CSS principal: `assets/index-*.css` ≈ **8.7 kB** gzip.
+- Vendors separados (solo cuando se necesitan):
+  - React/runtime: `vendor-react-*.js` ≈ 54.9 kB.
+  - Framer Motion: `vendor-motion-*.js` ≈ 25.7 kB.
+  - Charts (Recharts): `vendor-charts-*.js` ≈ 61.6 kB (lazy, solo dashboard).
+  - Partículas (tsparticles): `vendor-particles-*.js` ≈ 56.4 kB (lazy, solo en Skills).
+- Chunk de gráficas del dashboard: `TechTrendsCharts-*.js` ≈ 1.3 kB.
+
+En entornos reales se espera mantener un **LCP competitivo en mobile** gracias a la imagen optimizada, el code splitting y los budgets vigilando tamaños y timings clave (FCP/LCP/TBT/TTI).
+
+---
+
+## 🇪🇸 Decisiones arquitectónicas / 🇬🇧 Architectural decisions
+
+- **React 18 + Vite:** arranque rápido, HMR en desarrollo y build moderna.
+- **Estructura por dominio:** `src/sections`, `src/components`, `src/hooks`, `src/contexts`, `src/i18n`, lo que hace fácil localizar y extender funcionalidad.
+- **Accesibilidad:** uso de semántica HTML, roles/aria donde son necesarios, foco visible consistente, soporte para `prefers-reduced-motion` y contraste de color cuidado.
+- **Animaciones controladas:** Framer Motion con un contexto de efectos que permite activar/desactivar animaciones según la preferencia del usuario.
+- **Performance:**
+  - Imagen del héroe con `<picture>` (AVIF/WebP/JPG) y `preload` del WebP.
+  - Code splitting: gráficas en `TechTrendsCharts` (import dinámico) y partículas (tsparticles) cargadas bajo demanda.
+  - Eliminación de dependencias innecesarias (ej. `vanilla-tilt`) a favor de soluciones nativas/CSS.
+  - Budgets de Lighthouse (desktop/mobile) y doble pasada en CI.
+- **PWA:** `vite-plugin-pwa` para precache, manifest y compatibilidad con hosting estático.
+- **i18n:** contexto de idioma, almacenamiento de preferencia y traducciones centralizadas en `src/i18n/translations.js`.
+- **Telemetría (opcional):** integración con Plausible mediante un `AnalyticsProvider` que envía pageviews y eventos de sección.
+
+---
+
+## 🇪🇸 Métricas y auditorías / 🇬🇧 Metrics and audits
+
+### 🇪🇸 Instantánea (build local) / 🇬🇧 Snapshot (local build)
 
 Compilación reciente de producción (gzip aproximado):
 
-- JS de entrada (app): `assets/index-*.js` ≈ 15.9 kB
-- CSS principal: `assets/index-*.css` ≈ 8.7 kB
-- Vendors (cargan de forma separada cuando se necesitan):
-  - React/runtime: `vendor-react-*.js` ≈ 54.9 kB
-  - Framer Motion: `vendor-motion-*.js` ≈ 25.7 kB
-  - Charts (Recharts): `vendor-charts-*.js` ≈ 61.6 kB (lazy)
-  - Partículas (tsparticles): `vendor-particles-*.js` ≈ 56.4 kB (lazy)
-- Dashboard charts chunk: `TechTrendsCharts-*.js` ≈ 1.3 kB
+- App JS: `assets/index-*.js` ≈ 15.9 kB.
+- CSS principal: `assets/index-*.css` ≈ 8.7 kB.
+- Vendors y chunks detallados en la sección de caso de estudio.
 
-Notas de rendimiento:
+Para resultados Lighthouse definitivos, se utilizan los reportes generados por Lighthouse CI (desktop y mobile) como artefactos del pipeline.
 
-- LCP candidato: imagen del héroe 208×208 pre-cargada (`<link rel="preload" as="image" href="/profile.webp">`) y servida vía `<picture>` (AVIF/WebP + fallback JPG).
-- JS no crítico diferido: dashboard y gráficas se cargan al interactuar (panel abierto); partículas se cargan por intersección en Skills.
-- PWA habilitada (service worker precache) y fonts/imágenes optimizadas por script.
+### 🇪🇸 Lighthouse y Budgets / 🇬🇧 Lighthouse and Budgets
 
-Para resultados Lighthouse definitivos, revisa los reportes del CI (desktop y mobile) en los artefactos del job.
+- **Configs:**
+  - Desktop: `lighthouserc.desktop.cjs` + `performance-budget.desktop.json`.
+  - Mobile: `lighthouserc.mobile.cjs` + `performance-budget.mobile.json`.
+  - Local (único): `lighthouserc.cjs` (preset móvil + budgets activos).
+- **En CI:** se ejecutan dos pasadas (desktop y mobile) y se publican reportes en `lhci-reports/desktop` y `lhci-reports/mobile`.
+- **Budgets:** controlan tamaños/cantidades por tipo de recurso y tiempos clave (FCP/LCP/TBT/TTI) para prevenir regresiones.
 
-## Scripts disponibles
+Recomendación: al modificar recursos pesados (imágenes, vendors, nuevas features), revisar estos reportes antes de hacer deploy.
 
-- `npm run dev`: entorno de desarrollo.
-- `npm run build`: build de producción.
-- `npm run preview`: sirve la build (`dist`) para pruebas manuales.
+---
+
+## 🇪🇸 Tests y CI/CD / 🇬🇧 Tests and CI/CD
+
+### 🇪🇸 Scripts / 🇬🇧 Scripts
+
+- `npm run dev`: entorno de desarrollo / development server.
+- `npm run build`: build de producción / production build.
+- `npm run preview`: sirve `dist` para pruebas manuales / preview production build.
 - `npm run lint`: linting con ESLint.
-- `npm run test`: pruebas unitarias con Vitest.
-- `npm run e2e`: pruebas end‑to‑end con Playwright.
+- `npm run test`: pruebas unitarias con Vitest / unit tests.
+- `npm run e2e`: pruebas end‑to‑end con Playwright / E2E tests.
 - `npm run optimize:images`: optimiza imágenes en `public/` y `src/assets/` con `sharp`.
-- `npm run audit:lighthouse`: corre Lighthouse CI local con `lighthouserc.cjs` (puedes usar los configs específicos desktop/mobile también).
+- `npm run audit:lighthouse`: corre Lighthouse CI local con `lighthouserc.cjs`.
 
-### Optimización de imágenes
+### 🇪🇸 Cobertura (resumen) / 🇬🇧 Coverage (summary)
 
-- Optimización general: `npm run optimize:images` (comprensión PNG/JPG/WebP/AVIF manteniendo calidad)).
-- Variantes de foto de perfil: `node ./scripts/generate-profile-variants.js`
+- Pruebas unitarias sobre componentes clave (ej. Hero, Skills, Contact, Navbar) y hooks.
+- Prueba E2E con Playwright para la home (carga general, navegación y elementos críticos visibles).
+- Linting obligatorio en CI antes de build y auditorías Lighthouse.
+
+### 🇪🇸 Pipeline CI/CD / 🇬🇧 CI/CD pipeline
+
+- Workflow principal: `/.github/workflows/ci.yml`.
+- Pasos:
+  1. Install → Lint → Test → Build.
+  2. Lighthouse (desktop) + Lighthouse (mobile) con budgets activos.
+  3. Publicación de artefactos: `dist/`, `lhci-reports/desktop`, `lhci-reports/mobile`.
+- Opcional: integración con GitHub Pages u otro proveedor (Vercel/Netlify) para previsualizar cambios.
+
+---
+
+## 🇪🇸 Optimización de imágenes / 🇬🇧 Image optimization
+
+- **Optimización general / General optimization:** `npm run optimize:images` (compresión PNG/JPG/WebP/AVIF manteniendo calidad).
+- **Foto de perfil / Profile picture:** `node ./scripts/generate-profile-variants.js`
   - Genera `public/profile.avif`, `public/profile.webp` y `public/profile.jpg` a partir de `public/profile.jpg.jfif`, redimensionadas a 208×208 y optimizadas.
   - Si cambias la foto, ejecuta este script antes de `npm run build`.
 
-### Analytics con Plausible
+---
 
-1. Copia `.env.example` a `.env` y define `VITE_PLAUSIBLE_DOMAIN` (p. ej. `portafolio.cristian.dev`).
-2. Reinicia `npm run dev` o reconstruye.
+## 🇪🇸 Analytics con Plausible / 🇬🇧 Analytics with Plausible
+
+1. Copia `.env.example` a `.env` y define `VITE_PLAUSIBLE_DOMAIN` (ej. `portafolio.cristian.dev`).
+2. Reinicia `npm run dev` o reconstruye la app.
 3. `AnalyticsProvider` envía `Pageview` + eventos `Section View` cuando una sección es visible ≥55 % por primera vez.
-4. Para self‑host/proxy, define `VITE_PLAUSIBLE_SCRIPT_URL`.
+4. Para self‑host o proxy, define `VITE_PLAUSIBLE_SCRIPT_URL`.
 
-## Auditorías Lighthouse y Budgets
+---
 
-- Configs:
-  - Desktop: `lighthouserc.desktop.cjs` + `performance-budget.desktop.json`
-  - Mobile: `lighthouserc.mobile.cjs` + `performance-budget.mobile.json`
-  - Local (único): `lighthouserc.cjs` (preset móvil y budgets activos)
-- En CI se ejecutan dos pasadas (desktop y mobile) y se publican reportes en `lhci-reports/desktop` y `lhci-reports/mobile`.
-- Budgets vigilan tamaños/cantidades por tipo de recurso, y timings clave (FCP/LCP/TBT/TTI) para prevenir regresiones.
-
-### Requisitos previos para correr LH local
-
-1. `npm install`
-2. Puerto `4173` libre (lo usa `vite preview`).
-
-Si alguna auditoría no pasa, abre los reportes, identifica los hallazgos y ajusta: lazy loading, tamaños de imágenes, contrastes, orden de recursos críticos, etc.
-
-## CI/CD
-
-Workflow: `/.github/workflows/ci.yml`
-
-1. Install → Lint → Test → Build
-2. Lighthouse (desktop) y Lighthouse (mobile) con budgets y artefactos de reportes
-3. (Opcional) Deploy preview a GitHub Pages en PRs
-
-Artefactos:
-
-- `dist/` (build de producción)
-- `lhci-reports/desktop` y `lhci-reports/mobile` (HTML/JSON)
-
-## Decisiones arquitectónicas clave
-
-- React 18 + Vite, división de código por dominios (`sections/`, `components/`, `hooks/`, `contexts/`).
-- Accesibilidad: semántica, roles/aria, soporte `prefers-reduced-motion`, foco visible consistente.
-- Animaciones con Framer Motion, controladas por contexto de efectos y preferencias del usuario.
-- Performance:
-  - `<picture>` para la foto del héroe (AVIF/WebP/JPG) + `preload` del WebP.
-  - Code splitting: gráficas (Recharts) en `TechTrendsCharts` con import dinámico; partículas (tsparticles) por `lazy` + `IntersectionObserver`.
-  - Limpieza de dependencias: se eliminó `vanilla-tilt`; efectos de elevación via CSS/Motion.
-  - Budgets Lighthouse (desktop/mobile) y CI con doble pasada.
-- PWA con `vite-plugin-pwa` (precache, manifest), lista para hosting estático.
-- i18n con `LanguageContext` y traducciones.
-- Telemetría opcional con Plausible.
-
-## Desarrollo local
+## 🇪🇸 Desarrollo local / 🇬🇧 Local development
 
 1. `npm install`
 2. `npm run dev`
-3. Visita `http://localhost:5173` (puerto por defecto de Vite)
+3. Visita `http://localhost:5173` (puerto por defecto de Vite) / visit `http://localhost:5173`.
 
-## Troubleshooting
+---
 
-- Windows + sharp: si falla la instalación, asegura tener las dependencias nativas (Visual C++ Build Tools) o usa Node LTS.
-- Puertos en uso: libera `4173` para `npm run preview` y auditorías locales.
-- Si `lhci` marca “flaky” en entornos CI, revisa flags de Chrome y considera aumentar `numberOfRuns` o ajustar throttling.
+## 🇪🇸 Troubleshooting / 🇬🇧 Troubleshooting
+
+- **Windows + sharp:** si falla la instalación, asegúrate de tener las dependencias nativas (Visual C++ Build Tools) o usa Node LTS.
+- **Puertos en uso / Ports in use:** libera `4173` para `npm run preview` y auditorías locales.
+- **Flakiness en Lighthouse CI:** si `lhci` es inestable en CI, revisa flags de Chrome y considera aumentar `numberOfRuns` o ajustar throttling.
+
+---
+
+## 🇪🇸 Próximos pasos sugeridos / 🇬🇧 Suggested next steps
+
+- Añadir más casos de estudio con métricas antes/después.
+- Conectar el panel de tendencias a datos reales o a un backend ligero.
+- Extender la suite de tests E2E para más flujos de usuario (contacto, cambio de idioma, navegación por proyectos).
+
+Este portafolio está pensado como base sólida para seguir iterando, no como landing estática cerrada.
