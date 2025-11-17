@@ -44,6 +44,12 @@
   --page-gradient: linear-gradient(135deg, #040710 0%, #080f1d 40%, #0f1a2f 78%, #060812 100%);
 }
 
+@media (max-width: 640px) {
+  :root {
+    --nav-height: 120px;
+  }
+}
+
 /* NOTE: font import moved to index.html to avoid PostCSS @import ordering issues */
 * {
   margin: 0;
