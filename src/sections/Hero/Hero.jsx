@@ -117,7 +117,18 @@ export default function Hero() {
     };
   }, [displayText, isDeleting, roleIndex, roles, highlight, effectsEnabled, shouldReduceMotion]);
 
-  const nameChars = useMemo(() => Array.from(nameText || ''), [nameText]);
+  // Asegura que el espacio entre nombres sea un espacio no separable para evitar saltos y que siempre se muestre
+  const nameChars = useMemo(() => {
+    if (!nameText) return [];
+    // Reemplaza el primer espacio por un espacio no separable
+    const idx = nameText.indexOf(' ');
+    if (idx > 0) {
+      return Array.from(nameText.slice(0, idx))
+        .concat('\u00A0')
+        .concat(Array.from(nameText.slice(idx + 1)));
+    }
+    return Array.from(nameText);
+  }, [nameText]);
 
   const letterVariants =
     shouldReduceMotion || !effectsEnabled
