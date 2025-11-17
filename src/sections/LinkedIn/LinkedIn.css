@@ -7,7 +7,7 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
   padding: 60px 20px;
   /* refined professional gradient and animated overlay */
   --section-bg: linear-gradient(160deg, #0d1726 0%, #11263a 55%, #0d1e30 100%);
@@ -28,17 +28,17 @@
 
 /* Tarjetas de publicaciones */
 .linkedin-posts {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 25px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: clamp(16px, 4vw, 24px);
 }
 
 .linkedin-card {
   background: var(--card-bg);
   border-radius: 15px;
-  padding: 25px;
-  width: 280px;
+  padding: clamp(18px, 4vw, 25px);
+  width: 100%;
+  min-width: 0;
   text-decoration: none;
   color: var(--text-color);
   transition: all 0.3s ease;
@@ -65,4 +65,15 @@
 html.light-theme .linkedin-section {
   --section-bg: linear-gradient(160deg, #f8fafc 0%, #e8f1fb 55%, #dde9f5 100%);
   --animated-gradient: linear-gradient(-45deg, #0a66c2, #4fb3ff, #9ab6d6, #e0efff);
+}
+
+@media (max-width: 640px) {
+  .linkedin-section {
+    min-height: auto;
+    padding: clamp(48px, 12vw, 64px) 16px 60px;
+  }
+
+  .linkedin-posts {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }

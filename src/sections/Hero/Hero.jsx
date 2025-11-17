@@ -5,10 +5,10 @@ import { useLanguage } from '../../contexts/LanguageContext.jsx';
 import { useEffects } from '../../contexts/EffectsContext.jsx';
 
 const TYPEWRITER_CONFIG = {
-  TYPE_SPEED: 110, // slower typing for readability
-  DELETE_SPEED: 70,
-  HOLD_FULL: 4500, // keep each role fully visible a bit over 4s
-  HOLD_EMPTY: 850, // pause before typing the next role
+  TYPE_SPEED: 160, // slower typing for readability
+  DELETE_SPEED: 90,
+  HOLD_FULL: 6000, // keep each role fully visible ~6s
+  HOLD_EMPTY: 1200, // pause before typing the next role
 };
 
 export default function Hero() {

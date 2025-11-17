@@ -258,6 +258,7 @@
   .tech-trends-root {
     bottom: 20px;
     right: 20px;
+    gap: 12px;
   }
   .tech-trends-toggle {
     width: 54px;
@@ -269,5 +270,29 @@
   }
   .tech-trends-chart {
     height: 220px;
+  }
+}
+
+@media (max-width: 640px) {
+  .tech-trends-root {
+    position: static;
+    bottom: auto;
+    right: auto;
+    width: 100%;
+    padding: 0 16px 48px;
+    align-items: stretch;
+    pointer-events: auto;
+  }
+
+  .tech-trends-toggle {
+    align-self: flex-end;
+    width: 52px;
+    height: 52px;
+  }
+
+  .tech-trends-panel {
+    width: 100%;
+    max-height: none;
+    border-radius: 20px;
   }
 }

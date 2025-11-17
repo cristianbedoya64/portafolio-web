@@ -7,7 +7,7 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
   padding: 60px 20px;
   /* cool tech gradient background */
   --section-bg: linear-gradient(135deg, #0d1b2a 0%, #102a43 35%, #16324f 70%, #1b2f47 100%);
@@ -31,9 +31,15 @@
 }
 
 @keyframes gradientMove {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .ai-content {
@@ -62,17 +68,17 @@
 
 /* Cuadrícula de proyectos IA */
 .ai-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 25px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: clamp(18px, 4vw, 28px);
 }
 
 .ai-card {
   background: var(--card-bg);
   border-radius: 15px;
-  padding: 25px;
-  width: 300px;
+  padding: clamp(18px, 4vw, 25px);
+  width: 100%;
+  min-width: 0;
   text-decoration: none;
   color: var(--text-color);
   transition: all 0.3s ease;
@@ -106,4 +112,15 @@ html.light-theme .ai-showcase {
   font-size: 0.9rem;
   color: var(--accent-yellow);
   opacity: 0.8;
+}
+
+@media (max-width: 640px) {
+  .ai-showcase {
+    min-height: auto;
+    padding: clamp(48px, 12vw, 64px) 16px 60px;
+  }
+
+  .ai-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }

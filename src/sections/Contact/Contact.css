@@ -40,11 +40,11 @@
 }
 
 .contact-buttons {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 20px;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: clamp(16px, 4vw, 20px);
+  align-items: stretch;
+  width: 100%;
 }
 
 .contact-btn {
@@ -55,10 +55,10 @@
   background: transparent;
   border: 2px solid var(--btn-border, var(--accent-yellow));
   color: var(--text-color);
-  padding: 0 18px; /* padding vertical removed, height controls size */
-  height: 44px; /* fixed height for uniform buttons */
-  min-width: 140px; /* keep buttons reasonably sized and uniform */
-  max-width: 220px;
+  padding: 0 18px;
+  height: var(--btn-height, 44px);
+  width: 100%;
+  min-width: 0;
   box-sizing: border-box;
   border-radius: 8px;
   font-weight: 600;
@@ -113,6 +113,17 @@
   }
   .contact-subtitle {
     margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  .contact {
+    min-height: auto;
+    padding: clamp(48px, 12vw, 64px) 16px 64px;
+  }
+
+  .contact-buttons {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
