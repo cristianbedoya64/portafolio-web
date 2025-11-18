@@ -426,6 +426,34 @@ export const TRANSLATIONS = {
       subtitle: 'Un vistazo rápido a las mejoras que mantienen este portafolio en evolución.',
       entries: [
         {
+          dateLabel: '18 Nov 2025',
+          dateTime: '2025-11-18',
+          title: 'Panel de tendencias optimizado',
+          description:
+            'Mejor contraste, accesibilidad, responsividad y feedback visual en el panel de tendencias tecnológicas. Ahora muestra más datos, regiones únicas y se limita a las 5 más relevantes.',
+        },
+        {
+          dateLabel: '18 Nov 2025',
+          dateTime: '2025-11-18',
+          title: 'Datos de regiones dinámicos',
+          description:
+            'El panel detecta y agrupa todas las regiones únicas de los datos de empleos, mostrando solo las 5 más frecuentes para evitar saturación visual.',
+        },
+        {
+          dateLabel: '18 Nov 2025',
+          dateTime: '2025-11-18',
+          title: 'Más lenguajes y roles en tendencias',
+          description:
+            'Ahora se muestran todos los lenguajes y roles disponibles en el panel, no solo un subconjunto.',
+        },
+        {
+          dateLabel: '18 Nov 2025',
+          dateTime: '2025-11-18',
+          title: 'Contraste y modo claro mejorados',
+          description:
+            'El panel de tendencias ahora adapta fondo y colores para modo claro, garantizando legibilidad en todos los temas.',
+        },
+        {
           dateLabel: '14 Nov 2025',
           dateTime: '2025-11-14',
           title: 'Deploy estable en GitHub Pages',
@@ -1033,6 +1061,34 @@ export const TRANSLATIONS = {
       title: 'Recent updates',
       subtitle: 'A living changelog that showcases how this portfolio keeps evolving.',
       entries: [
+        {
+          dateLabel: 'Nov 18, 2025',
+          dateTime: '2025-11-18',
+          title: 'Optimised Tech Trends panel',
+          description:
+            'Improved contrast, accessibility, responsiveness, and visual feedback in the Tech Trends dashboard. Now shows more data, unique regions, and limits to the 5 most relevant.',
+        },
+        {
+          dateLabel: 'Nov 18, 2025',
+          dateTime: '2025-11-18',
+          title: 'Dynamic region data',
+          description:
+            'The panel now detects and groups all unique regions from job data, showing only the 5 most frequent to avoid visual overload.',
+        },
+        {
+          dateLabel: 'Nov 18, 2025',
+          dateTime: '2025-11-18',
+          title: 'More languages and roles in trends',
+          description:
+            'All available languages and roles are now shown in the panel, not just a subset.',
+        },
+        {
+          dateLabel: 'Nov 18, 2025',
+          dateTime: '2025-11-18',
+          title: 'Improved contrast and light mode',
+          description:
+            'The trends panel now adapts background and colors for light mode, ensuring legibility in all themes.',
+        },
         {
           dateLabel: 'Nov 14, 2025',
           dateTime: '2025-11-14',

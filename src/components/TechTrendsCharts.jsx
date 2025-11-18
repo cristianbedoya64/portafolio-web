@@ -35,7 +35,7 @@ export default function TechTrendsCharts({
   const { translations } = useLanguage();
   const chartsText = translations.techTrends?.charts || {};
   return (
-    <>
+    <div aria-live="polite">
       <section className="tech-trends-section">
         <div className="tech-trends-section-header">
           <h3>{chartsText.languagesTitle ?? '📊 Lenguajes de programación más demandados'}</h3>
@@ -63,18 +63,22 @@ export default function TechTrendsCharts({
                 allowDecimals={false}
               />
               <Tooltip
-                cursor={{ fill: 'rgba(59, 130, 246, 0.1)' }}
+                cursor={{ fill: '#38bdf822' }}
                 contentStyle={{
-                  background: 'rgba(15, 23, 42, 0.9)',
-                  border: '1px solid rgba(56, 189, 248, 0.4)',
-                  borderRadius: 12,
+                  background: '#101926',
+                  border: '2px solid #38bdf8',
+                  borderRadius: 14,
+                  color: '#fff',
+                  fontWeight: 600,
+                  boxShadow: '0 2px 12px #000a',
                 }}
-                labelStyle={{ color: '#f8fafc' }}
-                itemStyle={{ color: '#fbbf24' }}
+                labelStyle={{ color: '#fff', fontWeight: 700 }}
+                itemStyle={{ color: '#fbbf24', fontWeight: 700 }}
                 formatter={(value, name) => [
                   `${formatCount(value)} (${pct(value, totalLanguages)})`,
                   name,
                 ]}
+                wrapperStyle={{ zIndex: 9999 }}
               />
               <Bar dataKey="value" radius={[6, 6, 0, 0]}>
                 {languagesData.map((entry, index) => (
@@ -132,18 +136,22 @@ export default function TechTrendsCharts({
                 tickLine={false}
               />
               <Tooltip
-                cursor={{ fill: 'rgba(15, 118, 110, 0.12)' }}
+                cursor={{ fill: '#22d3ee22' }}
                 contentStyle={{
-                  background: 'rgba(15, 23, 42, 0.9)',
-                  border: '1px solid rgba(56, 189, 248, 0.4)',
-                  borderRadius: 12,
+                  background: '#101926',
+                  border: '2px solid #22d3ee',
+                  borderRadius: 14,
+                  color: '#fff',
+                  fontWeight: 600,
+                  boxShadow: '0 2px 12px #000a',
                 }}
-                labelStyle={{ color: '#f8fafc' }}
-                itemStyle={{ color: '#38bdf8' }}
+                labelStyle={{ color: '#fff', fontWeight: 700 }}
+                itemStyle={{ color: '#22d3ee', fontWeight: 700 }}
                 formatter={(value, name) => [
                   `${formatCount(value)} (${pct(value, totalRoles)})`,
                   name,
                 ]}
+                wrapperStyle={{ zIndex: 9999 }}
               />
               <Bar dataKey="value" radius={[0, 6, 6, 0]}>
                 {rolesData.map((entry, index) => (
@@ -176,16 +184,20 @@ export default function TechTrendsCharts({
             <PieChart>
               <Tooltip
                 contentStyle={{
-                  background: 'rgba(15, 23, 42, 0.9)',
-                  border: '1px solid rgba(56, 189, 248, 0.4)',
-                  borderRadius: 12,
+                  background: '#101926',
+                  border: '2px solid #a855f7',
+                  borderRadius: 14,
+                  color: '#fff',
+                  fontWeight: 600,
+                  boxShadow: '0 2px 12px #000a',
                 }}
-                labelStyle={{ color: '#f8fafc' }}
-                itemStyle={{ color: '#38bdf8' }}
+                labelStyle={{ color: '#fff', fontWeight: 700 }}
+                itemStyle={{ color: '#a855f7', fontWeight: 700 }}
                 formatter={(value, name) => [
                   `${formatCount(value)} (${pct(value, totalRegions)})`,
                   name,
                 ]}
+                wrapperStyle={{ zIndex: 9999 }}
               />
               <Pie
                 data={regionsData}
@@ -195,7 +207,10 @@ export default function TechTrendsCharts({
                 cy="50%"
                 innerRadius={50}
                 outerRadius={90}
-                paddingAngle={4}
+                paddingAngle={2}
+                minAngle={2}
+                label={({ name }) => name}
+                labelLine={false}
               >
                 {regionsData.map((entry, index) => (
                   <Cell key={`region-${entry.name}`} fill={PIE_COLORS[index % PIE_COLORS.length]} />
@@ -216,6 +231,6 @@ export default function TechTrendsCharts({
           </ul>
         </div>
       </section>
-    </>
+    </div>
   );
 }

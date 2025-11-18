@@ -153,41 +153,24 @@ function deriveRegionalTrends(jobs) {
     return [];
   }
 
-  const regions = {
-    Colombia: 0,
-    'Remote LATAM': 0,
-    'Global Remote': 0,
-    'On-site Global': 0,
-  };
+  const regionCounts = new Map();
 
   for (const job of jobs) {
-    const locationRaw = `${job?.location || ''} ${job?.country || ''}`.toLowerCase();
-    const isRemote = job?.remote || /remote/.test(locationRaw);
-
-    if (locationRaw.includes('colombia')) {
-      regions.Colombia += 1;
-      continue;
-    }
-
-    if (
-      isRemote &&
-      /latam|latin america|south america|mexico|peru|chile|argentina|brazil/.test(locationRaw)
-    ) {
-      regions['Remote LATAM'] += 1;
-      continue;
-    }
-
-    if (isRemote) {
-      regions['Global Remote'] += 1;
-      continue;
-    }
-
-    regions['On-site Global'] += 1;
+    // Usar location y country, normalizar y agrupar por región única
+    let region = (job?.location || job?.country || '').trim();
+    if (!region) region = 'Desconocido';
+    // Unificar variantes comunes
+    if (/remote/i.test(region)) region = 'Remote';
+    if (/colombia/i.test(region)) region = 'Colombia';
+    if (/latam|latin america|south america|mexico|peru|chile|argentina|brazil/i.test(region))
+      region = 'LATAM';
+    // Capitalizar
+    region = region.charAt(0).toUpperCase() + region.slice(1);
+    regionCounts.set(region, (regionCounts.get(region) || 0) + 1);
   }
 
-  return Object.entries(regions)
-    .filter(([, value]) => value > 0)
+  return Array.from(regionCounts.entries())
     .map(([name, value]) => ({ name, value }))
     .sort((a, b) => b.value - a.value)
-    .slice(0, 4);
+    .slice(0, 5);
 }

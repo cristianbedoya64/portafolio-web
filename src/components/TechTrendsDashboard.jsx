@@ -132,9 +132,10 @@ export default function TechTrendsDashboard() {
   const totalRoles = rolesData.reduce((acc, it) => acc + (it?.value ?? 0), 0);
   const totalRegions = regionsData.reduce((acc, it) => acc + (it?.value ?? 0), 0);
 
-  const languagesSummary = languagesData.slice(0, 3);
-  const rolesSummary = rolesData.slice(0, 4);
-  const regionsSummary = regionsData.slice(0, 4);
+  // Mostrar todos los datos disponibles en los resúmenes
+  const languagesSummary = languagesData;
+  const rolesSummary = rolesData;
+  const regionsSummary = regionsData;
 
   const formatCount = useCallback(
     (value) => {
