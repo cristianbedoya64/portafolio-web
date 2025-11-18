@@ -11,7 +11,7 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'robots.txt', 'og-image.png'],
       manifest: {
-        name: 'Cristian  Portafolio',
+        name: 'Cristian  4 Portafolio',
         short_name: 'Cristian',
         start_url: '/portafolio-web/',
         display: 'standalone',

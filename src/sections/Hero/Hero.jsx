@@ -15,6 +15,13 @@ export default function Hero() {
   const { t, language } = useLanguage();
   const { effectsEnabled } = useEffects();
   const shouldReduceMotion = useReducedMotion();
+  // Detect viewport width for animation gating
+  const [isWide, setIsWide] = useState(() => window.innerWidth >= 768);
+  useEffect(() => {
+    const onResize = () => setIsWide(window.innerWidth >= 768);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
 
   // Foto de perfil – usar <picture> con AVIF + WebP + JPG como fallback para máxima compatibilidad
   const [imgLoaded, setImgLoaded] = useState(false);
@@ -130,30 +137,29 @@ export default function Hero() {
     return Array.from(nameText);
   }, [nameText]);
 
-  const letterVariants =
-    shouldReduceMotion || !effectsEnabled
-      ? undefined
-      : {
-          hidden: { y: 16, opacity: 0 },
-          visible: { y: 0, opacity: 1 },
-        };
-  const nameContainer =
-    shouldReduceMotion || !effectsEnabled
-      ? undefined
-      : {
-          hidden: {},
-          visible: {
-            transition: { staggerChildren: 0.035, delayChildren: 0.15 },
-          },
-        };
+  const allowAnim = effectsEnabled && !shouldReduceMotion && isWide;
+  const letterVariants = !allowAnim
+    ? undefined
+    : {
+        hidden: { y: 16, opacity: 0 },
+        visible: { y: 0, opacity: 1 },
+      };
+  const nameContainer = !allowAnim
+    ? undefined
+    : {
+        hidden: {},
+        visible: {
+          transition: { staggerChildren: 0.035, delayChildren: 0.15 },
+        },
+      };
 
-  const containerInitial = shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 24 };
-  const containerAnimate = shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 };
-  const containerTransition = shouldReduceMotion
+  const containerInitial = !allowAnim ? { opacity: 0 } : { opacity: 0, y: 24 };
+  const containerAnimate = !allowAnim ? { opacity: 1 } : { opacity: 1, y: 0 };
+  const containerTransition = !allowAnim
     ? { duration: 0.6, ease: 'linear' }
     : { duration: 1.2, ease: 'easeOut' };
-  const hoverScale = shouldReduceMotion ? undefined : { scale: 1.06 };
-  const tapScale = shouldReduceMotion ? undefined : { scale: 0.97 };
+  const hoverScale = !allowAnim ? undefined : { scale: 1.06 };
+  const tapScale = !allowAnim ? undefined : { scale: 0.97 };
 
   return (
     <section id="home" className="hero">
@@ -217,7 +223,7 @@ export default function Hero() {
           {titlePrefix}{' '}
           <motion.span
             className={
-              effectsEnabled
+              allowAnim
                 ? 'hero-name hero-name-plain hero-name-marker-animated'
                 : 'hero-name hero-name-plain'
             }
@@ -225,18 +231,21 @@ export default function Hero() {
             initial={nameContainer ? 'hidden' : undefined}
             animate={nameContainer ? 'visible' : undefined}
             role="text"
+            style={!allowAnim ? { whiteSpace: 'nowrap' } : undefined}
           >
-            {nameChars.map((ch, idx) => (
-              <motion.span
-                key={`ch-${idx}-${ch}`}
-                className="char"
-                variants={letterVariants}
-                whileHover={shouldReduceMotion ? undefined : { y: -2 }}
-                aria-hidden="true"
-              >
-                {ch}
-              </motion.span>
-            ))}
+            {allowAnim
+              ? nameChars.map((ch, idx) => (
+                  <motion.span
+                    key={`ch-${idx}-${ch}`}
+                    className="char"
+                    variants={letterVariants}
+                    whileHover={allowAnim ? { y: -2 } : undefined}
+                    aria-hidden="true"
+                  >
+                    {ch}
+                  </motion.span>
+                ))
+              : nameText}
             {/* Accessible fallback text ensures screen readers read the name normally */}
             <span className="sr-only">{nameText}</span>
           </motion.span>

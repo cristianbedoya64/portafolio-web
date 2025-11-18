@@ -1,14 +1,16 @@
-import { useEffect } from 'react';
+// ...existing code...
 import Hero from './sections/Hero/Hero';
 import About from './sections/About';
 import Skills from './sections/Skills';
-import Projects from './sections/Projects';
-import Updates from './sections/Updates';
-import LinkedIn from './sections/LinkedIn';
-import AI from './sections/AI';
-import Contact from './sections/Contact';
+import { Suspense, lazy, useEffect } from 'react';
+import Projects from './sections/Projects'; // fallback for SSR, will be replaced below
+const LazyProjects = lazy(() => import('./sections/Projects'));
+const LazyAI = lazy(() => import('./sections/AI'));
+const LazyUpdates = lazy(() => import('./sections/Updates'));
+const LazyLinkedIn = lazy(() => import('./sections/LinkedIn'));
+const LazyContact = lazy(() => import('./sections/Contact'));
 import Navbar from './components/Navbar/Navbar';
-import TechTrendsDashboard from './components/TechTrendsDashboard.jsx';
+const LazyTechTrendsDashboard = lazy(() => import('./components/TechTrendsDashboard.jsx'));
 import FloatingWhatsApp from './components/FloatingWhatsApp.jsx';
 import FloatingStackIcons from './components/FloatingStackIcons.jsx';
 import { useLanguage } from './contexts/LanguageContext.jsx';
@@ -31,13 +33,25 @@ export default function App() {
         <FloatingStackIcons />
         <About />
         <Skills />
-        <Projects />
-        <LinkedIn />
-        <AI />
-        <Contact />
-        <Updates />
+        <Suspense fallback={null}>
+          <LazyProjects />
+        </Suspense>
+        <Suspense fallback={null}>
+          <LazyLinkedIn />
+        </Suspense>
+        <Suspense fallback={null}>
+          <LazyAI />
+        </Suspense>
+        <Suspense fallback={null}>
+          <LazyContact />
+        </Suspense>
+        <Suspense fallback={null}>
+          <LazyUpdates />
+        </Suspense>
       </main>
-      <TechTrendsDashboard />
+      <Suspense fallback={null}>
+        <LazyTechTrendsDashboard />
+      </Suspense>
       <FloatingWhatsApp />
     </>
   );

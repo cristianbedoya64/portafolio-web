@@ -1,3 +1,10 @@
+.project-detail-card {
+  /* ...existing styles... */
+  scrollbar-width: none; /* Firefox */
+}
+.project-detail-card::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
 .projects {
   position: relative;
   min-height: 100vh;
@@ -278,6 +285,8 @@
 
 .project-detail-card {
   width: min(780px, 100%);
+  max-height: 80vh;
+  overflow-y: auto;
   border-radius: 28px;
   padding: clamp(24px, 5vw, 40px);
   background:

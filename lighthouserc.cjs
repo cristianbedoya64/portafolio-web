@@ -7,7 +7,7 @@ module.exports = {
       url: ['/', '/index.html'],
       numberOfRuns: 1,
       settings: {
-        preset: 'mobile',
+        preset: 'perf',
         emulatedFormFactor: 'mobile',
         onlyCategories: ['performance', 'accessibility', 'best-practices', 'seo'],
         extraHeaders: JSON.stringify({ 'Accept-Language': 'es-ES' }),

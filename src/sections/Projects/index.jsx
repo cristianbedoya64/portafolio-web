@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback, useState, useEffect } from 'react';
+import React, { useMemo, useCallback, useState, useEffect, useRef } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import './Projects.css';
 import { useLanguage } from '../../contexts/LanguageContext.jsx';
@@ -37,6 +37,7 @@ function prefetchLink(href) {
 }
 
 export default function Projects() {
+  const trapRef = useRef(null);
   const { t, language, translations } = useLanguage();
   // Estabiliza la referencia de projectCards usando translations, que cambia solo con el idioma
   const projectCards = useMemo(() => {
@@ -95,6 +96,38 @@ export default function Projects() {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [detailCard, handleCloseDetails]);
 
+  useEffect(() => {
+    if (!detailCard) return;
+    // Focus trap
+    const trap = trapRef.current;
+    if (trap) {
+      const focusable = trap.querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+      );
+      if (focusable.length) focusable[0].focus();
+      const handleTab = (e) => {
+        if (e.key !== 'Tab') return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      };
+      trap.addEventListener('keydown', handleTab);
+      // Scroll lock
+      const prevOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        trap.removeEventListener('keydown', handleTab);
+        document.body.style.overflow = prevOverflow;
+      };
+    }
+  }, [detailCard]);
+
   const detailOverlay = detailCard
     ? (() => {
         const stackLabel =
@@ -111,6 +144,7 @@ export default function Projects() {
             aria-modal="true"
             aria-label={detailCard.title || detailCard.projectName}
             onClick={handleCloseDetails}
+            ref={trapRef}
           >
             <motion.div
               className="project-detail-card"
@@ -192,7 +226,7 @@ export default function Projects() {
 
   return (
     <section id="projects" className="projects">
-      <div className="animated-bg"></div>
+      <div className="animated-bg" aria-hidden="true"></div>
       {/* SEO: JSON-LD for highlighted projects */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd }} />
 
