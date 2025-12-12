@@ -37,35 +37,14 @@ function prefetchLink(href) {
 }
 
 export default function Projects() {
-  const trapRef = useRef(null);
   const { t, language, translations } = useLanguage();
-  // Estabiliza la referencia de projectCards usando translations, que cambia solo con el idioma
   const projectCards = useMemo(() => {
     const list = translations?.projects?.cards;
     return Array.isArray(list) ? list : [];
   }, [translations]);
   const shouldReduceMotion = useReducedMotion();
-  const [detailCardIndex, setDetailCardIndex] = useState(null);
+  const [expanded, setExpanded] = useState(null);
 
-  const containerInitial = shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 36 };
-  const containerWhileInView = shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 };
-  const containerTransition = shouldReduceMotion
-    ? { duration: 0.6, ease: 'linear' }
-    : { duration: 1, ease: 'easeOut' };
-  const cardHover = shouldReduceMotion ? undefined : { scale: 1.04, y: -4 };
-
-  const jsonLd = useMemo(() => buildJsonLd(projectCards, language), [projectCards, language]);
-  const activeProject =
-    typeof detailCardIndex === 'number' && projectCards[detailCardIndex]
-      ? projectCards[detailCardIndex]
-      : null;
-  const detailCard = useMemo(() => {
-    if (!activeProject?.buildDetails) return null;
-    return {
-      projectName: activeProject.title,
-      ...activeProject.buildDetails,
-    };
-  }, [activeProject]);
   const handleAnalyticsClick = useCallback((projectTitle, linkLabel) => {
     try {
       if (typeof window !== 'undefined' && typeof window.plausible === 'function') {
@@ -77,152 +56,18 @@ export default function Projects() {
       /* ignore */
     }
   }, []);
-  const handleOpenDetails = useCallback((projectIndex) => {
-    setDetailCardIndex(typeof projectIndex === 'number' ? projectIndex : null);
-  }, []);
 
-  const handleCloseDetails = useCallback(() => {
-    setDetailCardIndex(null);
-  }, []);
+  const toggleExpand = (idx) => setExpanded(expanded === idx ? null : idx);
 
-  useEffect(() => {
-    if (!detailCard) return undefined;
-    const onKeyDown = (event) => {
-      if (event.key === 'Escape') {
-        handleCloseDetails();
-      }
-    };
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
-  }, [detailCard, handleCloseDetails]);
+  const containerInitial = shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 36 };
+  const containerWhileInView = shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 };
+  const containerTransition = shouldReduceMotion
+    ? { duration: 0.6, ease: 'linear' }
+    : { duration: 1, ease: 'easeOut' };
 
-  useEffect(() => {
-    if (!detailCard) return;
-    // Focus trap
-    const trap = trapRef.current;
-    if (trap) {
-      const focusable = trap.querySelectorAll(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-      );
-      if (focusable.length) focusable[0].focus();
-      const handleTab = (e) => {
-        if (e.key !== 'Tab') return;
-        const first = focusable[0];
-        const last = focusable[focusable.length - 1];
-        if (e.shiftKey && document.activeElement === first) {
-          e.preventDefault();
-          last.focus();
-        } else if (!e.shiftKey && document.activeElement === last) {
-          e.preventDefault();
-          first.focus();
-        }
-      };
-      trap.addEventListener('keydown', handleTab);
-      // Scroll lock
-      const prevOverflow = document.body.style.overflow;
-      document.body.style.overflow = 'hidden';
-      return () => {
-        trap.removeEventListener('keydown', handleTab);
-        document.body.style.overflow = prevOverflow;
-      };
-    }
-  }, [detailCard]);
+  const cardHover = shouldReduceMotion ? undefined : { scale: 1.04, y: -4 };
 
-  const detailOverlay = detailCard
-    ? (() => {
-        const stackLabel =
-          detailCard.stackLabel || (language === 'en' ? 'Main stack' : 'Stack principal');
-        const metricsLabel =
-          detailCard.metricsLabel || (language === 'en' ? 'Measurable impact' : 'Impacto medible');
-        const closeLabel =
-          detailCard.closeLabel || (language === 'en' ? 'Close details' : 'Cerrar detalle');
-
-        return (
-          <div
-            className="project-detail-overlay"
-            role="dialog"
-            aria-modal="true"
-            aria-label={detailCard.title || detailCard.projectName}
-            onClick={handleCloseDetails}
-            ref={trapRef}
-          >
-            <motion.div
-              className="project-detail-card"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.25, ease: 'easeOut' }}
-              onClick={(event) => event.stopPropagation()}
-            >
-              <div className="project-detail-card-head">
-                {detailCard.timeline && (
-                  <span className="project-detail-timeline">{detailCard.timeline}</span>
-                )}
-                <button
-                  type="button"
-                  className="project-detail-close"
-                  onClick={handleCloseDetails}
-                  aria-label={closeLabel}
-                >
-                  ×
-                </button>
-              </div>
-
-              <div className="project-detail-body">
-                <p className="project-detail-chip">{detailCard.projectName}</p>
-                <h3>{detailCard.title}</h3>
-                {detailCard.subtitle && (
-                  <p className="project-detail-subtitle">{detailCard.subtitle}</p>
-                )}
-                {detailCard.summary && (
-                  <p className="project-detail-summary">{detailCard.summary}</p>
-                )}
-
-                {Array.isArray(detailCard.stack) && detailCard.stack.length > 0 && (
-                  <div className="project-detail-section">
-                    <p className="project-detail-section-title">{stackLabel}</p>
-                    <div className="project-detail-chips">
-                      {detailCard.stack.map((item) => (
-                        <span key={item}>{item}</span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {Array.isArray(detailCard.sections) && detailCard.sections.length > 0 && (
-                  <div className="project-detail-grid">
-                    {detailCard.sections.map((section) => (
-                      <div key={section.title} className="project-detail-section-card">
-                        <p className="project-detail-section-title">{section.title}</p>
-                        {Array.isArray(section.items) ? (
-                          <ul>
-                            {section.items.map((item, index) => (
-                              <li key={`${section.title}-${index}`}>{item}</li>
-                            ))}
-                          </ul>
-                        ) : (
-                          <p>{section.description}</p>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {Array.isArray(detailCard.metrics) && detailCard.metrics.length > 0 && (
-                  <div className="project-detail-section">
-                    <p className="project-detail-section-title">{metricsLabel}</p>
-                    <ul className="project-detail-metrics">
-                      {detailCard.metrics.map((metric, index) => (
-                        <li key={`metric-${index}`}>{metric}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
-            </motion.div>
-          </div>
-        );
-      })()
-    : null;
+  const jsonLd = useMemo(() => buildJsonLd(projectCards, language), [projectCards, language]);
 
   return (
     <section id="projects" className="projects">
@@ -256,102 +101,148 @@ export default function Projects() {
                       },
                     ]
                   : [];
-
+            const expandedDetails = project.buildDetails;
             return (
-              <motion.article
+              <motion.section
                 key={project.title + index}
-                className="project-card"
-                role="listitem"
+                className={`project-card mini-section${expanded === index ? ' expanded' : ''}`}
+                role="region"
+                aria-labelledby={`project-title-${index}`}
                 whileHover={cardHover}
                 transition={shouldReduceMotion ? { duration: 0.2 } : { duration: 0.3 }}
               >
-                <div className="project-card-head">
-                  <h3>{project.title}</h3>
+                <header className="project-card-head" onClick={() => toggleExpand(index)} style={{cursor:'pointer'}}>
+                  <h3 id={`project-title-${index}`}>{project.title}</h3>
                   {project.badge && <span className="project-card-badge">{project.badge}</span>}
-                </div>
-
-                {project.description && (
-                  <p className="project-card-description">{project.description}</p>
-                )}
-
-                {Array.isArray(project.outcomes) && project.outcomes.length > 0 && (
-                  <ul
-                    className="project-card-outcomes"
-                    aria-label={
-                      language === 'en'
-                        ? `${project.title} outcomes`
-                        : `Resultados de ${project.title}`
-                    }
+                  <button
+                    className="project-expand-btn"
+                    aria-label={expanded === index ? 'Ocultar detalles' : 'Mostrar detalles'}
+                    aria-expanded={expanded === index}
+                    tabIndex={0}
                   >
-                    {project.outcomes.map((line, i) => (
-                      <li key={`${project.title}-outcome-${i}`}>{line}</li>
-                    ))}
-                  </ul>
-                )}
+                    {expanded === index ? '−' : '+'}
+                  </button>
+                </header>
 
-                {highlights.length > 0 && (
-                  <ul className="project-card-tags" aria-label={`${project.title} tech stack`}>
-                    {highlights.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                )}
+                <div className="project-card-main">
+                  {project.description && (
+                    <p className="project-card-description">{project.description}</p>
+                  )}
 
-                {links.length > 0 && (
-                  <div className="project-card-links" role="list">
-                    {links.map((link) => {
-                      const href = link.href || '#';
-                      const isExternal = /^https?:\/\//i.test(href);
-                      const variant = link.variant
-                        ? `project-link--${link.variant}`
-                        : 'project-link--primary';
+                  {Array.isArray(project.outcomes) && project.outcomes.length > 0 && (
+                    <ul
+                      className="project-card-outcomes"
+                      aria-label={
+                        language === 'en'
+                          ? `${project.title} outcomes`
+                          : `Resultados de ${project.title}`
+                      }
+                    >
+                      {project.outcomes.map((line, i) => (
+                        <li key={`${project.title}-outcome-${i}`}>{line}</li>
+                      ))}
+                    </ul>
+                  )}
 
-                      const extraClass = link.type === 'details' ? 'project-link--details' : '';
+                  {highlights.length > 0 && (
+                    <ul className="project-card-tags" aria-label={`${project.title} tech stack`}>
+                      {highlights.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  )}
 
-                      if (link.type === 'details') {
+                  {links.length > 0 && (
+                    <div className="project-card-links" role="list">
+                      {links.map((link) => {
+                        const href = link.href || '#';
+                        const isExternal = /^https?:\/\//i.test(href);
+                        // Solo el botón Demo interactiva (exactamente) mantiene --primary
+                        const isDemo = link.variant === 'primary' &&
+                          (link.label.trim().toLowerCase() === 'demo interactiva' || link.label.trim().toLowerCase() === 'interactive demo');
+                        const variant = isDemo
+                          ? 'project-link--primary'
+                          : 'project-link--details';
+                        const extraClass = [
+                          link.highlight ? 'project-link--highlight' : '',
+                        ].join(' ');
+                        const icon = link.icon ? (
+                          <span className="project-link-icon" aria-hidden="true">{link.icon}</span>
+                        ) : null;
+
                         return (
-                          <button
+                          <a
                             key={`${project.title}-${link.label}`}
-                            type="button"
                             className={`project-link ${variant} ${extraClass}`}
+                            href={href}
+                            target={isExternal ? '_blank' : undefined}
+                            rel={isExternal ? 'noopener noreferrer' : undefined}
                             aria-label={link.aria || link.label}
                             role="listitem"
-                            onClick={() => {
-                              handleAnalyticsClick(project.title, link.label);
-                              handleOpenDetails(index);
-                            }}
+                            onMouseEnter={() => prefetchLink(href)}
+                            onFocus={() => prefetchLink(href)}
+                            onClick={() => handleAnalyticsClick(project.title, link.label)}
+                            aria-current={link.highlight ? 'true' : undefined}
                           >
+                            {icon}
                             {link.label}
-                          </button>
+                          </a>
                         );
-                      }
+                      })}
+                    </div>
+                  )}
+                </div>
 
-                      return (
-                        <a
-                          key={`${project.title}-${link.label}`}
-                          className={`project-link ${variant} ${extraClass}`}
-                          href={href}
-                          target={isExternal ? '_blank' : undefined}
-                          rel={isExternal ? 'noopener noreferrer' : undefined}
-                          aria-label={link.aria || link.label}
-                          role="listitem"
-                          onMouseEnter={() => prefetchLink(href)}
-                          onFocus={() => prefetchLink(href)}
-                          onClick={() => handleAnalyticsClick(project.title, link.label)}
-                        >
-                          {link.label}
-                        </a>
-                      );
-                    })}
+                {expanded === index && expandedDetails && (
+                  <div className="project-card-details">
+                    <h4>{expandedDetails.title}</h4>
+                    {expandedDetails.subtitle && <p className="project-detail-subtitle">{expandedDetails.subtitle}</p>}
+                    {expandedDetails.summary && <p className="project-detail-summary">{expandedDetails.summary}</p>}
+                    {Array.isArray(expandedDetails.stack) && expandedDetails.stack.length > 0 && (
+                      <div className="project-detail-section">
+                        <p className="project-detail-section-title">{expandedDetails.stackLabel || (language === 'en' ? 'Main stack' : 'Stack principal')}</p>
+                        <div className="project-detail-chips">
+                          {expandedDetails.stack.map((item) => (
+                            <span key={item}>{item}</span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    {Array.isArray(expandedDetails.sections) && expandedDetails.sections.length > 0 && (
+                      <div className="project-detail-grid">
+                        {expandedDetails.sections.map((section) => (
+                          <div key={section.title} className="project-detail-section-card">
+                            <p className="project-detail-section-title">{section.title}</p>
+                            {Array.isArray(section.items) ? (
+                              <ul>
+                                {section.items.map((item, idx) => (
+                                  <li key={`${section.title}-${idx}`}>{item}</li>
+                                ))}
+                              </ul>
+                            ) : (
+                              <p>{section.description}</p>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    {Array.isArray(expandedDetails.metrics) && expandedDetails.metrics.length > 0 && (
+                      <div className="project-detail-section">
+                        <p className="project-detail-section-title">{expandedDetails.metricsLabel || (language === 'en' ? 'Measurable impact' : 'Impacto medible')}</p>
+                        <ul className="project-detail-metrics">
+                          {expandedDetails.metrics.map((metric, idx) => (
+                            <li key={`metric-${idx}`}>{metric}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                   </div>
                 )}
-              </motion.article>
+              </motion.section>
             );
           })}
         </div>
       </motion.div>
-
-      {detailOverlay}
     </section>
   );
 }
