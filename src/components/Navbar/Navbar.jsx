@@ -142,7 +142,7 @@ export default function Navbar() {
             </a>
             <a
               className="cv-link"
-              href="/cv/Cristian-Bedoya-CV.pdf"
+              href={language === 'en' ? '/cv/en-CristianBedoyaDev.pdf' : '/cv/CristianBedoyaDev.pdf'}
               download
               aria-label={t('navbar.cvAria')}
             >

@@ -46,7 +46,7 @@ export default function Contact() {
 
         <div className="contact-buttons">
           <motion.a
-            href="/cv/Cristian-Bedoya-CV.pdf"
+            href={language === 'en' ? '/cv/en-CristianBedoyaDev.pdf' : '/cv/CristianBedoyaDev.pdf'}
             download
             className="contact-btn btn cv"
             aria-label={t('contact.buttons.cv.aria')}

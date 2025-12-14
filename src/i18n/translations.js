@@ -187,8 +187,8 @@ export const TRANSLATIONS = {
             },
             {
               label: 'Repositorio',
-              href: 'https://github.com/<tu‑usuario>/uarp‑ai',
-              aria: 'Abrir el repositorio de UARP-AI en una nueva pestaña',
+              href: 'https://github.com/cristianbedoya64/crud-users-ia',
+              aria: 'Abrir el repositorio real de UARP-AI en GitHub',
               variant: 'primary',
               icon: '💻',
             },
