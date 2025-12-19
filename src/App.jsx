@@ -5,8 +5,9 @@ import Skills from './sections/Skills';
 import { Suspense, lazy, useEffect, useRef, useState } from 'react';
 import Projects from './sections/Projects'; // fallback for SSR, will be replaced below
 
-// Default to enabling heavy effects for users; automation can disable via VITE_DISABLE_HEAVY_EFFECTS=true
-const DISABLE_HEAVY_EFFECTS = (import.meta.env.VITE_DISABLE_HEAVY_EFFECTS ?? 'false') === 'true';
+// Fuerza efectos pesados siempre habilitados en producción
+const isProd = import.meta.env.MODE === 'production';
+const DISABLE_HEAVY_EFFECTS = isProd ? false : (import.meta.env.VITE_DISABLE_HEAVY_EFFECTS ?? 'false') === 'true';
 const LazyProjects = lazy(() => import('./sections/Projects'));
 const LazyAI = lazy(() => import('./sections/AI'));
 const LazyUpdates = lazy(() => import('./sections/Updates'));
@@ -91,6 +92,11 @@ export default function App() {
 
   // Partículas: diferir hasta idle para bajar TBT, pero mantener visibles para usuarios.
   useEffect(() => {
+    // En producción, fuerza partículas siempre activas
+    if (isProd) {
+      setShowParticles(true);
+      return;
+    }
     if (DISABLE_HEAVY_EFFECTS || prefersReducedMotion || navigator.webdriver || !effectsEnabled) {
       setShowParticles(false);
       return undefined;
