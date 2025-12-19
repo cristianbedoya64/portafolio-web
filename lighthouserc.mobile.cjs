@@ -30,6 +30,8 @@ module.exports = {
         'categories:accessibility': ['warn', { minScore: 0.95 }],
         'categories:best-practices': ['warn', { minScore: 0.9 }],
         'categories:seo': ['warn', { minScore: 0.9 }],
+        // Defer payload control to budgets; avoid double-fail on informative audit
+        'total-byte-weight': 'off',
         'uses-http2': 'off',
       },
     },

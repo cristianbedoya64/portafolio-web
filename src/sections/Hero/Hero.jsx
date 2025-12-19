@@ -62,6 +62,7 @@ export default function Hero() {
   const [imgLoaded, setImgLoaded] = useState(false);
   const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '/');
   const srcAvif = `${base}profile.avif`;
+  // Public assets available: profile.avif, profile.webp, profile.jpg
   const srcWebp = `${base}profile.webp`;
   const srcJpg = `${base}profile.jpg`;
   const [hadError, setHadError] = useState(false);
@@ -233,7 +234,6 @@ export default function Hero() {
             variants={nameContainer}
             initial={nameContainer ? 'hidden' : undefined}
             animate={nameContainer ? 'visible' : undefined}
-            role="text"
             style={!allowAnim ? { whiteSpace: 'nowrap' } : undefined}
           >
             {allowAnim

@@ -80,7 +80,6 @@ export default function Navbar() {
         <a
           className="nav-brand"
           href="#home"
-          aria-label={t('navbar.home')}
           onClick={handleNavClick}
         >
           {t('navbar.brand')}
@@ -146,7 +145,7 @@ export default function Navbar() {
               className="cv-link"
               href={`${import.meta.env.BASE_URL}cv/${language === 'en' ? 'en-CristianBedoyaDev.pdf' : 'CristianBedoyaDev.pdf'}`}
               download={language === 'en' ? 'en-CristianBedoyaDev.pdf' : 'CristianBedoyaDev.pdf'}
-              aria-label={t('navbar.cvAria')}
+              aria-label={`${t('navbar.cv')} – ${t('navbar.cvAria')}`}
             >
               {t('navbar.cv')}
             </a>

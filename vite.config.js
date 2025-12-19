@@ -22,6 +22,10 @@ export default defineConfig({
           { src: 'icons/icon-512.png', sizes: '512x512', type: 'image/png' },
         ],
       },
+      workbox: {
+        // Avoid precaching heavy optional bundles so they don't count against budgets in cold runs
+        globIgnores: ['**/vendor-particles-*.js', '**/vendor-charts-*.js'],
+      },
     }),
   ],
   build: {

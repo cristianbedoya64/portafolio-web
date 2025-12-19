@@ -26,5 +26,6 @@ lhci-reports
 *.sw?
 
 # Lighthouse CI temp artifacts
+.lighthouseci
 .lighthouseci/tmp
 .lighthouseci/flags-*.json

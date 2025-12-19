@@ -1,12 +1,12 @@
 import React, { useCallback } from 'react';
-import { loadFull } from 'tsparticles';
+import { loadSlim } from 'tsparticles-slim';
 import Particles from 'react-tsparticles';
 
 // Fondo de partículas liviano para no inflar demasiado el bundle.
 // Ajustado para un look sutil tecnológico.
 export default function ParticlesBackground() {
   const init = useCallback(async (engine) => {
-    await loadFull(engine);
+    await loadSlim(engine);
   }, []);
 
   const options = {

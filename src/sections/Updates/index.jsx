@@ -17,19 +17,17 @@ export default function Updates() {
         <h2 className="updates-title">{t('updates.title')}</h2>
         <p className="updates-subtitle">{t('updates.subtitle')}</p>
 
-        <div className="updates-timeline" role="list">
+        <ul className="updates-timeline" style={{ listStyle: 'none', padding: 0, margin: 0 }}>
           {timeline.map((item, index) => (
-            <article
-              key={`${item?.dateTime || index}-${item?.title || index}`}
-              className="updates-card"
-              role="listitem"
-            >
-              <time dateTime={item?.dateTime || ''}>{item?.dateLabel || ''}</time>
-              <h3>{item?.title || ''}</h3>
-              <p>{item?.description || ''}</p>
-            </article>
+            <li key={`${item?.dateTime || index}-${item?.title || index}`} className="updates-card">
+              <article>
+                <time dateTime={item?.dateTime || ''}>{item?.dateLabel || ''}</time>
+                <h3>{item?.title || ''}</h3>
+                <p>{item?.description || ''}</p>
+              </article>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   );

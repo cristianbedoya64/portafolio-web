@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "predeploy": "npm run build",
-  "deploy": "gh-pages -d dist",
+    "deploy": "gh-pages -d dist",
     "dev": "vite",
     "build": "vite build",
     "test": "vitest run",
@@ -20,8 +20,8 @@
     "lh:mobile": "node ./scripts/run-lhci.js ./lighthouserc.mobile.cjs",
     "lh:all": "node ./scripts/run-lhci.js ./lighthouserc.desktop.cjs && node ./scripts/run-lhci.js ./lighthouserc.mobile.cjs",
     "prepare": "husky install",
-    "preview": "vite preview"
-    
+    "preview": "vite preview",
+    "serve:dist": "node ./scripts/serve-dist.js"
   },
   "dependencies": {
     "framer-motion": "^12.23.24",
@@ -29,6 +29,7 @@
     "react-dom": "^18.3.1",
     "react-tsparticles": "^2.12.2",
     "recharts": "^2.12.7",
+    "tsparticles-slim": "^2.12.0",
     "tsparticles": "^2.12.0"
   },
   "devDependencies": {

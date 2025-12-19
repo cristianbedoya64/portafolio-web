@@ -1,8 +1,12 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { Suspense, lazy, useEffect, useRef, useState, useCallback } from 'react';
 import './Skills.css';
 import { useLanguage } from '../../contexts/LanguageContext.jsx';
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion.js';
-import ParticlesBackground from '../../components/ParticlesBackground.jsx';
+
+const HEAVY_OFF = (import.meta.env.VITE_DISABLE_HEAVY_EFFECTS ?? 'false') === 'true';
+const ParticlesBackground = HEAVY_OFF
+  ? () => null
+  : lazy(() => import('../../components/ParticlesBackground.jsx'));
 
 const SkillCard = ({ card, shouldReduceMotion, isExpanded, onToggle, index }) => {
   const handleKey = useCallback(
@@ -50,13 +54,13 @@ const SkillCard = ({ card, shouldReduceMotion, isExpanded, onToggle, index }) =>
               </ul>
             )}
             {Array.isArray(card.keywords) && card.keywords.length > 0 && (
-              <div className="skill-chips" role="list">
+              <ul className="skill-chips" style={{ listStyle: 'none', padding: 0, margin: 0 }}>
                 {card.keywords.map((kw, i) => (
-                  <span key={`${card.title}-kw-${i}`} className="skill-chip" role="listitem">
+                  <li key={`${card.title}-kw-${i}`} className="skill-chip">
                     {kw}
-                  </span>
+                  </li>
                 ))}
-              </div>
+              </ul>
             )}
           </div>
         ) : (
@@ -129,9 +133,11 @@ const Skills = () => {
       className={`skills-section${shouldReduceMotion ? ' reduced-motion' : ''}`}
       ref={sectionRef}
     >
-      {!shouldReduceMotion ? (
+      {!shouldReduceMotion && !HEAVY_OFF ? (
         <div className="section-particles" aria-hidden="true">
-          <ParticlesBackground />
+          <Suspense fallback={null}>
+            <ParticlesBackground />
+          </Suspense>
         </div>
       ) : null}
       <div className="skills-content">

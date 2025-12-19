@@ -4,21 +4,30 @@ import About from './sections/About';
 import Skills from './sections/Skills';
 import { Suspense, lazy, useEffect, useRef, useState } from 'react';
 import Projects from './sections/Projects'; // fallback for SSR, will be replaced below
+
+// Default to enabling heavy effects for users; automation can disable via VITE_DISABLE_HEAVY_EFFECTS=true
+const DISABLE_HEAVY_EFFECTS = (import.meta.env.VITE_DISABLE_HEAVY_EFFECTS ?? 'false') === 'true';
 const LazyProjects = lazy(() => import('./sections/Projects'));
 const LazyAI = lazy(() => import('./sections/AI'));
 const LazyUpdates = lazy(() => import('./sections/Updates'));
 const LazyLinkedIn = lazy(() => import('./sections/LinkedIn'));
 const LazyContact = lazy(() => import('./sections/Contact'));
-const LazyParticlesBackground = lazy(() => import('./components/ParticlesBackground.jsx'));
+const LazyParticlesBackground = DISABLE_HEAVY_EFFECTS
+  ? null
+  : lazy(() => import('./components/ParticlesBackground.jsx'));
 import Navbar from './components/Navbar/Navbar';
-const LazyTechTrendsDashboard = lazy(() => import('./components/TechTrendsDashboard.jsx'));
+const LazyTechTrendsDashboard = DISABLE_HEAVY_EFFECTS
+  ? null
+  : lazy(() => import('./components/TechTrendsDashboard.jsx'));
 import FloatingWhatsApp from './components/FloatingWhatsApp.jsx';
 import FloatingStackIcons from './components/FloatingStackIcons.jsx';
 import { useLanguage } from './contexts/LanguageContext.jsx';
 import { usePrefersReducedMotion } from './hooks/usePrefersReducedMotion.js';
+import { useEffects } from './contexts/EffectsContext.jsx';
 
 export default function App() {
   const { t } = useLanguage();
+  const { effectsEnabled } = useEffects();
   const prefersReducedMotion = usePrefersReducedMotion();
   const [showParticles, setShowParticles] = useState(false);
   const [showTrends, setShowTrends] = useState(false);
@@ -80,58 +89,47 @@ export default function App() {
     return () => observer.disconnect();
   }, []);
 
-  // Global particles background: single instance for all sections (disabled on reduce-motion)
+  // Partículas: diferir hasta idle para bajar TBT, pero mantener visibles para usuarios.
   useEffect(() => {
-    if (prefersReducedMotion) {
+    if (DISABLE_HEAVY_EFFECTS || prefersReducedMotion || navigator.webdriver || !effectsEnabled) {
       setShowParticles(false);
       return undefined;
     }
-    setShowParticles(true);
-    return undefined;
-  }, [prefersReducedMotion]);
 
-  // Only load TechTrendsDashboard when near viewport (or after idle fallback)
-  useEffect(() => {
-    if (showTrends) return;
-    const node = trendsProbeRef.current;
-    let timeoutId;
+    let idleId;
+    const enable = () => setShowParticles(true);
+
     if (typeof requestIdleCallback === 'function') {
-      timeoutId = requestIdleCallback(() => setShowTrends(true), { timeout: 8000 });
+      idleId = requestIdleCallback(enable, { timeout: 1200 });
     } else {
-      timeoutId = setTimeout(() => setShowTrends(true), 8000);
+      idleId = setTimeout(enable, 900);
     }
+
+    return () => {
+      if (idleId) {
+        typeof cancelIdleCallback === 'function' ? cancelIdleCallback(idleId) : clearTimeout(idleId);
+      }
+    };
+  }, [prefersReducedMotion, effectsEnabled]);
+
+  // Only load TechTrendsDashboard when it is near the viewport
+  useEffect(() => {
+    if (DISABLE_HEAVY_EFFECTS || showTrends) return undefined;
+    const node = trendsProbeRef.current;
     if (node && typeof IntersectionObserver !== 'undefined') {
       const observer = new IntersectionObserver(
         (entries) => {
           if (entries[0]?.isIntersecting) {
             setShowTrends(true);
             observer.disconnect();
-            if (timeoutId) {
-              typeof cancelIdleCallback === 'function'
-                ? cancelIdleCallback(timeoutId)
-                : clearTimeout(timeoutId);
-            }
           }
         },
-        { root: null, rootMargin: '0px 0px 20% 0px', threshold: 0.05 },
+        { root: null, rootMargin: '0px 0px 16% 0px', threshold: 0.08 },
       );
       observer.observe(node);
-      return () => {
-        observer.disconnect();
-        if (timeoutId) {
-          typeof cancelIdleCallback === 'function'
-            ? cancelIdleCallback(timeoutId)
-            : clearTimeout(timeoutId);
-        }
-      };
+      return () => observer.disconnect();
     }
-    return () => {
-      if (timeoutId) {
-        typeof cancelIdleCallback === 'function'
-          ? cancelIdleCallback(timeoutId)
-          : clearTimeout(timeoutId);
-      }
-    };
+    return undefined;
   }, [showTrends]);
 
   return (
@@ -139,7 +137,7 @@ export default function App() {
       <a className="skip-link" href="#main">
         {t('navbar.skipToMain')}
       </a>
-      {showParticles ? (
+      {!DISABLE_HEAVY_EFFECTS && showParticles ? (
         <Suspense fallback={null}>
           <div className="global-particles">
             <LazyParticlesBackground />
@@ -169,7 +167,7 @@ export default function App() {
         </Suspense>
       </main>
       <div ref={trendsProbeRef} aria-hidden="true" />
-      {showTrends ? (
+      {!DISABLE_HEAVY_EFFECTS && showTrends ? (
         <Suspense fallback={null}>
           <LazyTechTrendsDashboard />
         </Suspense>

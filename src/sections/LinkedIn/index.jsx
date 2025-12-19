@@ -76,7 +76,7 @@ export default function LinkedIn() {
         </h2>
         <p className="linkedin-subtitle">{t('linkedin.subtitle')}</p>
 
-        <div className="linkedin-posts" role="list">
+        <ul className="linkedin-posts" style={{ listStyle: 'none', padding: 0, margin: 0 }}>
           {posts.map((post, index) => {
             const hasLink = Boolean(post.link);
             const content = (
@@ -89,34 +89,29 @@ export default function LinkedIn() {
 
             if (hasLink) {
               return (
-                <a
-                  key={index}
-                  href={post.link}
-                  className="linkedin-card"
-                  target="_blank"
-                  rel="noopener noreferrer nofollow"
-                  aria-label={`Abrir post de LinkedIn: ${post.title}`}
-                  role="listitem"
-                  onMouseEnter={() => prefetchLink(post.link)}
-                  onFocus={() => prefetchLink(post.link)}
-                  onClick={() => handleAnalyticsClick(post.title)}
-                >
-                  {content}
-                </a>
+                <li key={index} className="linkedin-card" role="listitem">
+                  <a
+                    href={post.link}
+                    target="_blank"
+                    rel="noopener noreferrer nofollow"
+                    aria-label={`Abrir post de LinkedIn: ${post.title}`}
+                    onMouseEnter={() => prefetchLink(post.link)}
+                    onFocus={() => prefetchLink(post.link)}
+                    onClick={() => handleAnalyticsClick(post.title)}
+                  >
+                    {content}
+                  </a>
+                </li>
               );
             }
 
             return (
-              <div
-                key={index}
-                className="linkedin-card"
-                role="listitem"
-              >
+              <li key={index} className="linkedin-card" role="listitem">
                 {content}
-              </div>
+              </li>
             );
           })}
-        </div>
+        </ul>
       </div>
     </section>
   );
