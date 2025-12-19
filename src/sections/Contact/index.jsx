@@ -1,19 +1,18 @@
 import React, { useMemo } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
-import { FaLinkedin, FaGithub, FaEnvelope, FaWhatsapp, FaFileDownload } from 'react-icons/fa';
+import {
+  IconLinkedIn,
+  IconGithub,
+  IconMail,
+  IconWhatsapp,
+  IconDownload,
+} from '../../components/icons/InlineIcons.jsx';
 import './Contact.css';
 import { useLanguage } from '../../contexts/LanguageContext.jsx';
+import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion.js';
 
 export default function Contact() {
   const { t, language } = useLanguage();
-  const shouldReduceMotion = useReducedMotion();
-
-  const containerInitial = shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 30 };
-  const containerWhileInView = shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 };
-  const containerTransition = shouldReduceMotion
-    ? { duration: 0.5, ease: 'linear' }
-    : { duration: 1, ease: 'easeOut' };
-  const buttonHover = shouldReduceMotion ? undefined : { scale: 1.05 };
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   // Mensaje prellenado para WhatsApp (enfocado a reclutadores)
   const whatsappText = useMemo(() => {
@@ -31,73 +30,63 @@ export default function Contact() {
   }, [language]);
 
   return (
-    <section id="contact" className="contact">
+    <section id="contact" className={`contact${prefersReducedMotion ? ' reduced-motion' : ''}`}>
       <div className="animated-bg"></div>
 
-      <motion.div
-        className="contact-content"
-        initial={containerInitial}
-        whileInView={containerWhileInView}
-        transition={containerTransition}
-        viewport={{ once: true }}
-      >
+      <div className="contact-content">
         <h2 className="contact-title" dangerouslySetInnerHTML={{ __html: t('contact.title') }} />
         <p className="contact-subtitle">{t('contact.subtitle')}</p>
 
         <div className="contact-buttons">
-          <motion.a
-            href={language === 'en' ? '/cv/en-CristianBedoyaDev.pdf' : '/cv/CristianBedoyaDev.pdf'}
-            download
+          <a
+            href={`${import.meta.env.BASE_URL}cv/${language === 'en' ? 'en-CristianBedoyaDev.pdf' : 'CristianBedoyaDev.pdf'}`}
+            download={language === 'en' ? 'en-CristianBedoyaDev.pdf' : 'CristianBedoyaDev.pdf'}
             className="contact-btn btn cv"
             aria-label={t('contact.buttons.cv.aria')}
-            whileHover={buttonHover}
+            onClick={e => e.stopPropagation()}
           >
-            <FaFileDownload className="icon" /> {t('contact.buttons.cv.label')}
-          </motion.a>
+            <IconDownload className="icon" aria-hidden="true" /> {t('contact.buttons.cv.label')}
+          </a>
 
-          <motion.a
+          <a
             href="https://www.linkedin.com/in/cristian-alexander-bedoya-marin-ba1306277/"
             target="_blank"
             rel="noopener noreferrer"
             className="contact-btn btn linkedin"
             aria-label={t('contact.buttons.linkedin.aria')}
-            whileHover={buttonHover}
           >
-            <FaLinkedin className="icon" /> {t('contact.buttons.linkedin.label')}
-          </motion.a>
+            <IconLinkedIn className="icon" aria-hidden="true" /> {t('contact.buttons.linkedin.label')}
+          </a>
 
-          <motion.a
+          <a
             href="mailto:cristian.bedoya02@usc.edu.co"
             className="contact-btn btn email"
             aria-label={t('contact.buttons.email.aria')}
-            whileHover={buttonHover}
           >
-            <FaEnvelope className="icon" /> {t('contact.buttons.email.label')}
-          </motion.a>
+            <IconMail className="icon" aria-hidden="true" /> {t('contact.buttons.email.label')}
+          </a>
 
-          <motion.a
+          <a
             href="https://github.com/cristianbedoya64"
             target="_blank"
             rel="noopener noreferrer"
             className="contact-btn btn github"
             aria-label={t('contact.buttons.github.aria')}
-            whileHover={buttonHover}
           >
-            <FaGithub className="icon" /> {t('contact.buttons.github.label')}
-          </motion.a>
+            <IconGithub className="icon" aria-hidden="true" /> {t('contact.buttons.github.label')}
+          </a>
 
-          <motion.a
+          <a
             href={`https://wa.me/573171084060?text=${whatsappText}`}
             target="_blank"
             rel="noopener noreferrer"
             className="contact-btn btn whatsapp"
             aria-label={t('contact.buttons.whatsapp.aria')}
-            whileHover={buttonHover}
           >
-            <FaWhatsapp className="icon" /> {t('contact.buttons.whatsapp.label')}
-          </motion.a>
+            <IconWhatsapp className="icon" aria-hidden="true" /> {t('contact.buttons.whatsapp.label')}
+          </a>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }

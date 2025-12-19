@@ -39,10 +39,12 @@
 
 .floating-stack-track--left {
   animation: floating-marquee-left 28s linear infinite;
+  animation-play-state: paused;
 }
 
 .floating-stack-track--right {
   animation: floating-marquee-right 32s linear infinite;
+  animation-play-state: paused;
 }
 
 .floating-stack-pill {
@@ -58,12 +60,24 @@
   white-space: nowrap;
 }
 
+.floating-stack-band[data-animated='true'] .floating-stack-track--left,
+.floating-stack-band[data-animated='true'] .floating-stack-track--right {
+  animation-play-state: running;
+}
+
+.floating-stack-band[data-animated='false'] .floating-stack-track--left,
+.floating-stack-band[data-animated='false'] .floating-stack-track--right {
+  transform: translateX(0);
+}
+
 .floating-stack-icon {
   font-size: 1.1rem;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--pill-color, #6366f1);
+  width: 1.15em;
+  height: 1.15em;
 }
 
 .floating-stack-pill-label {
@@ -94,6 +108,7 @@
   .floating-stack-track--right {
     animation-duration: 0s;
     animation-iteration-count: 1;
+    animation-play-state: paused;
   }
 }
 

@@ -15,6 +15,8 @@ export default function Navbar() {
   const handleNavClick = (e) => {
     const target = e.target.closest('a');
     if (!target) return;
+    // Si el enlace tiene el atributo download, no interceptar
+    if (target.hasAttribute('download')) return;
     const href = target.getAttribute('href') || '';
     if (!href.startsWith('#')) return; // external links keep default
     e.preventDefault();
@@ -142,8 +144,8 @@ export default function Navbar() {
             </a>
             <a
               className="cv-link"
-              href={language === 'en' ? '/cv/en-CristianBedoyaDev.pdf' : '/cv/CristianBedoyaDev.pdf'}
-              download
+              href={`${import.meta.env.BASE_URL}cv/${language === 'en' ? 'en-CristianBedoyaDev.pdf' : 'CristianBedoyaDev.pdf'}`}
+              download={language === 'en' ? 'en-CristianBedoyaDev.pdf' : 'CristianBedoyaDev.pdf'}
               aria-label={t('navbar.cvAria')}
             >
               {t('navbar.cv')}

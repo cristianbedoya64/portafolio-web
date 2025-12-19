@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { FaWhatsapp } from 'react-icons/fa';
 import './FloatingWhatsApp.css';
 import { useLanguage } from '../contexts/LanguageContext.jsx';
 import { useEffects } from '../contexts/EffectsContext.jsx';
+import { IconWhatsapp } from './icons/InlineIcons.jsx';
 
 export default function FloatingWhatsApp() {
   const { language } = useLanguage();
@@ -52,9 +52,6 @@ export default function FloatingWhatsApp() {
       rel="noopener noreferrer"
       aria-label="Abrir chat de WhatsApp con Cristian"
       title="WhatsApp"
-      drag={motionAllowed}
-      dragElastic={0.2}
-      dragMomentum
       whileHover={motionAllowed ? { scale: 1.08 } : undefined}
       whileTap={motionAllowed ? { scale: 0.94 } : undefined}
       animate={animateProps}
@@ -62,7 +59,7 @@ export default function FloatingWhatsApp() {
       onClick={handleClick}
     >
       <span className="fw-glow" aria-hidden="true" />
-      <FaWhatsapp className="fw-icon" aria-hidden="true" />
+      <IconWhatsapp className="fw-icon" aria-hidden="true" />
       <span className="sr-only">WhatsApp</span>
     </motion.a>
   );

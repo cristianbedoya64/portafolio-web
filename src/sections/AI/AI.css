@@ -20,13 +20,13 @@
   width: 150%;
   height: 150%;
   background: var(--animated-gradient);
-  background-size: 300% 300%;
-  animation: gradientMove 10s ease infinite;
-  filter: blur(12px);
+  background-size: 220% 220%;
+  animation: gradientMove 22s ease infinite;
+  filter: blur(8px);
   top: -25%;
   left: -25%;
   z-index: 0;
-  opacity: 0.25;
+  opacity: 0.16;
   pointer-events: none;
 }
 

@@ -4,24 +4,59 @@ import './Hero.css';
 import { useLanguage } from '../../contexts/LanguageContext.jsx';
 import { useEffects } from '../../contexts/EffectsContext.jsx';
 
-const TYPEWRITER_CONFIG = {
-  TYPE_SPEED: 160, // slower typing for readability
-  DELETE_SPEED: 90,
-  HOLD_FULL: 6000, // keep each role fully visible ~6s
-  HOLD_EMPTY: 1200, // pause before typing the next role
-};
-
 export default function Hero() {
   const { t, language } = useLanguage();
   const { effectsEnabled } = useEffects();
   const shouldReduceMotion = useReducedMotion();
-  // Detect viewport width for animation gating
+  const [effectsArmed, setEffectsArmed] = useState(false);
+  // Detect viewport width for animation gating; throttled to avoid resize-induced jank
   const [isWide, setIsWide] = useState(() => window.innerWidth >= 768);
+  const resizeRaf = useRef(null);
   useEffect(() => {
-    const onResize = () => setIsWide(window.innerWidth >= 768);
+    const onResize = () => {
+      if (resizeRaf.current) return;
+      resizeRaf.current = requestAnimationFrame(() => {
+        setIsWide(window.innerWidth >= 768);
+        resizeRaf.current = null;
+      });
+    };
     window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
+    return () => {
+      window.removeEventListener('resize', onResize);
+      if (resizeRaf.current) {
+        cancelAnimationFrame(resizeRaf.current);
+        resizeRaf.current = null;
+      }
+    };
   }, []);
+
+  useEffect(() => {
+    if (!effectsEnabled || shouldReduceMotion) {
+      setEffectsArmed(false);
+      return;
+    }
+    let idleId;
+    const arm = () => setEffectsArmed(true);
+    if (typeof requestIdleCallback === 'function') {
+      idleId = requestIdleCallback(arm, { timeout: 3500 });
+    } else {
+      idleId = setTimeout(arm, 3500);
+    }
+    const onScroll = () => {
+      setEffectsArmed(true);
+      if (idleId) {
+        typeof cancelIdleCallback === 'function' ? cancelIdleCallback(idleId) : clearTimeout(idleId);
+      }
+      window.removeEventListener('scroll', onScroll, { passive: true });
+    };
+    window.addEventListener('scroll', onScroll, { passive: true, once: true });
+    return () => {
+      if (idleId) {
+        typeof cancelIdleCallback === 'function' ? cancelIdleCallback(idleId) : clearTimeout(idleId);
+      }
+      window.removeEventListener('scroll', onScroll, { passive: true });
+    };
+  }, [effectsEnabled, shouldReduceMotion]);
 
   // Foto de perfil – usar <picture> con AVIF + WebP + JPG como fallback para máxima compatibilidad
   const [imgLoaded, setImgLoaded] = useState(false);
@@ -63,66 +98,35 @@ export default function Hero() {
     return Array.isArray(raw) && raw.length ? raw : [highlight];
   }, [t, highlight]);
 
-  // Typewriter state for rotating roles with custom timings
-  const [roleIndex, setRoleIndex] = useState(0);
-  const [displayText, setDisplayText] = useState(roles[0] || highlight);
-  const [isDeleting, setIsDeleting] = useState(false);
-  const timerRef = useRef(null);
+  const [activeRoleIndex, setActiveRoleIndex] = useState(0);
+  const longestRole = useMemo(() => {
+    const pool = roles.length ? roles : [highlight];
+    return pool.reduce((acc, curr) => ((curr?.length || 0) > (acc?.length || 0) ? curr : acc), '') ||
+      highlight;
+  }, [roles, highlight]);
 
   // Reset animation when translations change drastically
   useEffect(() => {
-    setRoleIndex(0);
-    setDisplayText(roles[0] || highlight);
-    setIsDeleting(false);
+    setActiveRoleIndex(0);
   }, [roles, highlight]);
 
   useEffect(() => {
     const isTestEnv = import.meta.env.MODE === 'test' || Boolean(import.meta.env.VITEST);
-    const enableTypewriter =
-      effectsEnabled && !shouldReduceMotion && !isTestEnv && roles.length > 1;
+    const enableCycle = effectsEnabled && !shouldReduceMotion && !isTestEnv && roles.length > 1;
 
-    if (!enableTypewriter) {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-        timerRef.current = null;
-      }
-      setDisplayText(roles[0] || highlight);
-      setRoleIndex(0);
-      setIsDeleting(false);
+    if (!enableCycle) {
+      setActiveRoleIndex(0);
       return;
     }
 
-    const fullText = roles[roleIndex] || '';
-    const currentLength = displayText.length;
-    const { TYPE_SPEED, DELETE_SPEED, HOLD_FULL, HOLD_EMPTY } = TYPEWRITER_CONFIG;
+    const interval = window.setInterval(() => {
+      setActiveRoleIndex((idx) => (idx + 1) % roles.length);
+    }, 4200);
 
-    let delay = TYPE_SPEED;
-    let nextAction = () => {};
+    return () => window.clearInterval(interval);
+  }, [roles, highlight, effectsEnabled, shouldReduceMotion]);
 
-    if (!isDeleting && currentLength < fullText.length) {
-      nextAction = () => setDisplayText(fullText.slice(0, currentLength + 1));
-    } else if (!isDeleting && currentLength === fullText.length) {
-      delay = HOLD_FULL;
-      nextAction = () => setIsDeleting(true);
-    } else if (isDeleting && currentLength > 0) {
-      delay = DELETE_SPEED;
-      nextAction = () => setDisplayText(fullText.slice(0, currentLength - 1));
-    } else if (isDeleting && currentLength === 0) {
-      delay = HOLD_EMPTY;
-      nextAction = () => {
-        setIsDeleting(false);
-        setRoleIndex((idx) => (idx + 1) % roles.length);
-      };
-    }
-
-    timerRef.current = setTimeout(() => nextAction(), delay);
-    return () => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-        timerRef.current = null;
-      }
-    };
-  }, [displayText, isDeleting, roleIndex, roles, highlight, effectsEnabled, shouldReduceMotion]);
+  const activeRole = roles[activeRoleIndex] || highlight;
 
   // Asegura que el espacio entre nombres sea un espacio no separable para evitar saltos y que siempre se muestre
   const nameChars = useMemo(() => {
@@ -138,6 +142,7 @@ export default function Hero() {
   }, [nameText]);
 
   const allowAnim = effectsEnabled && !shouldReduceMotion && isWide;
+  const showRoleCycle = effectsEnabled && !shouldReduceMotion && roles.length > 1;
   const letterVariants = !allowAnim
     ? undefined
     : {
@@ -158,11 +163,9 @@ export default function Hero() {
   const containerTransition = !allowAnim
     ? { duration: 0.6, ease: 'linear' }
     : { duration: 1.2, ease: 'easeOut' };
-  const hoverScale = !allowAnim ? undefined : { scale: 1.06 };
-  const tapScale = !allowAnim ? undefined : { scale: 0.97 };
 
   return (
-    <section id="home" className="hero">
+    <section id="home" className={effectsArmed ? 'hero hero-effects-armed' : 'hero hero-effects-off'}>
       <div className="animated-bg"></div>
 
       <motion.div
@@ -250,22 +253,19 @@ export default function Hero() {
             <span className="sr-only">{nameText}</span>
           </motion.span>
         </h1>
-        <h2
-          className={
-            effectsEnabled
-              ? 'hero-highlight hero-highlight-animated hero-typewriter'
-              : 'hero-highlight'
-          }
-        >
-          {effectsEnabled && !shouldReduceMotion && roles.length > 1 ? (
-            <>
-              <span className="typewriter-text" aria-live="polite">
-                {displayText}
-              </span>
-              <span className="typewriter-caret" aria-hidden="true">
-                |
-              </span>
-            </>
+        <h2 className={effectsEnabled ? 'hero-highlight hero-highlight-animated' : 'hero-highlight'}>
+          {showRoleCycle ? (
+            <motion.span
+              key={activeRoleIndex}
+              className="hero-role-slot"
+              style={{ minWidth: `${Math.max(6, longestRole.length)}ch` }}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, ease: 'easeOut' }}
+              aria-live="polite"
+            >
+              {activeRole}
+            </motion.span>
           ) : (
             highlight
           )}
@@ -273,24 +273,17 @@ export default function Hero() {
         <p className="hero-subtitle">{t('hero.subtitle')}</p>
 
         <div className="hero-actions">
-          <motion.a
-            className="hero-btn"
-            href="#projects"
-            whileHover={hoverScale}
-            whileTap={tapScale}
-          >
+          <a className="hero-btn" href="#projects">
             {t('hero.cta')}
-          </motion.a>
-          <motion.a
+          </a>
+          <a
             className="hero-btn hero-btn--secondary"
             href="https://github.com/cristianbedoya64/portafolio-web"
             target="_blank"
             rel="noopener noreferrer"
-            whileHover={hoverScale}
-            whileTap={tapScale}
           >
             {t('hero.repoCta')}
-          </motion.a>
+          </a>
         </div>
         <a href="#about" className="hero-scroll-indicator" aria-label="Scroll">
           <span className="hsi-mouse" aria-hidden="true"></span>

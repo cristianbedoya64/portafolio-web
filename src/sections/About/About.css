@@ -113,6 +113,15 @@
   animation: aboutIconPulse 4s ease-in-out infinite;
 }
 
+html:not(.effects-armed) .about-title {
+  animation: none;
+}
+
+html:not(.effects-armed) .about-item-icon {
+  animation: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+}
+
 .about-item h4 {
   color: #ff6600;
   margin: 0;

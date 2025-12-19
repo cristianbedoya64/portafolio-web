@@ -168,7 +168,7 @@ export const TRANSLATIONS = {
             'AI-assisted',
           ],
           outcomes: [
-            'Desarrollada en < 3 semanas, >90% de features implementadas.',
+            'Desarrollada en < 1 semana, >90% de features implementadas.',
             'Arquitectura modular, escalable y documentada.',
             'Paneles de control con KPIs, auditoría y detección de anomalías.',
             'Integración de IA para scoring de riesgo y sugerencias.',
@@ -534,6 +534,12 @@ export const TRANSLATIONS = {
       title: 'Actualizaciones recientes',
       subtitle: 'Un vistazo rápido a las mejoras que mantienen este portafolio en evolución.',
       entries: [
+        {
+          dateLabel: '14 Dic 2025',
+          dateTime: '2025-12-14',
+          title: 'Botón de descargar CV actualizado',
+          description: 'El botón de descargar CV ahora selecciona y descarga el archivo correcto según el idioma del portafolio (español o inglés).',
+        },
         {
           dateLabel: '18 Nov 2025',
           dateTime: '2025-11-18',
@@ -1175,6 +1181,12 @@ export const TRANSLATIONS = {
       title: 'Recent updates',
       subtitle: 'A living changelog that showcases how this portfolio keeps evolving.',
       entries: [
+        {
+          dateLabel: 'Dec 14, 2025',
+          dateTime: '2025-12-14',
+          title: 'Download CV button updated',
+          description: 'The Download CV button now selects and downloads the correct file based on the portfolio language (Spanish or English).',
+        },
         {
           dateLabel: 'Nov 18, 2025',
           dateTime: '2025-11-18',

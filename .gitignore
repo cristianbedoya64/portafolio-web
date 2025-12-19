@@ -24,3 +24,7 @@ lhci-reports
 *.njsproj
 *.sln
 *.sw?
+
+# Lighthouse CI temp artifacts
+.lighthouseci/tmp
+.lighthouseci/flags-*.json

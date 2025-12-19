@@ -1,19 +1,10 @@
 import React, { useCallback } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
 import './LinkedIn.css';
 import { useLanguage } from '../../contexts/LanguageContext.jsx';
 
 export default function LinkedIn() {
   const { t, language } = useLanguage();
   const posts = t('linkedin.cards') || [];
-  const shouldReduceMotion = useReducedMotion();
-
-  const containerInitial = shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 28 };
-  const containerWhileInView = shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 };
-  const containerTransition = shouldReduceMotion
-    ? { duration: 0.5, ease: 'linear' }
-    : { duration: 1, ease: 'easeOut' };
-  const cardHover = shouldReduceMotion ? undefined : { scale: 1.03 };
 
   const prefetchLink = useCallback((href) => {
     try {
@@ -73,13 +64,7 @@ export default function LinkedIn() {
     <section id="linkedin" className="linkedin-section">
       <div className="animated-bg"></div>
 
-      <motion.div
-        className="linkedin-content"
-        initial={containerInitial}
-        whileInView={containerWhileInView}
-        transition={containerTransition}
-        viewport={{ once: true }}
-      >
+      <div className="linkedin-content">
         <h2 className="linkedin-title">
           {t('linkedin.title')}
           {t('linkedin.highlight') && (
@@ -104,7 +89,7 @@ export default function LinkedIn() {
 
             if (hasLink) {
               return (
-                <motion.a
+                <a
                   key={index}
                   href={post.link}
                   className="linkedin-card"
@@ -112,29 +97,27 @@ export default function LinkedIn() {
                   rel="noopener noreferrer nofollow"
                   aria-label={`Abrir post de LinkedIn: ${post.title}`}
                   role="listitem"
-                  whileHover={cardHover}
                   onMouseEnter={() => prefetchLink(post.link)}
                   onFocus={() => prefetchLink(post.link)}
                   onClick={() => handleAnalyticsClick(post.title)}
                 >
                   {content}
-                </motion.a>
+                </a>
               );
             }
 
             return (
-              <motion.div
+              <div
                 key={index}
                 className="linkedin-card"
                 role="listitem"
-                whileHover={cardHover}
               >
                 {content}
-              </motion.div>
+              </div>
             );
           })}
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }

@@ -21,10 +21,10 @@
   --btn-height: 44px;
   --animated-gradient: linear-gradient(-45deg, #1b263b, #24304a, #4d628a, #8493c2);
   /* animated background tuning (per-section override allowed) */
-  --animated-bg-opacity: 0.35;
-  --animated-bg-blur: 28px;
-  --animated-bg-size: 400% 400%;
-  --animated-bg-duration: 12s;
+  --animated-bg-opacity: 0.18;
+  --animated-bg-blur: 14px;
+  --animated-bg-size: 240% 240%;
+  --animated-bg-duration: 24s;
   /* altura del navbar fija para compensar anclas */
   --nav-height: 52px;
   /* navbar visuals */
@@ -71,6 +71,54 @@
   .animated-bg {
     display: none !important;
   }
+}
+
+/* Pause animated backgrounds by default; they become active when IO adds the class */
+.animated-bg {
+  animation-play-state: paused;
+  opacity: 0.08;
+}
+
+.animated-bg.animated-bg--active {
+  animation-play-state: running;
+  opacity: var(--animated-bg-opacity, 0.16);
+}
+
+@media (max-width: 640px) {
+  .animated-bg,
+  .animated-bg.animated-bg--active {
+    animation: none !important;
+    opacity: 0.14;
+    background-size: 200% 200%;
+  }
+}
+
+.global-particles {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.2;
+}
+
+.global-particles .particles-wrapper {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.global-particles canvas {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+/* Keep app content above the particle layer */
+#root {
+  position: relative;
 }
 
 body {

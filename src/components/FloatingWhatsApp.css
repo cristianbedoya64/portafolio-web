@@ -17,6 +17,7 @@
   text-decoration: none;
   pointer-events: auto;
   user-select: none;
+  will-change: transform;
 }
 
 .floating-whatsapp:focus-visible {
@@ -31,6 +32,8 @@
   font-size: 26px;
   color: #04210f;
   filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.25));
+  width: 1.2em;
+  height: 1.2em;
 }
 
 .fw-glow {

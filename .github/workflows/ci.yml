@@ -63,6 +63,9 @@ jobs:
           name: lhci-reports
           path: lhci-reports
 
+      - name: Security audit (production deps)
+        run: npm run audit:security
+
   deploy-preview:
     name: Deploy Preview (GitHub Pages)
     needs: ci

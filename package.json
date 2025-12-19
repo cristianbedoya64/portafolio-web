@@ -12,8 +12,13 @@
     "e2e": "playwright test",
     "lint": "eslint .",
     "format": "prettier --write .",
+    "audit:security": "npm audit --production",
+    "audit:full": "npm audit",
     "optimize:images": "node ./scripts/optimize-images.js",
     "audit:lighthouse": "lhci autorun --config=./lighthouserc.cjs",
+    "lh:desktop": "node ./scripts/run-lhci.js ./lighthouserc.desktop.cjs",
+    "lh:mobile": "node ./scripts/run-lhci.js ./lighthouserc.mobile.cjs",
+    "lh:all": "node ./scripts/run-lhci.js ./lighthouserc.desktop.cjs && node ./scripts/run-lhci.js ./lighthouserc.mobile.cjs",
     "prepare": "husky install",
     "preview": "vite preview"
     
@@ -22,14 +27,12 @@
     "framer-motion": "^12.23.24",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-icons": "^5.5.0",
     "react-tsparticles": "^2.12.2",
     "recharts": "^2.12.7",
-    "tsparticles": "^3.9.1"
+    "tsparticles": "^2.12.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
-    "@lhci/cli": "^0.13.0",
     "@playwright/test": "^1.40.0",
     "@testing-library/jest-dom": "^6.0.0",
     "@testing-library/react": "^14.0.0",
@@ -50,8 +53,8 @@
     "sharp": "^0.33.4",
     "tailwindcss": "^4.1.17",
     "vite": "^7.2.2",
-    "vite-plugin-pwa": "^1.0.0",
-    "vitest": "^1.3.0"
+    "vite-plugin-pwa": "^1.1.0",
+    "vitest": "^1.6.0"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
@@ -61,5 +64,8 @@
     "*.{css,scss,html,md}": [
       "prettier --write"
     ]
+  },
+  "resolutions": {
+    "esbuild": "0.24.4"
   }
 }

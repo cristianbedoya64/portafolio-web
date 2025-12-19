@@ -1,5 +1,4 @@
-import React, { useMemo, useCallback, useState, useEffect, useRef } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import React, { useMemo, useCallback, useState } from 'react';
 import './Projects.css';
 import { useLanguage } from '../../contexts/LanguageContext.jsx';
 
@@ -42,7 +41,6 @@ export default function Projects() {
     const list = translations?.projects?.cards;
     return Array.isArray(list) ? list : [];
   }, [translations]);
-  const shouldReduceMotion = useReducedMotion();
   const [expanded, setExpanded] = useState(null);
 
   const handleAnalyticsClick = useCallback((projectTitle, linkLabel) => {
@@ -59,14 +57,6 @@ export default function Projects() {
 
   const toggleExpand = (idx) => setExpanded(expanded === idx ? null : idx);
 
-  const containerInitial = shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 36 };
-  const containerWhileInView = shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 };
-  const containerTransition = shouldReduceMotion
-    ? { duration: 0.6, ease: 'linear' }
-    : { duration: 1, ease: 'easeOut' };
-
-  const cardHover = shouldReduceMotion ? undefined : { scale: 1.04, y: -4 };
-
   const jsonLd = useMemo(() => buildJsonLd(projectCards, language), [projectCards, language]);
 
   return (
@@ -75,13 +65,7 @@ export default function Projects() {
       {/* SEO: JSON-LD for highlighted projects */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd }} />
 
-      <motion.div
-        className="projects-content"
-        initial={containerInitial}
-        whileInView={containerWhileInView}
-        transition={containerTransition}
-        viewport={{ once: true }}
-      >
+      <div className="projects-content">
         <h2 className="projects-title">{t('projects.title')}</h2>
         <p className="projects-subtitle">{t('projects.subtitle')}</p>
 
@@ -103,13 +87,11 @@ export default function Projects() {
                   : [];
             const expandedDetails = project.buildDetails;
             return (
-              <motion.section
+              <section
                 key={project.title + index}
                 className={`project-card mini-section${expanded === index ? ' expanded' : ''}`}
                 role="region"
                 aria-labelledby={`project-title-${index}`}
-                whileHover={cardHover}
-                transition={shouldReduceMotion ? { duration: 0.2 } : { duration: 0.3 }}
               >
                 <header className="project-card-head" onClick={() => toggleExpand(index)} style={{cursor:'pointer'}}>
                   <h3 id={`project-title-${index}`}>{project.title}</h3>
@@ -238,11 +220,11 @@ export default function Projects() {
                     )}
                   </div>
                 )}
-              </motion.section>
+              </section>
             );
           })}
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }

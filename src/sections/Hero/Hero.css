@@ -18,14 +18,20 @@
   width: 150%;
   height: 150%;
   background: var(--animated-gradient);
-  background-size: 300% 300%;
-  animation: gradientMove 10s ease infinite;
-  filter: blur(12px);
+  background-size: 220% 220%;
+  animation: gradientMove 22s ease infinite;
+  animation-play-state: paused;
+  filter: blur(8px);
   top: -25%;
   left: -25%;
   z-index: 0;
-  opacity: 0.25;
+  opacity: 0.08;
   pointer-events: none;
+}
+
+.animated-bg.animated-bg--active {
+  animation-play-state: running;
+  opacity: 0.16;
 }
 
 @keyframes gradientMove {
@@ -162,7 +168,7 @@
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   pointer-events: none;
-  opacity: 0.9;
+  opacity: 0.4;
   transition:
     background-position 600ms ease,
     filter 280ms ease,
@@ -185,6 +191,13 @@
   pointer-events: none;
 }
 
+.hero-effects-off .hero-photo-tilt:hover,
+.hero-effects-off .hero-photo-tilt:focus-within {
+  transform: none;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.32);
+  filter: none;
+}
+
 .hero-photo-tilt:hover,
 .hero-photo-tilt:focus-within {
   transform: translateY(-6px);
@@ -192,6 +205,14 @@
     0 14px 36px rgba(2, 132, 199, 0.25),
     0 6px 16px rgba(0, 0, 0, 0.24);
   filter: saturate(115%);
+}
+
+.hero-effects-off .hero-photo-tilt::before {
+  opacity: 0.2;
+}
+
+.hero-effects-off .hero-photo-tilt::after {
+  opacity: 0;
 }
 
 .hero-photo-tilt:hover::before,
@@ -370,7 +391,7 @@
   filter: blur(10px);
   opacity: 0.7;
   border-radius: 12px;
-  animation: markerFlow 6.5s linear infinite;
+  animation: markerFlow 12s linear infinite;
   mask: radial-gradient(circle at 8% 50%, black 30%, transparent 75%);
 }
 
@@ -438,33 +459,14 @@
   animation: shimmer 2.8s ease-in-out infinite;
 }
 
-/* Typewriter styles for rotating roles */
-.hero-typewriter {
+/* Stable width slot for rotating roles (avoids jitter/reflow) */
+.hero-role-slot {
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  min-height: 1.4em;
   white-space: nowrap;
-  min-height: 1.3em;
-}
-.typewriter-text {
-  display: inline-block;
-}
-.typewriter-caret {
-  display: inline-block;
-  width: 0.6ch;
-  margin-left: 2px;
-  background: linear-gradient(180deg, #fbbf24, #38bdf8);
-  border-radius: 2px;
-  animation: caretBlink 1s steps(1, end) infinite;
-  position: relative;
-  top: 2px;
-}
-@keyframes caretBlink {
-  0%,
-  45% {
-    opacity: 1;
-  }
-  50%,
-  100% {
-    opacity: 0;
-  }
+  font-variant-numeric: tabular-nums;
 }
 
 @keyframes shimmer {

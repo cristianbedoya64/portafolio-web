@@ -12,6 +12,23 @@
   overflow: hidden;
 }
 
+.skills-section .section-particles {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.52;
+}
+
+.skills-section .section-particles .particles-wrapper,
+.skills-section .section-particles canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
 .skills-content {
   max-width: 900px;
   width: 100%;
@@ -25,7 +42,7 @@
     transform 0.4s ease,
     box-shadow 0.4s ease;
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
 .skills-content:hover {
@@ -412,6 +429,35 @@ html.light-theme .particles-fallback .pf-glow {
   box-shadow:
     0 14px 40px rgba(56, 189, 248, 0.24),
     0 6px 16px rgba(0, 0, 0, 0.22);
+}
+
+.skills-section.reduced-motion .skills-title,
+.skills-section.reduced-motion .skills-item-icon {
+  animation: none;
+}
+
+.skills-section.reduced-motion .skills-item,
+.skills-section.reduced-motion .skills-item::before,
+.skills-section.reduced-motion .skills-item::after {
+  transition: none;
+}
+
+.skills-section.reduced-motion .skills-item:hover,
+.skills-section.reduced-motion .skills-item:focus-within {
+  transform: none;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+
+.skills-item.no-motion,
+.skills-item.no-motion::before,
+.skills-item.no-motion::after {
+  transition: none;
+}
+
+.skills-item.no-motion:hover,
+.skills-item.no-motion:focus-within {
+  transform: none;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
 }
 
 /* Reduced motion: tone down animations */

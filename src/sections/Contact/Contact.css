@@ -76,6 +76,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: 1.1em;
+  height: 1.1em;
 }
 
 /* 🔵 Efecto neón al pasar el mouse */
@@ -86,6 +88,15 @@
     0 0 20px rgba(var(--btn-shadow-rgb, 255, 209, 102), 0.35);
   transform: translateY(-2px);
   border-color: var(--btn-border-hover, #f4a261);
+}
+
+.contact.reduced-motion .contact-btn {
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+
+.contact.reduced-motion .contact-btn:hover {
+  transform: none;
+  box-shadow: none;
 }
 
 /* Responsive tweaks: make buttons smaller on narrow screens */
