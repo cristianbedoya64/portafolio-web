@@ -1,0 +1,31 @@
+%% Mermaid architecture diagram for portafolio-web
+%% Render with a mermaid renderer (README or docs site)
+
+flowchart LR
+  subgraph Client
+    A[Browser] --> B[Vite-built SPA]
+    B -->|fetch| C[TechTrends API (GitHub Search, Arbeitnow)]
+    B -->|load lazy| D[Recharts bundle]
+    B -->|load lazy| E[tsparticles bundle]
+    B -->|send| P[Plausible (SaaS or proxied)]
+  end
+
+  subgraph CI
+    GH[GitHub Actions CI] -->|npm ci, lint, test| Build[Build]
+    Build -->|artifact| Artifacts[dist + lhci-reports]
+    GH -->|run| LH[Lighthouse CI desktop/mobile]
+    GH -->|deploy on main| Pages[GitHub Pages]
+  end
+
+  subgraph Ops
+    Pages -->|serve static| CDN[GitHub Pages CDN]
+  end
+
+  C -.->|public APIs| GitHub[GitHub Search API]
+  C -.->|public APIs| JobBoard[Arbeitnow API]
+
+  style B fill:#f9f,stroke:#333,stroke-width:1px
+  style GH fill:#f3f4f6,stroke:#333
+  style P fill:#eef,stroke:#333
+
+  click P "https://plausible.io" "Plausible"
