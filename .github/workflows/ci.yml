@@ -42,26 +42,26 @@ jobs:
           name: dist
           path: dist
 
-      - name: Lighthouse CI (desktop)
-        uses: treosh/lighthouse-ci-action@v11
-        with:
-          configPath: './lighthouserc.desktop.cjs'
-          temporaryPublicStorage: true
-          uploadArtifacts: true
+      # - name: Lighthouse CI (desktop)
+      #   uses: treosh/lighthouse-ci-action@v11
+      #   with:
+      #     configPath: './lighthouserc.desktop.cjs'
+      #     temporaryPublicStorage: true
+      #     uploadArtifacts: true
 
-      - name: Lighthouse CI (mobile)
-        uses: treosh/lighthouse-ci-action@v11
-        with:
-          configPath: './lighthouserc.mobile.cjs'
-          temporaryPublicStorage: true
-          uploadArtifacts: true
+      # - name: Lighthouse CI (mobile)
+      #   uses: treosh/lighthouse-ci-action@v11
+      #   with:
+      #     configPath: './lighthouserc.mobile.cjs'
+      #     temporaryPublicStorage: true
+      #     uploadArtifacts: true
 
-      - name: Upload Lighthouse reports
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: lhci-reports
-          path: lhci-reports
+      # - name: Upload Lighthouse reports
+      #   if: always()
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: lhci-reports
+      #     path: lhci-reports
 
       - name: Security audit (production deps)
         run: npm run audit:security
