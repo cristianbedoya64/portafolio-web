@@ -179,7 +179,7 @@ export const TRANSLATIONS = {
           links: [
             {
               label: 'Demo interactiva',
-              href: 'https://<tu‑demo‑url>',
+              href: 'http://206.189.76.47:5173/',
               aria: 'Abrir la demo interactiva de UARP-AI en una nueva pestaña',
               variant: 'star',
               icon: '🚀',
@@ -901,7 +901,7 @@ export const TRANSLATIONS = {
       subtitle: 'A collection of work showcasing my passion for technology and design.',
       cards: [
         {
-          title: 'Interactive Web Portfolio',
+          title: 'UARP-AI (User, Audit & Role Platform)',
           description:
             'Animated portfolio with React + TypeScript + Vite. Smooth Framer Motion transitions, Vanta/Three effects, and Tailwind styling. Optional serverless backend for forms.',
           highlights: [
@@ -922,6 +922,13 @@ export const TRANSLATIONS = {
           ],
           badge: '2025',
           links: [
+            {
+              label: 'Live demo',
+              href: 'http://206.189.76.47:5173/',
+              aria: 'Open the live demo of UARP-AI in a new tab',
+              variant: 'star',
+              highlight: true,
+            },
             {
               label: 'Repository',
               href: 'https://github.com/cristianbedoya64/portafolio-web',
